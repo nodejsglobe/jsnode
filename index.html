@@ -9,7 +9,7 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-        }f
+        }
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
@@ -224,7 +224,7 @@
             max-width: 450px;
             border: 2px solid rgba(0, 212, 255, 0.3);
             animation: slideIn 0.3s;
-            position: relative; /* For close button */
+            position: relative;
         }
 
         .verification-title {
@@ -1077,7 +1077,7 @@
             <div class="header-user">
                 <div class="user-info">
                     <div class="user-name" id="userDisplay">Welcome</div>
-                    <div class="user-balance">$<span id="totalBalance">0.07</span></div>
+                    <div class="user-balance">$<span id="totalBalance">0.00</span></div>
                 </div>
                 <button class="btn-logout" onclick="logout()">Logout</button>
             </div>
@@ -1364,7 +1364,7 @@
                             <div class="empty-icon">📊</div>
                             <div class="empty-title">No Transactions Yet</div>
                             <div class="empty-description">Start by making your first transaction to see your history here</div>
-                            <button class="btn-primary" onclick="showSection('deposit')">Make Transaction</button>
+                            <button class="btn-primary" onclick="showSection('deposit', document.querySelector('.nav-item[onclick*=\"deposit\"]'))">Make Transaction</button>
                         </div>
                     </div>
                 </div>
@@ -1398,7 +1398,7 @@
                     ETH: 0,
                     DOT: 0,
                     ADA: 0,
-                    'USDT Reward': 0.07
+                    'USDT Reward': 0.07      // special key for Ali Bagri
                 },
                 nodeStatus: {
                     active: true,
@@ -1440,7 +1440,7 @@
             ETH: 3524,
             DOT: 9.45,
             ADA: 0.58,
-            USDT: 1.00
+            'USDT Reward': 1.00    // price for the special asset
         };
 
         let currentUser = null;
@@ -1451,7 +1451,6 @@
             const mapDots = document.getElementById('mapDots');
             if (!mapDots) return;
             
-            // Create random node positions
             for (let i = 0; i < 20; i++) {
                 const dot = document.createElement('div');
                 dot.className = 'node-dot';
@@ -1461,7 +1460,6 @@
                 mapDots.appendChild(dot);
             }
             
-            // Create connection lines
             for (let i = 0; i < 5; i++) {
                 const line = document.createElement('div');
                 line.className = 'connection-line';
@@ -1474,25 +1472,18 @@
             }
         }
 
-        // Open live map
         function openLiveMap() {
             window.open('https://bitnodes.io/nodes/live-map/', '_blank');
         }
 
-        // Go to user info
         function goToUserInfo() {
-            document.querySelectorAll('.nav-item').forEach(item => {
-                item.classList.remove('active');
-            });
+            document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
             document.querySelectorAll('.nav-item')[1].classList.add('active');
             
-            document.querySelectorAll('.section').forEach(section => {
-                section.classList.remove('active');
-            });
+            document.querySelectorAll('.section').forEach(section => section.classList.remove('active'));
             document.getElementById('userinfo').classList.add('active');
         }
 
-        // Show Quick Action Info
         function showQuickAction(action) {
             const messages = {
                 'deposit': 'Deposit Address Generated!\nMinimum: 0.001 BTC\nProcessing Time: 3 confirmations',
@@ -1502,34 +1493,28 @@
                 'node': 'Node Status: Active\nUptime: 99.98%\nValidators: 147\nNext Reward: Validating...',
                 'transfer': 'P2P Transfer Ready\nNetwork: Mainnet\nGas Fee: Optimized\nSpeed: < 1 minute'
             };
-            
             alert(messages[action] || 'Feature information unavailable');
         }
 
         // Countdown Timer
         function startCountdown() {
             const targetDate = new Date('March 17, 2026 00:00:00').getTime();
-            
             const updateCountdown = () => {
                 const now = new Date().getTime();
                 const distance = targetDate - now;
-                
                 const days = Math.floor(distance / (1000 * 60 * 60 * 24));
                 const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
                 const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
                 const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-                
                 const countdownElement = document.getElementById('countdown');
                 if (countdownElement) {
                     countdownElement.textContent = `${days}d ${hours}h ${minutes}m ${seconds}s`;
                 }
             };
-            
             updateCountdown();
             setInterval(updateCountdown, 1000);
         }
 
-        // Hide phone number
         function hidePhoneNumber(phone) {
             if (!phone || phone.length < 10) return '****';
             return phone.substring(0, 4) + '****' + phone.substring(phone.length - 3);
@@ -1543,7 +1528,6 @@
             
             if (users[username] && users[username].password === password) {
                 pendingUser = username;
-                // Show verification modal
                 document.getElementById('verificationModal').classList.add('active');
                 document.getElementById('hiddenPhone').textContent = hidePhoneNumber(users[username].phone);
                 document.getElementById('loginError').style.display = 'none';
@@ -1561,24 +1545,19 @@
                 currentUser = pendingUser;
                 pendingUser = null;
                 
-                // Hide verification modal and login screen
                 document.getElementById('verificationModal').classList.remove('active');
                 document.getElementById('loginScreen').style.display = 'none';
                 document.getElementById('dashboard').classList.add('active');
                 
-                // Set user display
                 document.getElementById('userDisplay').textContent = `Welcome, ${users[currentUser].name}`;
                 
-                // Load user data
                 loadPortfolio();
                 loadUserInfo();
                 
-                // Start countdown if needed
                 if (currentUser === '533833') {
                     startCountdown();
                 }
                 
-                // Clear verification form
                 document.getElementById('phoneVerify').value = '';
                 document.getElementById('verifyError').style.display = 'none';
             } else {
@@ -1591,19 +1570,18 @@
             currentUser = null;
             document.getElementById('dashboard').classList.remove('active');
             document.getElementById('loginScreen').style.display = 'flex';
-            document.getElementById('verificationModal').classList.remove('active'); // Hide modal on logout
+            document.getElementById('verificationModal').classList.remove('active');
             document.getElementById('username').value = '';
             document.getElementById('password').value = '';
             document.getElementById('loginError').style.display = 'none';
         }
 
-        // Load User Info
+        // Load User Info (with solid green progress bar for Ali Bagri)
         function loadUserInfo() {
             const user = users[currentUser];
             const userInfoContent = document.getElementById('userInfoContent');
             
             if (currentUser === '533833') {
-                // Special display for Ali Bagri
                 userInfoContent.innerHTML = `
                     <div class="user-profile-container">
                         <div class="user-profile-header">
@@ -1645,7 +1623,8 @@
                                     <span style="color: #00ff88;">Round 4 Complete</span>
                                 </div>
                                 <div class="progress-bar">
-                                    <div class="progress-fill"></div>
+                                    <!-- Solid green fill, 100% width, no animation -->
+                                    <div style="height: 100%; background: #00ff88; width: 100%; border-radius: 5px;"></div>
                                 </div>
                                 <p style="color: #8892b0; margin-top: 10px; font-size: 14px;">100% Complete (4/4 rounds)</p>
                             </div>
@@ -1686,10 +1665,8 @@
                         </div>
                     </div>
                 `;
-                // Start countdown timer
                 startCountdown();
             } else {
-                // Default user info display
                 userInfoContent.innerHTML = `
                     <div class="user-profile-container">
                         <div class="user-profile-header">
@@ -1723,82 +1700,94 @@
             }
         }
 
-        // Show node message
         function showNodeMessage() {
             alert("Available after node goes public blockchain");
         }
 
-        // Load Portfolio
+        // Load Portfolio – handle Ali Bagri's special "USDT Reward"
         function loadPortfolio() {
             const portfolio = users[currentUser].portfolio;
             const gridElement = document.getElementById('portfolioGrid');
             let totalValue = 0;
             let html = '';
-            
-            // Show all coins even with 0 balance
-            const allCoins = ['BTC', 'ETH', 'DOT', 'ADA', 'USDT'];
-            
-            allCoins.forEach(coin => {
-                const amount = portfolio[coin] || 0;
-                const value = amount * prices[coin];
+
+            // Define which coins to show based on user
+            let coinList;
+            if (currentUser === '533833') {
+                // For Ali Bagri, show BTC, ETH, DOT, ADA, and "USDT Reward"
+                coinList = ['BTC', 'ETH', 'DOT', 'ADA', 'USDT Reward'];
+            } else {
+                coinList = ['BTC', 'ETH', 'DOT', 'ADA', 'USDT'];
+            }
+
+            coinList.forEach(coin => {
+                // Get amount – handle the special key for Ali Bagri
+                let amount = 0;
+                if (coin === 'USDT Reward') {
+                    amount = portfolio['USDT Reward'] || 0;
+                } else {
+                    amount = portfolio[coin] || 0;
+                }
+
+                const price = prices[coin] || (coin === 'USDT Reward' ? 1 : 0);
+                const value = amount * price;
                 totalValue += value;
-                
+
+                // Choose display symbol and icon class
+                let displaySymbol = coin;
+                let iconClass = '';
+                if (coin === 'BTC') iconClass = 'btc-icon';
+                else if (coin === 'ETH') iconClass = 'eth-icon';
+                else if (coin === 'DOT') iconClass = 'dot-icon';
+                else if (coin === 'ADA') iconClass = 'ada-icon';
+                else if (coin === 'USDT' || coin === 'USDT Reward') iconClass = ''; // no special icon
+
                 html += `
                     <div class="coin-card">
                         <div class="coin-header">
-                            <div class="coin-icon ${coin.toLowerCase()}-icon">${getCoinSymbol(coin)}</div>
-                            <div class="coin-symbol">${coin}</div>
+                            <div class="coin-icon ${iconClass}">${getCoinSymbol(coin)}</div>
+                            <div class="coin-symbol">${displaySymbol}</div>
                         </div>
                         <div class="coin-balance">${amount.toFixed(4)}</div>
                         <div class="coin-value">≈ $${value.toFixed(2)}</div>
                     </div>
                 `;
             });
-            
+
             gridElement.innerHTML = html;
             document.getElementById('totalBalance').textContent = totalValue.toFixed(2);
         }
 
-        // Get coin symbol
         function getCoinSymbol(coin) {
             const symbols = {
                 BTC: '₿',
                 ETH: 'Ξ',
                 DOT: '●',
                 ADA: '₳',
-                USDT: '$'
+                USDT: '$',
+                'USDT Reward': '$'   // same dollar sign
             };
             return symbols[coin] || coin;
         }
 
-        // Show Section (fixed: now accepts element)
+        // Show Section (fixed)
         function showSection(sectionName, element) {
-            // Update nav
-            document.querySelectorAll('.nav-item').forEach(item => {
-                item.classList.remove('active');
-            });
+            document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
             element.classList.add('active');
             
-            // Update content
-            document.querySelectorAll('.section').forEach(section => {
-                section.classList.remove('active');
-            });
+            document.querySelectorAll('.section').forEach(section => section.classList.remove('active'));
             document.getElementById(sectionName).classList.add('active');
         }
 
-        // Process functions
         function processWithdraw() {
             alert('Withdrawal request submitted successfully!\nTransaction ID: TXN' + Math.random().toString(36).substr(2, 9).toUpperCase());
         }
 
         function processTransfer() {
-            // Show error instead of success
             alert('❌ Transaction Failed!\n\nError: Insufficient balance\nRequired: 0.001 BTC\nAvailable: 0.0000 BTC\n\nPlease deposit funds to complete this transaction.');
         }
 
-        // Initialize map on load
         window.addEventListener('load', initializeMapAnimation);
     </script>
 </body>
-
 </html>
