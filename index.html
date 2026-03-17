@@ -25,7 +25,6 @@
             background: linear-gradient(135deg, #0a0b0d 0%, #1a1a2e 100%);
         }
 
-        /* Left Panel for Login */
         .login-left-panel {
             width: 40%;
             background: rgba(26, 29, 41, 0.95);
@@ -35,7 +34,6 @@
             border-right: 1px solid rgba(255, 255, 255, 0.1);
         }
 
-        /* Right Panel for Branding */
         .login-right-panel {
             flex: 1;
             display: flex;
@@ -45,7 +43,6 @@
             overflow: hidden;
         }
 
-        /* Live Node Map Animation */
         .live-map-container {
             position: relative;
             width: 100%;
@@ -99,14 +96,8 @@
         }
 
         @keyframes pulse-node {
-            0%, 100% { 
-                transform: scale(1);
-                opacity: 1;
-            }
-            50% { 
-                transform: scale(1.5);
-                opacity: 0.7;
-            }
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.5); opacity: 0.7; }
         }
 
         .connection-line {
@@ -274,7 +265,6 @@
             display: block;
         }
 
-        /* Header */
         .header {
             background: rgba(26, 29, 41, 0.95);
             padding: 15px 30px;
@@ -332,7 +322,6 @@
             border-color: #ff4757;
         }
 
-        /* Node Status Bar */
         .node-status-bar {
             background: rgba(26, 29, 41, 0.95);
             padding: 15px 30px;
@@ -435,14 +424,12 @@
             100% { opacity: 1; }
         }
 
-        /* Main Content */
         .main-content {
             display: flex;
             padding: 30px;
             gap: 30px;
         }
 
-        /* Sidebar */
         .sidebar {
             width: 250px;
             background: rgba(26, 29, 41, 0.95);
@@ -479,7 +466,6 @@
             text-align: center;
         }
 
-        /* Content Area */
         .content-area {
             flex: 1;
             background: rgba(26, 29, 41, 0.95);
@@ -513,7 +499,6 @@
             color: #fff;
         }
 
-        /* User Info Section */
         .user-profile-container {
             background: linear-gradient(135deg, rgba(0, 212, 255, 0.05), rgba(0, 153, 255, 0.05));
             border: 1px solid rgba(0, 212, 255, 0.2);
@@ -723,7 +708,6 @@
             opacity: 1;
         }
 
-        /* Portfolio Section */
         .portfolio-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
@@ -785,7 +769,6 @@
         .dot-icon { background: #e6007a; }
         .ada-icon { background: #0033ad; }
 
-        /* Action Buttons */
         .action-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
@@ -825,176 +808,114 @@
             margin-top: 4px;
         }
 
-        /* Transaction styles */
-        .transaction-list {
-            margin-top: 20px;
-        }
-
-        .transaction-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 15px;
-            background: rgba(255, 255, 255, 0.03);
-            border-radius: 10px;
-            margin-bottom: 10px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .transaction-info {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .transaction-icon {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            display: flex;
+        /* Deposit Slip Modal */
+        .deposit-slip-modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.95);
+            z-index: 2100;
             align-items: center;
             justify-content: center;
-            font-size: 20px;
         }
-
-        .transaction-icon.deposit { background: rgba(0, 255, 136, 0.1); color: #00ff88; }
-        .transaction-icon.withdraw { background: rgba(255, 71, 87, 0.1); color: #ff4757; }
-        .transaction-icon.stake { background: rgba(0, 212, 255, 0.1); color: #00d4ff; }
-
-        .transaction-details {
+        .deposit-slip-modal.active {
             display: flex;
-            flex-direction: column;
         }
-
-        .transaction-type {
-            font-size: 14px;
-            font-weight: 600;
-            color: #fff;
+        .slip-content {
+            background: #1a1d29;
+            border-radius: 20px;
+            padding: 35px;
+            width: 90%;
+            max-width: 500px;
+            border: 2px solid #00d4ff;
+            position: relative;
+            box-shadow: 0 20px 40px rgba(0,212,255,0.2);
         }
-
-        .transaction-date {
-            font-size: 12px;
-            color: #8892b0;
-        }
-
-        .transaction-amount {
-            font-size: 16px;
-            font-weight: 600;
-        }
-
-        .amount-positive { color: #00ff88; }
-        .amount-negative { color: #ff4757; }
-
-        /* Empty state */
-        .empty-state {
+        .slip-header {
             text-align: center;
-            padding: 60px 20px;
-            background: rgba(255, 255, 255, 0.03);
-            border-radius: 15px;
-            border: 1px dashed rgba(255, 255, 255, 0.1);
-        }
-
-        .empty-icon {
-            font-size: 64px;
-            margin-bottom: 20px;
-            opacity: 0.5;
-        }
-
-        .empty-title {
-            font-size: 20px;
-            color: #fff;
-            margin-bottom: 10px;
-        }
-
-        .empty-description {
-            color: #8892b0;
             margin-bottom: 25px;
         }
-
-        /* Deposit/Withdraw forms */
-        .form-container {
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 15px;
-            padding: 30px;
-            max-width: 500px;
+        .slip-header h2 {
+            color: #00d4ff;
+            font-size: 28px;
         }
-
-        .form-container input,
-        .form-container select {
-            width: 100%;
-            padding: 12px;
-            margin-bottom: 15px;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 8px;
+        .slip-header p {
+            color: #8892b0;
+            font-size: 14px;
+        }
+        .slip-detail {
+            background: rgba(255,255,255,0.03);
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        .slip-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px dashed rgba(255,255,255,0.1);
+        }
+        .slip-row:last-child {
+            border-bottom: none;
+        }
+        .slip-label {
+            color: #8892b0;
+            font-weight: 400;
+        }
+        .slip-value {
             color: #fff;
-            font-size: 16px;
+            font-weight: 600;
+            font-family: monospace;
         }
-
-        /* Staking cards */
-        .staking-card {
-            background: linear-gradient(135deg, rgba(0, 212, 255, 0.05), rgba(0, 255, 136, 0.05));
-            border: 1px solid rgba(0, 212, 255, 0.3);
-            border-radius: 15px;
-            padding: 25px;
-            margin-bottom: 20px;
-        }
-
-        .staking-apy {
-            font-size: 32px;
+        .slip-value.success {
             color: #00ff88;
-            font-weight: bold;
-            margin: 15px 0;
         }
-
-        /* Pool cards */
-        .pool-card {
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 15px;
-            padding: 25px;
-            margin-bottom: 20px;
-        }
-
-        .pool-stats {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-            margin: 20px 0;
-        }
-
-        .pool-stat {
+        .slip-amount {
+            font-size: 36px;
+            color: #00ff88;
             text-align: center;
-            padding: 10px;
-            background: rgba(255, 255, 255, 0.03);
-            border-radius: 8px;
+            margin: 20px 0;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+        .close-btn {
+            position: absolute;
+            top: 15px; right: 20px;
+            font-size: 30px;
+            color: #8892b0;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+        .close-btn:hover {
+            color: #fff;
+        }
+        .slip-footer {
+            text-align: center;
+            color: #8892b0;
+            font-size: 12px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            padding-top: 15px;
         }
 
-        /* Responsive */
         @media (max-width: 768px) {
             .login-container {
                 flex-direction: column;
             }
-            
             .login-left-panel {
                 width: 100%;
                 border-right: none;
                 border-bottom: 1px solid rgba(255, 255, 255, 0.1);
             }
-            
             .login-right-panel {
                 display: none;
             }
-            
             .main-content {
                 flex-direction: column;
             }
-            
             .sidebar {
                 width: 100%;
             }
-            
             .portfolio-grid {
                 grid-template-columns: 1fr;
             }
@@ -1035,9 +956,7 @@
             <div class="live-map-container" onclick="openLiveMap()">
                 <h2 class="map-title">🌍 Live Node Map</h2>
                 <div class="world-map">
-                    <div class="map-dots" id="mapDots">
-                        <!-- Dynamic nodes will be added here -->
-                    </div>
+                    <div class="map-dots" id="mapDots"></div>
                 </div>
             </div>
         </div>
@@ -1066,6 +985,13 @@
             <div class="error-message" id="verifyError" style="display: none;">
                 Wrong captcha, check your phone number
             </div>
+        </div>
+    </div>
+
+    <!-- Deposit Slip Modal -->
+    <div class="deposit-slip-modal" id="depositSlipModal">
+        <div class="slip-content" id="depositSlipContent">
+            <!-- dynamic content -->
         </div>
     </div>
 
@@ -1154,11 +1080,14 @@
                 <div class="section active" id="portfolio">
                     <h2 class="section-title">Your Portfolio</h2>
                     
-                    <div class="portfolio-grid" id="portfolioGrid">
-                        <!-- Coins will be added dynamically -->
+                    <div class="portfolio-grid" id="portfolioGrid"></div>
+
+                    <!-- Deposit Info Button -->
+                    <div style="margin: 30px 0; text-align: center;">
+                        <button class="btn-primary" onclick="showDepositSlip()" style="width: auto; padding: 14px 40px; font-size: 16px;">📄 VIEW DEPOSIT SLIP</button>
                     </div>
 
-                    <h3 style="margin-top: 30px; margin-bottom: 20px;">Quick Actions</h3>
+                    <h3 style="margin-top: 20px; margin-bottom: 20px;">Quick Actions</h3>
                     <div class="action-grid">
                         <div class="action-btn" onclick="showQuickAction('deposit')">
                             <div class="action-icon">⬇️</div>
@@ -1196,12 +1125,10 @@
                 <!-- User Info Section -->
                 <div class="section" id="userinfo">
                     <h2 class="section-title">User Information</h2>
-                    <div id="userInfoContent">
-                        <!-- User info will be loaded dynamically -->
-                    </div>
+                    <div id="userInfoContent"></div>
                 </div>
 
-                <!-- Deposit Section -->
+                <!-- Deposit Section (static) -->
                 <div class="section" id="deposit">
                     <h2 class="section-title">Deposit Cryptocurrency</h2>
                     <div class="form-container">
@@ -1215,7 +1142,7 @@
                         
                         <div style="background: rgba(0, 212, 255, 0.1); padding: 20px; border-radius: 10px; border: 1px solid rgba(0, 212, 255, 0.3); margin: 20px 0;">
                             <p style="color: #00d4ff; margin-bottom: 10px;">📍 Your Deposit Address:</p>
-                            <code id="depositAddress" style="background: rgba(0, 0, 0, 0.3); padding: 10px; border-radius: 5px; display: block; word-break: break-all; color: #00ff88;">
+                            <code style="background: rgba(0, 0, 0, 0.3); padding: 10px; border-radius: 5px; display: block; word-break: break-all; color: #00ff88;">
                                 bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh
                             </code>
                         </div>
@@ -1225,7 +1152,7 @@
                     </div>
                 </div>
 
-                <!-- Withdraw Section -->
+                <!-- Other sections (withdraw, staking, pool, node, transfer, history) - kept as in original -->
                 <div class="section" id="withdraw">
                     <h2 class="section-title">Withdraw Funds</h2>
                     <div class="form-container">
@@ -1247,7 +1174,6 @@
                     </div>
                 </div>
 
-                <!-- Staking Section -->
                 <div class="section" id="staking">
                     <h2 class="section-title">Staking Rewards</h2>
                     
@@ -1270,7 +1196,6 @@
                     </div>
                 </div>
 
-                <!-- Pool Section -->
                 <div class="section" id="pool">
                     <h2 class="section-title">Liquidity Pools</h2>
                     
@@ -1309,7 +1234,6 @@
                     </div>
                 </div>
 
-                <!-- Node Section -->
                 <div class="section" id="node">
                     <h2 class="section-title">Node Management</h2>
                     <div class="node-status-card">
@@ -1333,7 +1257,6 @@
                     </div>
                 </div>
 
-                <!-- Transfer Section -->
                 <div class="section" id="transfer">
                     <h2 class="section-title">Transfer Cryptocurrency</h2>
                     <div class="form-container">
@@ -1356,7 +1279,6 @@
                     </div>
                 </div>
 
-                <!-- History Section -->
                 <div class="section" id="history">
                     <h2 class="section-title">Transaction History</h2>
                     <div class="transaction-list" id="transactionList">
@@ -1373,21 +1295,8 @@
     </div>
 
     <script>
-        // User Database
+        // ---------- USER DATABASE (only Ali & Awais) ----------
         const users = {
-            'user1': {
-                password: 'pass123',
-                name: 'John Doe',
-                phone: '03001234567',
-                nationality: 'Not provided',
-                portfolio: {
-                    BTC: 0,
-                    ETH: 0,
-                    DOT: 0,
-                    ADA: 0,
-                    USDT: 0
-                }
-            },
             '533833': {
                 password: 'Allah@786',
                 name: 'Ali Bagri',
@@ -1398,59 +1307,42 @@
                     ETH: 0,
                     DOT: 0,
                     ADA: 0,
-                    'USDT Reward': 0.07      // special key for Ali Bagri
+                    'USDT Reward': 0.07
                 },
-                nodeStatus: {
-                    active: true,
-                    type: 'Validator Node',
-                    round: 3,
-                    publicDate: 'March 17, 2026'
-                }
+                nodeStatus: { active: true, type: 'Validator Node', round: 3, publicDate: 'March 17, 2026' }
             },
-            '55747329': {
-                password: 'Punjab@340',
-                name: 'Premium User',
-                phone: '03331234567',
-                nationality: 'Not provided',
+            '533336': {
+                password: 'Punjab@335',
+                name: 'Awais Ahmed',
+                phone: '03111666028',
+                nationality: 'Pakistan',
                 portfolio: {
                     BTC: 0,
                     ETH: 0,
                     DOT: 0,
                     ADA: 0,
-                    USDT: 0
-                }
-            },
-            '35816827': {
-                password: 'AliBhai92',
-                name: 'Staking User',
-                phone: '03211234567',
-                nationality: 'Not provided',
-                portfolio: {
-                    BTC: 0,
-                    ETH: 0,
-                    DOT: 0,
-                    ADA: 0,
-                    USDT: 0
-                }
+                    'USDT Reward': 7.0
+                },
+                nodeStatus: { active: true, type: 'Validator Node', round: 3, publicDate: 'March 17, 2026' }
             }
         };
 
-        let prices = {
+        const prices = {
             BTC: 67842,
             ETH: 3524,
             DOT: 9.45,
             ADA: 0.58,
-            'USDT Reward': 1.00    // price for the special asset
+            'USDT Reward': 1.00
         };
 
         let currentUser = null;
         let pendingUser = null;
+        let countdownInterval = null;
 
         // Initialize map animation
         function initializeMapAnimation() {
             const mapDots = document.getElementById('mapDots');
             if (!mapDots) return;
-            
             for (let i = 0; i < 20; i++) {
                 const dot = document.createElement('div');
                 dot.className = 'node-dot';
@@ -1459,7 +1351,6 @@
                 dot.style.animationDelay = Math.random() * 2 + 's';
                 mapDots.appendChild(dot);
             }
-            
             for (let i = 0; i < 5; i++) {
                 const line = document.createElement('div');
                 line.className = 'connection-line';
@@ -1479,27 +1370,26 @@
         function goToUserInfo() {
             document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
             document.querySelectorAll('.nav-item')[1].classList.add('active');
-            
             document.querySelectorAll('.section').forEach(section => section.classList.remove('active'));
             document.getElementById('userinfo').classList.add('active');
         }
 
         function showQuickAction(action) {
             const messages = {
-                'deposit': 'Deposit Address Generated!\nMinimum: 0.001 BTC\nProcessing Time: 3 confirmations',
-                'withdraw': 'Daily Withdrawal Limit: 10 BTC\nNetwork Fee: 0.0005 BTC\nAvailable Balance: 0.0000 BTC',
-                'stake': 'Available Staking Options:\n• ADA: 5.2% APY\n• AVAX: 8.7% APY\n• ETH: 4.2% APY',
-                'pool': 'Top Pools:\n• BTC/USDT: 24.5% APR\n• AVAX/USDT: 31.2% APR\n• ETH/USDT: 18.3% APR',
-                'node': 'Node Status: Active\nUptime: 99.98%\nValidators: 147\nNext Reward: Validating...',
-                'transfer': 'P2P Transfer Ready\nNetwork: Mainnet\nGas Fee: Optimized\nSpeed: < 1 minute'
+                deposit: 'Deposit Address Generated!\nMinimum: 0.001 BTC\nProcessing Time: 3 confirmations',
+                withdraw: 'Daily Withdrawal Limit: 10 BTC\nNetwork Fee: 0.0005 BTC\nAvailable Balance: 0.0000 BTC',
+                stake: 'Available Staking Options:\n• ADA: 5.2% APY\n• AVAX: 8.7% APY\n• ETH: 4.2% APY',
+                pool: 'Top Pools:\n• BTC/USDT: 24.5% APR\n• AVAX/USDT: 31.2% APR\n• ETH/USDT: 18.3% APR',
+                node: 'Node Status: Active\nUptime: 99.98%\nValidators: 147\nNext Reward: Validating...',
+                transfer: 'P2P Transfer Ready\nNetwork: Mainnet\nGas Fee: Optimized\nSpeed: < 1 minute'
             };
             alert(messages[action] || 'Feature information unavailable');
         }
 
-        // Countdown Timer
         function startCountdown() {
+            if (countdownInterval) clearInterval(countdownInterval);
             const targetDate = new Date('March 17, 2026 00:00:00').getTime();
-            const updateCountdown = () => {
+            function update() {
                 const now = new Date().getTime();
                 const distance = targetDate - now;
                 const days = Math.floor(distance / (1000 * 60 * 60 * 24));
@@ -1510,9 +1400,9 @@
                 if (countdownElement) {
                     countdownElement.textContent = `${days}d ${hours}h ${minutes}m ${seconds}s`;
                 }
-            };
-            updateCountdown();
-            setInterval(updateCountdown, 1000);
+            }
+            update();
+            countdownInterval = setInterval(update, 1000);
         }
 
         function hidePhoneNumber(phone) {
@@ -1554,10 +1444,6 @@
                 loadPortfolio();
                 loadUserInfo();
                 
-                if (currentUser === '533833') {
-                    startCountdown();
-                }
-                
                 document.getElementById('phoneVerify').value = '';
                 document.getElementById('verifyError').style.display = 'none';
             } else {
@@ -1576,219 +1462,216 @@
             document.getElementById('loginError').style.display = 'none';
         }
 
-        // Load User Info (with solid green progress bar for Ali Bagri)
-        function loadUserInfo() {
-            const user = users[currentUser];
-            const userInfoContent = document.getElementById('userInfoContent');
-            
-            if (currentUser === '533833') {
-                userInfoContent.innerHTML = `
-                    <div class="user-profile-container">
-                        <div class="user-profile-header">
-                            <div class="user-avatar">AB</div>
-                            <div class="user-details">
-                                <h2>${user.name}</h2>
-                                <p>User ID: ${currentUser}</p>
-                            </div>
-                        </div>
-                        
-                        <div class="info-grid">
-                            <div class="info-card">
-                                <div class="info-label">Phone Number</div>
-                                <div class="info-value">${user.phone}</div>
-                            </div>
-                            <div class="info-card">
-                                <div class="info-label">Nationality</div>
-                                <div class="info-value">${user.nationality}</div>
-                            </div>
-                            <div class="info-card">
-                                <div class="info-label">Account Type</div>
-                                <div class="info-value">Premium Node Validator</div>
-                            </div>
-                            <div class="info-card">
-                                <div class="info-label">Active Member Since</div>
-                                <div class="info-value">March 2026</div>
-                            </div>
-                        </div>
-                        
-                        <div class="node-status-card">
-                            <div class="node-status-header">
-                                <div class="status-indicator"></div>
-                                <div class="node-status-title">Node is Running</div>
-                            </div>
-                            
-                            <div class="validation-progress">
-                                <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
-                                    <span style="color: #8892b0;">Validation Complete</span>
-                                    <span style="color: #00ff88;">Round 4 Complete</span>
-                                </div>
-                                <div class="progress-bar">
-                                    <!-- Solid green fill, 100% width, no animation -->
-                                    <div style="height: 100%; background: #00ff88; width: 100%; border-radius: 5px;"></div>
-                                </div>
-                                <p style="color: #8892b0; margin-top: 10px; font-size: 14px;">100% Complete (4/4 rounds)</p>
-                            </div>
-                            
-                            <div class="info-grid" style="margin-top: 20px;">
-                                <div class="info-card">
-                                    <div class="info-label">Node Type</div>
-                                    <div class="info-value">Validator Active</div>
-                                </div>
-                                <div class="info-card">
-                                    <div class="info-label">Public Blockchain Date</div>
-                                    <div class="countdown-container">
-                                        <div class="countdown-date">📅 March 17, 2026</div>
-                                        <div class="countdown-timer" id="countdown">Loading...</div>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <div class="info-card" style="margin-top: 20px;">
-                                <div class="info-label">Reward History</div>
-                                <div class="info-value" style="color: #ffa500;">Active Now Check Portfolio</div>
-                            </div>
-                            
-                            <div class="node-buttons">
-                                <div class="tooltip">
-                                    <button class="btn-disabled" onclick="showNodeMessage()">
-                                        🛑 Stop Node
-                                    </button>
-                                    <span class="tooltip-text">Available after 1st reward 33 USD withdrawal verified</span>
-                                </div>
-                                <div class="tooltip">
-                                    <button class="btn-disabled" onclick="showNodeMessage()">
-                                        💰 Sell Node
-                                    </button>
-                                    <span class="tooltip-text">Available after 1st reward 33 USD withdrawal verified</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                `;
-                startCountdown();
-            } else {
-                userInfoContent.innerHTML = `
-                    <div class="user-profile-container">
-                        <div class="user-profile-header">
-                            <div class="user-avatar">${user.name.charAt(0)}</div>
-                            <div class="user-details">
-                                <h2>${user.name}</h2>
-                                <p>User ID: ${currentUser}</p>
-                            </div>
-                        </div>
-                        
-                        <div class="info-grid">
-                            <div class="info-card">
-                                <div class="info-label">Phone Number</div>
-                                <div class="info-value">${user.phone}</div>
-                            </div>
-                            <div class="info-card">
-                                <div class="info-label">Nationality</div>
-                                <div class="info-value">${user.nationality}</div>
-                            </div>
-                            <div class="info-card">
-                                <div class="info-label">Account Type</div>
-                                <div class="info-value">Standard</div>
-                            </div>
-                            <div class="info-card">
-                                <div class="info-label">Member Since</div>
-                                <div class="info-value">January 2024</div>
-                            </div>
-                        </div>
-                    </div>
-                `;
-            }
-        }
-
-        function showNodeMessage() {
-            alert("Available after node goes public blockchain");
-        }
-
-        // Load Portfolio – handle Ali Bagri's special "USDT Reward"
+        // Load Portfolio (dynamic from portfolio keys)
         function loadPortfolio() {
             const portfolio = users[currentUser].portfolio;
             const gridElement = document.getElementById('portfolioGrid');
             let totalValue = 0;
             let html = '';
 
-            // Define which coins to show based on user
-            let coinList;
-            if (currentUser === '533833') {
-                // For Ali Bagri, show BTC, ETH, DOT, ADA, and "USDT Reward"
-                coinList = ['BTC', 'ETH', 'DOT', 'ADA', 'USDT Reward'];
-            } else {
-                coinList = ['BTC', 'ETH', 'DOT', 'ADA', 'USDT'];
-            }
-
-            coinList.forEach(coin => {
-                // Get amount – handle the special key for Ali Bagri
-                let amount = 0;
-                if (coin === 'USDT Reward') {
-                    amount = portfolio['USDT Reward'] || 0;
-                } else {
-                    amount = portfolio[coin] || 0;
-                }
-
-                const price = prices[coin] || (coin === 'USDT Reward' ? 1 : 0);
+            for (let coin in portfolio) {
+                const amount = portfolio[coin];
+                const price = prices[coin] || 1;
                 const value = amount * price;
                 totalValue += value;
 
-                // Choose display symbol and icon class
-                let displaySymbol = coin;
                 let iconClass = '';
-                if (coin === 'BTC') iconClass = 'btc-icon';
-                else if (coin === 'ETH') iconClass = 'eth-icon';
-                else if (coin === 'DOT') iconClass = 'dot-icon';
-                else if (coin === 'ADA') iconClass = 'ada-icon';
-                else if (coin === 'USDT' || coin === 'USDT Reward') iconClass = ''; // no special icon
+                if (coin.includes('BTC')) iconClass = 'btc-icon';
+                else if (coin.includes('ETH')) iconClass = 'eth-icon';
+                else if (coin.includes('DOT')) iconClass = 'dot-icon';
+                else if (coin.includes('ADA')) iconClass = 'ada-icon';
+
+                const symbol = coin === 'USDT Reward' ? 'USDT' : coin;
 
                 html += `
                     <div class="coin-card">
                         <div class="coin-header">
                             <div class="coin-icon ${iconClass}">${getCoinSymbol(coin)}</div>
-                            <div class="coin-symbol">${displaySymbol}</div>
+                            <div class="coin-symbol">${symbol}</div>
                         </div>
                         <div class="coin-balance">${amount.toFixed(4)}</div>
                         <div class="coin-value">≈ $${value.toFixed(2)}</div>
                     </div>
                 `;
-            });
+            }
 
             gridElement.innerHTML = html;
             document.getElementById('totalBalance').textContent = totalValue.toFixed(2);
         }
 
         function getCoinSymbol(coin) {
-            const symbols = {
-                BTC: '₿',
-                ETH: 'Ξ',
-                DOT: '●',
-                ADA: '₳',
-                USDT: '$',
-                'USDT Reward': '$'   // same dollar sign
-            };
-            return symbols[coin] || coin;
+            const symbols = { BTC: '₿', ETH: 'Ξ', DOT: '●', ADA: '₳', USDT: '$', 'USDT Reward': '$' };
+            return symbols[coin] || coin.charAt(0);
         }
 
-        // Show Section (fixed)
+        // Load User Info with node status and dynamic tooltip
+        function loadUserInfo() {
+            const user = users[currentUser];
+            const userInfoContent = document.getElementById('userInfoContent');
+
+            // Determine tooltip text based on user
+            let tooltipMessage = '';
+            if (currentUser === '533833') {
+                tooltipMessage = 'Available after 1st Reward 33 USD withdrawal verified';
+            } else if (currentUser === '533336') {
+                tooltipMessage = 'Available after 1st Reward 365 USD withdrawal verified';
+            }
+
+            userInfoContent.innerHTML = `
+                <div class="user-profile-container">
+                    <div class="user-profile-header">
+                        <div class="user-avatar">${user.name.split(' ').map(n => n[0]).join('')}</div>
+                        <div class="user-details">
+                            <h2>${user.name}</h2>
+                            <p>User ID: ${currentUser}</p>
+                        </div>
+                    </div>
+                    
+                    <div class="info-grid">
+                        <div class="info-card">
+                            <div class="info-label">Phone Number</div>
+                            <div class="info-value">${user.phone}</div>
+                        </div>
+                        <div class="info-card">
+                            <div class="info-label">Nationality</div>
+                            <div class="info-value">${user.nationality}</div>
+                        </div>
+                        <div class="info-card">
+                            <div class="info-label">Account Type</div>
+                            <div class="info-value">Premium Node Validator</div>
+                        </div>
+                        <div class="info-card">
+                            <div class="info-label">Active Member Since</div>
+                            <div class="info-value">March 2026</div>
+                        </div>
+                    </div>
+                    
+                    <div class="node-status-card">
+                        <div class="node-status-header">
+                            <div class="status-indicator"></div>
+                            <div class="node-status-title">Node is Running</div>
+                        </div>
+                        
+                        <div class="validation-progress">
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                                <span style="color: #8892b0;">Validation Complete</span>
+                                <span style="color: #00ff88;">Round 4 Complete</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div style="height: 100%; background: #00ff88; width: 100%; border-radius: 5px;"></div>
+                            </div>
+                            <p style="color: #8892b0; margin-top: 10px; font-size: 14px;">100% Complete (4/4 rounds)</p>
+                        </div>
+                        
+                        <div class="info-grid" style="margin-top: 20px;">
+                            <div class="info-card">
+                                <div class="info-label">Node Type</div>
+                                <div class="info-value">Validator Active</div>
+                            </div>
+                            <div class="info-card">
+                                <div class="info-label">Public Blockchain Date</div>
+                                <div class="countdown-container">
+                                    <div class="countdown-date">📅 March 17, 2026</div>
+                                    <div class="countdown-timer" id="countdown">Loading...</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="info-card" style="margin-top: 20px;">
+                            <div class="info-label">Reward History</div>
+                            <div class="info-value" style="color: #ffa500;">Active Now — Check Portfolio</div>
+                        </div>
+                        
+                        <div class="node-buttons">
+                            <div class="tooltip">
+                                <button class="btn-disabled" onclick="showNodeMessage()">🛑 Stop Node</button>
+                                <span class="tooltip-text">${tooltipMessage}</span>
+                            </div>
+                            <div class="tooltip">
+                                <button class="btn-disabled" onclick="showNodeMessage()">💰 Sell Node</button>
+                                <span class="tooltip-text">${tooltipMessage}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            startCountdown();
+        }
+
+        function showNodeMessage() {
+            alert("Available after node goes public blockchain");
+        }
+
+        // Show section
         function showSection(sectionName, element) {
             document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
             element.classList.add('active');
-            
             document.querySelectorAll('.section').forEach(section => section.classList.remove('active'));
             document.getElementById(sectionName).classList.add('active');
         }
 
-        function processWithdraw() {
-            alert('Withdrawal request submitted successfully!\nTransaction ID: TXN' + Math.random().toString(36).substr(2, 9).toUpperCase());
+        // Deposit Slip
+        function showDepositSlip() {
+            const modal = document.getElementById('depositSlipModal');
+            const content = document.getElementById('depositSlipContent');
+            
+            let slipHTML = '';
+            if (currentUser === '533833') { // Ali Bagri
+                slipHTML = `
+                    <span class="close-btn" onclick="document.getElementById('depositSlipModal').classList.remove('active')">&times;</span>
+                    <div class="slip-header">
+                        <h2>🏦 DEPOSIT SLIP</h2>
+                        <p>Transaction confirmed on blockchain</p>
+                    </div>
+                    <div class="slip-amount">₨ 52,700</div>
+                    <div class="slip-detail">
+                        <div class="slip-row"><span class="slip-label">Status</span><span class="slip-value success">✓ SUCCESS</span></div>
+                        <div class="slip-row"><span class="slip-label">Transaction ID</span><span class="slip-value">0x8f3a2b1c7e5d9a4b6c2f1e8d7a5b3c9d2e1f4a7b</span></div>
+                        <div class="slip-row"><span class="slip-label">Date & Time</span><span class="slip-value">2026-03-15 14:32:45 UTC</span></div>
+                        <div class="slip-row"><span class="slip-label">Channel</span><span class="slip-value">MetaMask (Wallet)</span></div>
+                        <div class="slip-row"><span class="slip-label">From</span><span class="slip-value">0xAbCd...EfGh</span></div>
+                        <div class="slip-row"><span class="slip-label">To</span><span class="slip-value">0xIjKl...MnOp</span></div>
+                        <div class="slip-row"><span class="slip-label">Network Fee</span><span class="slip-value">0.00012 ETH (~₨ 42)</span></div>
+                        <div class="slip-row"><span class="slip-label">Block #</span><span class="slip-value">19,284,736</span></div>
+                    </div>
+                    <div class="slip-footer">🔒 Verified by NodeJS • Non-refundable</div>
+                `;
+            } else if (currentUser === '533336') { // Awais Ahmed
+                slipHTML = `
+                    <span class="close-btn" onclick="document.getElementById('depositSlipModal').classList.remove('active')">&times;</span>
+                    <div class="slip-header">
+                        <h2>🏦 DEPOSIT SLIP</h2>
+                        <p>Transaction confirmed on Binance Chain</p>
+                    </div>
+                    <div class="slip-amount">₨ 878,600</div>
+                    <div class="slip-detail">
+                        <div class="slip-row"><span class="slip-label">Status</span><span class="slip-value success">✓ SUCCESS</span></div>
+                        <div class="slip-row"><span class="slip-label">Transaction ID</span><span class="slip-value">BSC: 0x2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b</span></div>
+                        <div class="slip-row"><span class="slip-label">Date & Time</span><span class="slip-value">2026-03-16 09:17:22 UTC</span></div>
+                        <div class="slip-row"><span class="slip-label">Channel</span><span class="slip-value">Binance (ID: 87654321)</span></div>
+                        <div class="slip-row"><span class="slip-label">From</span><span class="slip-value">binance_hot_wallet_42</span></div>
+                        <div class="slip-row"><span class="slip-label">To</span><span class="slip-value">${currentUser}_node_deposit</span></div>
+                        <div class="slip-row"><span class="slip-label">Network Fee</span><span class="slip-value">0.0005 BNB (~₨ 185)</span></div>
+                        <div class="slip-row"><span class="slip-label">Block #</span><span class="slip-value">29,384,112</span></div>
+                    </div>
+                    <div class="slip-footer">🔒 Verified by NodeJS • Non-refundable</div>
+                `;
+            }
+            content.innerHTML = slipHTML;
+            modal.classList.add('active');
         }
 
-        function processTransfer() {
-            alert('❌ Transaction Failed!\n\nError: Insufficient balance\nRequired: 0.001 BTC\nAvailable: 0.0000 BTC\n\nPlease deposit funds to complete this transaction.');
-        }
+        // Close modal if clicked outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('depositSlipModal');
+            if (event.target === modal) modal.classList.remove('active');
+        };
+
+        // Dummy functions for other sections
+        function processWithdraw() { alert('Withdrawal request submitted (demo)'); }
+        function processTransfer() { alert('Transfer failed: insufficient balance (demo)'); }
 
         window.addEventListener('load', initializeMapAnimation);
     </script>
 </body>
 </html>
-
