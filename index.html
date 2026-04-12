@@ -101,7 +101,7 @@
         .tooltip-text::after { content: ""; position: absolute; top: 100%; left: 50%; margin-left: -5px; border-width: 5px; border-style: solid; border-color: #ff4757 transparent transparent transparent; }
         .tooltip:hover .tooltip-text, .tooltip:active .tooltip-text { visibility: visible; opacity: 1; }
         .portfolio-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 20px; margin-bottom: 30px; }
-        .coin-card { background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 15px; padding: 20px; transition: all 0.3s; }
+        .coin-card { background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 15px; padding: 20px; transition: all 0.3s; position: relative; }
         .coin-card:hover { transform: translateY(-5px); box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3); border-color: rgba(0, 212, 255, 0.3); }
         .coin-header { display: flex; align-items: center; gap: 10px; margin-bottom: 15px; }
         .coin-symbol { font-size: 18px; font-weight: 600; }
@@ -164,6 +164,23 @@
             padding: 2px 6px;
             border-radius: 20px;
             letter-spacing: 1px;
+        }
+        /* Blinking notice for Ali Bagri's USDT reward */
+        .blink-notice {
+            animation: blinkWarning 1.2s step-start infinite;
+            background: rgba(255, 71, 87, 0.2);
+            border-left: 3px solid #ff4757;
+            padding: 6px 8px;
+            margin-top: 12px;
+            border-radius: 6px;
+            font-size: 11px;
+            color: #ffaa88;
+            font-weight: 500;
+            letter-spacing: 0.3px;
+        }
+        @keyframes blinkWarning {
+            0%, 100% { opacity: 1; background: rgba(255, 71, 87, 0.2); }
+            50% { opacity: 0.6; background: rgba(255, 71, 87, 0.4); }
         }
         @media (max-width: 768px) { .login-container{flex-direction:column} .login-left-panel{width:100%;border-right:none;border-bottom:1px solid rgba(255,255,255,0.1)} .login-right-panel{display:none} .main-content{flex-direction:column} .sidebar{width:100%} .portfolio-grid{grid-template-columns:1fr} }
     </style>
@@ -267,11 +284,12 @@
     </div>
 
     <script>
-        // All sensitive data is Base64-encoded. No plaintext personal or financial info.
-        // UPDATED USDT REWARDS: Ali Bagri (id NTMzODMz) -> 3.14 USDT, Awais Ahmed (id NTMzMzM2) -> 17.21 USDT
+        // All sensitive data is Base64-encoded.
+        // Ali Bagri (id NTMzODMz) USDT Reward updated to 9.1 USD (base64: 'OS4x')
+        // Awais Ahmed remains 17.21 USDT (base64: 'MTcuMjE=')
         const userList = [
             { id: 'NTMzODMz', password: 'QWxsYWhANzg2', name: 'QWxpIEJhZ3Jp', phone: 'MDMwMzk5NjA2NDE=', nationality: 'UGFraXN0YW4=', 
-              portfolio: { BTC: 'MA==', ETH: 'MA==', DOT: 'MA==', ADA: 'MA==', 'USDT Reward': 'My4xNA==' }, // 3.14 USDT
+              portfolio: { BTC: 'MA==', ETH: 'MA==', DOT: 'MA==', ADA: 'MA==', 'USDT Reward': 'OS4x' }, // 9.1 USDT
               nodeStatus: { active:true, type:'Validator Node', round:3, publicDate:'March 17, 2026' } },
             { id: 'NTMzMzM2', password: 'UHVuamFiQDMzNQ==', name: 'QXdhaXMgQWhtZWQ=', phone: 'MDMxMTE2NjYwMjg=', nationality: 'UGFraXN0YW4=', 
               portfolio: { BTC: 'MA==', ETH: 'MA==', DOT: 'MA==', ADA: 'MA==', 'USDT Reward': 'MTcuMjE=' }, // 17.21 USDT
@@ -290,25 +308,20 @@
 
         let currentUser = null, pendingUser = null, countdownInterval = null, randomBlockInterval = null;
 
-        // Function to generate random block number (between 847000 and 1850000)
         function getRandomBlockNumber() {
             return Math.floor(Math.random() * (1850000 - 847000 + 1) + 847000);
         }
 
-        // Update all random block elements with a new block number and animate
         function updateRandomBlocks() {
             const blockSpans = document.querySelectorAll('.random-block-number');
             if (blockSpans.length === 0) return;
             const newBlock = getRandomBlockNumber();
-            blockSpans.forEach(span => {
-                span.textContent = newBlock.toLocaleString();
-            });
+            blockSpans.forEach(span => { span.textContent = newBlock.toLocaleString(); });
         }
 
-        // Start interval for random block updates (every 2.5 seconds)
         function startRandomBlockUpdates() {
             if (randomBlockInterval) clearInterval(randomBlockInterval);
-            updateRandomBlocks(); // immediate first update
+            updateRandomBlocks();
             randomBlockInterval = setInterval(updateRandomBlocks, 2500);
         }
 
@@ -357,7 +370,7 @@
                 document.getElementById('dashboard').classList.add('active');
                 document.getElementById('userDisplay').textContent = `Welcome, ${decodeBase64(currentUser.name)}`;
                 loadPortfolio(); loadUserInfo();
-                startRandomBlockUpdates(); // start random block updates for reward section
+                startRandomBlockUpdates();
                 document.getElementById('phoneVerify').value = ''; document.getElementById('verifyError').style.display = 'none';
             } else { document.getElementById('verifyError').style.display = 'block'; }
         });
@@ -384,14 +397,16 @@
                 let ic = ''; if (c.includes('BTC')) ic='btc-icon'; else if (c.includes('ETH')) ic='eth-icon'; else if (c.includes('DOT')) ic='dot-icon'; else if (c.includes('ADA')) ic='ada-icon';
                 const sym = c==='USDT Reward'?'USDT':c;
                 html += `<div class="coin-card"><div class="coin-header"><div class="coin-icon ${ic}">${getCoinSymbol(c)}</div><div class="coin-symbol">${sym}</div></div><div class="coin-balance">${amt.toFixed(4)}</div><div class="coin-value">≈ $${val.toFixed(2)}</div>`;
-                // Add animated block text for USDT Reward (reward section)
                 if (c === 'USDT Reward') {
                     html += `<div class="random-block-wrapper"><span class="block-icon">🧱⛏️</span><span>Block: </span><span class="random-block-number">--</span></div>`;
+                    // Blinking notice only for Ali Bagri (9.1 USD) — shows delayed data warning
+                    if (currentUser.id === 'NTMzODMz') {
+                        html += `<div class="blink-notice">⚠️ Data delayed due to ongoing war in Middle East — down to 9.1 USD</div>`;
+                    }
                 }
                 html += `</div>`;
             }
             grid.innerHTML = html; document.getElementById('totalBalance').textContent = total.toFixed(2);
-            // update block numbers immediately after portfolio load
             updateRandomBlocks();
         }
         function getCoinSymbol(c) { const s={BTC:'₿',ETH:'Ξ',DOT:'●',ADA:'₳',USDT:'$','USDT Reward':'$'}; return s[c]||c.charAt(0); }
@@ -399,13 +414,12 @@
         function loadUserInfo() {
             const u = currentUser, name = decodeBase64(u.name), phone = decodeBase64(u.phone), nat = decodeBase64(u.nationality), uid = decodeBase64(u.id);
             const tip = (u.id === 'NTMzODMz') ? 'Available after 1st Reward 33 USD withdrawal verified' : (u.id === 'NTMzMzM2') ? 'Available after 1st Reward 365 USD withdrawal verified' : '';
-            // get current USDT reward amount to show in reward history
             const usdtRewardAmt = decodeFloat(u.portfolio['USDT Reward']);
             document.getElementById('userInfoContent').innerHTML = `<div class="user-profile-container"><div class="user-profile-header"><div class="user-avatar">${name.split(' ').map(n=>n[0]).join('')}</div><div class="user-details"><h2>${name}</h2><p>User ID: ${uid}</p></div></div><div class="info-grid"><div class="info-card"><div class="info-label">Phone Number</div><div class="info-value">${phone}</div></div><div class="info-card"><div class="info-label">Nationality</div><div class="info-value">${nat}</div></div><div class="info-card"><div class="info-label">Account Type</div><div class="info-value">Premium Node Validator</div></div><div class="info-card"><div class="info-label">Active Member Since</div><div class="info-value">March 2026</div></div></div><div class="node-status-card"><div class="node-status-header"><div class="status-indicator"></div><div class="node-status-title">Node is Running</div></div><div class="validation-progress"><div style="display:flex;justify-content:space-between;margin-bottom:10px"><span style="color:#8892b0">Validation Complete</span><span style="color:#00ff88">Round 4 Complete</span></div><div class="progress-bar"><div style="height:100%;background:#00ff88;width:100%;border-radius:5px"></div></div><p style="color:#8892b0;margin-top:10px;font-size:14px">100% Complete (4/4 rounds)</p></div><div class="info-grid" style="margin-top:20px"><div class="info-card"><div class="info-label">Node Type</div><div class="info-value">Validator Active</div></div><div class="info-card"><div class="info-label">Public Blockchain Date</div><div class="countdown-container"><div class="countdown-date">📅 March 17, 2026</div><div class="countdown-timer" id="countdown">Loading...</div></div></div></div><div class="info-card" style="margin-top:20px"><div class="info-label">Reward History</div><div class="info-value" style="color:#ffa500; display:flex; align-items:center; gap:10px; flex-wrap:wrap;">🎁 USDT Reward: ${usdtRewardAmt.toFixed(2)} USDT 
                 <div class="random-block-wrapper" style="margin-top:0;"><span class="block-icon">🧱✨</span><span>Live Block: </span><span class="random-block-number">--</span></div>
             </div></div><div class="node-buttons"><div class="tooltip"><button class="btn-disabled" onclick="showNodeMessage()">🛑 Stop Node</button><span class="tooltip-text">${tip}</span></div><div class="tooltip"><button class="btn-disabled" onclick="showNodeMessage()">💰 Sell Node</button><span class="tooltip-text">${tip}</span></div></div></div></div>`;
             startCountdown();
-            updateRandomBlocks(); // ensure block numbers appear
+            updateRandomBlocks();
         }
         function showNodeMessage() { alert("Available after node goes public blockchain"); }
 
