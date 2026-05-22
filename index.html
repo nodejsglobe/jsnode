@@ -134,54 +134,12 @@
         .close-btn { position: absolute; top: 15px; right: 20px; font-size: 30px; color: #8892b0; cursor: pointer; transition: color 0.2s; }
         .close-btn:hover { color: #fff; }
         .slip-footer { text-align: center; color: #8892b0; font-size: 12px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 15px; }
-        /* Animated block text styles */
-        .random-block-wrapper {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            background: rgba(0, 212, 255, 0.15);
-            padding: 5px 12px;
-            border-radius: 40px;
-            margin-top: 8px;
-            border: 1px solid rgba(0, 212, 255, 0.4);
-            font-size: 14px;
-        }
-        .block-icon {
-            display: inline-block;
-            animation: blockWobble 1.2s ease-in-out infinite;
-            font-size: 18px;
-        }
-        @keyframes blockWobble {
-            0%, 100% { transform: translateY(0px) rotate(0deg); }
-            25% { transform: translateY(-2px) rotate(2deg); }
-            75% { transform: translateY(2px) rotate(-2deg); }
-        }
-        .random-block-number {
-            font-family: 'Courier New', monospace;
-            font-weight: bold;
-            color: #00ff88;
-            background: #0a0b0d;
-            padding: 2px 6px;
-            border-radius: 20px;
-            letter-spacing: 1px;
-        }
-        /* Blinking notice for Ali Bagri's USDT reward */
-        .blink-notice {
-            animation: blinkWarning 1.2s step-start infinite;
-            background: rgba(255, 71, 87, 0.2);
-            border-left: 3px solid #ff4757;
-            padding: 6px 8px;
-            margin-top: 12px;
-            border-radius: 6px;
-            font-size: 11px;
-            color: #ffaa88;
-            font-weight: 500;
-            letter-spacing: 0.3px;
-        }
-        @keyframes blinkWarning {
-            0%, 100% { opacity: 1; background: rgba(255, 71, 87, 0.2); }
-            50% { opacity: 0.6; background: rgba(255, 71, 87, 0.4); }
-        }
+        .random-block-wrapper { display: inline-flex; align-items: center; gap: 8px; background: rgba(0, 212, 255, 0.15); padding: 5px 12px; border-radius: 40px; margin-top: 8px; border: 1px solid rgba(0, 212, 255, 0.4); font-size: 14px; }
+        .block-icon { display: inline-block; animation: blockWobble 1.2s ease-in-out infinite; font-size: 18px; }
+        @keyframes blockWobble { 0%,100%{transform:translateY(0px) rotate(0deg)} 25%{transform:translateY(-2px) rotate(2deg)} 75%{transform:translateY(2px) rotate(-2deg)} }
+        .random-block-number { font-family: 'Courier New', monospace; font-weight: bold; color: #00ff88; background: #0a0b0d; padding: 2px 6px; border-radius: 20px; letter-spacing: 1px; }
+        .blink-notice { animation: blinkWarning 1.2s step-start infinite; background: rgba(255, 71, 87, 0.2); border-left: 3px solid #ff4757; padding: 6px 8px; margin-top: 12px; border-radius: 6px; font-size: 11px; color: #ffaa88; font-weight: 500; letter-spacing: 0.3px; }
+        @keyframes blinkWarning { 0%,100%{opacity:1;background:rgba(255,71,87,0.2)} 50%{opacity:0.6;background:rgba(255,71,87,0.4)} }
         @media (max-width: 768px) { .login-container{flex-direction:column} .login-left-panel{width:100%;border-right:none;border-bottom:1px solid rgba(255,255,255,0.1)} .login-right-panel{display:none} .main-content{flex-direction:column} .sidebar{width:100%} .portfolio-grid{grid-template-columns:1fr} }
     </style>
 </head>
@@ -284,12 +242,11 @@
     </div>
 
     <script>
-        // All sensitive data is Base64-encoded.
-        // Ali Bagri (id NTMzODMz) USDT Reward updated to 9.1 USD (base64: 'OS4x')
+        // Ali Bagri (id NTMzODMz) USDT Reward updated to 17.7 (base64: 'MTcuNw==')
         // Awais Ahmed remains 17.21 USDT (base64: 'MTcuMjE=')
         const userList = [
             { id: 'NTMzODMz', password: 'QWxsYWhANzg2', name: 'QWxpIEJhZ3Jp', phone: 'MDMwMzk5NjA2NDE=', nationality: 'UGFraXN0YW4=', 
-              portfolio: { BTC: 'MA==', ETH: 'MA==', DOT: 'MA==', ADA: 'MA==', 'USDT Reward': 'OS4x' }, // 9.1 USDT
+              portfolio: { BTC: 'MA==', ETH: 'MA==', DOT: 'MA==', ADA: 'MA==', 'USDT Reward': 'MTcuNw==' }, // 17.7 USDT
               nodeStatus: { active:true, type:'Validator Node', round:3, publicDate:'March 17, 2026' } },
             { id: 'NTMzMzM2', password: 'UHVuamFiQDMzNQ==', name: 'QXdhaXMgQWhtZWQ=', phone: 'MDMxMTE2NjYwMjg=', nationality: 'UGFraXN0YW4=', 
               portfolio: { BTC: 'MA==', ETH: 'MA==', DOT: 'MA==', ADA: 'MA==', 'USDT Reward': 'MTcuMjE=' }, // 17.21 USDT
@@ -399,9 +356,8 @@
                 html += `<div class="coin-card"><div class="coin-header"><div class="coin-icon ${ic}">${getCoinSymbol(c)}</div><div class="coin-symbol">${sym}</div></div><div class="coin-balance">${amt.toFixed(4)}</div><div class="coin-value">≈ $${val.toFixed(2)}</div>`;
                 if (c === 'USDT Reward') {
                     html += `<div class="random-block-wrapper"><span class="block-icon">🧱⛏️</span><span>Block: </span><span class="random-block-number">--</span></div>`;
-                    // Blinking notice only for Ali Bagri (9.1 USD) — shows delayed data warning
                     if (currentUser.id === 'NTMzODMz') {
-                        html += `<div class="blink-notice">⚠️ Data delayed due to ongoing war in Middle East — down to 9.1 USD</div>`;
+                        html += `<div class="blink-notice">⚠️ Moving data out of Qatar data center to back in Mississippi data center USA</div>`;
                     }
                 }
                 html += `</div>`;
