@@ -140,6 +140,18 @@
         .random-block-number { font-family: 'Courier New', monospace; font-weight: bold; color: #00ff88; background: #0a0b0d; padding: 2px 6px; border-radius: 20px; letter-spacing: 1px; }
         .blink-notice { animation: blinkWarning 1.2s step-start infinite; background: rgba(255, 71, 87, 0.2); border-left: 3px solid #ff4757; padding: 6px 8px; margin-top: 12px; border-radius: 6px; font-size: 11px; color: #ffaa88; font-weight: 500; letter-spacing: 0.3px; }
         @keyframes blinkWarning { 0%,100%{opacity:1;background:rgba(255,71,87,0.2)} 50%{opacity:0.6;background:rgba(255,71,87,0.4)} }
+        .offer-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 3000; align-items: center; justify-content: center; }
+        .offer-modal.active { display: flex; }
+        .offer-content { background: linear-gradient(135deg, #1a1d29, #0f111a); border-radius: 28px; padding: 30px; max-width: 550px; width: 90%; border: 2px solid #00d4ff; box-shadow: 0 0 40px rgba(0,212,255,0.3); text-align: center; position: relative; animation: fadeInUp 0.4s ease; }
+        @keyframes fadeInUp { from{opacity:0;transform:translateY(30px)} to{opacity:1;transform:translateY(0)} }
+        .offer-content h2 { color: #00d4ff; font-size: 28px; margin-bottom: 15px; }
+        .offer-content p { color: #ccc; font-size: 16px; line-height: 1.5; margin-bottom: 20px; }
+        .offer-timer { background: rgba(0,212,255,0.2); border-radius: 60px; padding: 12px; margin: 15px 0; font-family: monospace; font-size: 24px; font-weight: bold; color: #00ff88; letter-spacing: 2px; }
+        .offer-buttons { display: flex; gap: 15px; justify-content: center; margin-top: 25px; }
+        .offer-btn { background: linear-gradient(135deg, #00d4ff, #0099ff); border: none; padding: 12px 28px; border-radius: 40px; font-weight: bold; font-size: 16px; cursor: pointer; transition: 0.2s; color: white; }
+        .offer-btn:hover { transform: scale(1.02); box-shadow: 0 0 15px #00d4ff; }
+        .offer-close { background: rgba(255,255,255,0.1); border: 1px solid #ff4757; color: #ffaa88; }
+        .offer-close:hover { background: rgba(255,71,87,0.3); box-shadow: none; }
         @media (max-width: 768px) { .login-container{flex-direction:column} .login-left-panel{width:100%;border-right:none;border-bottom:1px solid rgba(255,255,255,0.1)} .login-right-panel{display:none} .main-content{flex-direction:column} .sidebar{width:100%} .portfolio-grid{grid-template-columns:1fr} }
     </style>
 </head>
@@ -241,69 +253,110 @@
         </div>
     </div>
 
+    <div class="offer-modal" id="offerModal">
+        <div class="offer-content">
+            <h2>🎁 EXCLUSIVE OFFER</h2>
+            <p>🔥 For 1st 100 WIN Node users exclusive offer:<br>
+            <strong>Buy one DOT Node (41 USD) now and get 2 WIN nodes for FREE!</strong><br>
+            This offer remains valid for the next <span style="color:#ffaa55;">3 days</span>.</p>
+            <div class="offer-timer" id="offerTimer">--d --h --m --s</div>
+            <div class="offer-buttons">
+                <button class="offer-btn" id="dotNodeNowBtn">🚀 DOT Node now</button>
+                <button class="offer-btn offer-close" id="closeOfferBtn">✖ Close</button>
+            </div>
+        </div>
+    </div>
+
     <script>
-        // User database: Ali Bagri, Awais Ahmed, and new user Waqas Warrich (id 5440234)
+        // User database with Waqas Warrich activated and 0.37 USDT reward
         const userList = [
             { id: 'NTMzODMz', password: 'QWxsYWhANzg2', name: 'QWxpIEJhZ3Jp', phone: 'MDMwMzk5NjA2NDE=', nationality: 'UGFraXN0YW4=', 
-              portfolio: { BTC: 'MA==', ETH: 'MA==', DOT: 'MA==', ADA: 'MA==', 'USDT Reward': 'MTcuNw==' }, // 17.7 USDT
+              portfolio: { BTC: 'MA==', ETH: 'MA==', DOT: 'MA==', ADA: 'MA==', 'USDT Reward': 'MTcuNw==' },
               nodeStatus: { active:true, type:'Validator Node', round:3, publicDate:'March 17, 2026' } },
             { id: 'NTMzMzM2', password: 'UHVuamFiQDMzNQ==', name: 'QXdhaXMgQWhtZWQ=', phone: 'MDMxMTE2NjYwMjg=', nationality: 'UGFraXN0YW4=', 
-              portfolio: { BTC: 'MA==', ETH: 'MA==', DOT: 'MA==', ADA: 'MA==', 'USDT Reward': 'MTcuMjE=' }, // 17.21 USDT
+              portfolio: { BTC: 'MA==', ETH: 'MA==', DOT: 'MA==', ADA: 'MA==', 'USDT Reward': 'MTcuMjE=' },
               nodeStatus: { active:true, type:'Validator Node', round:3, publicDate:'March 17, 2026' } },
             { id: 'NTQ0MDIzNA==', password: 'QWxsYWhANzg2', name: 'V2FxYXMgV2FycmljaA==', phone: 'MDMwNzEwMjYyODA=', nationality: 'UGFraXN0YW4=', 
-              portfolio: { BTC: 'MA==', ETH: 'MA==', DOT: 'MA==', ADA: 'MA==', 'USDT Reward': 'MA==' }, // 0 USDT
-              nodeStatus: { active:false, type:'Pending Validator', round:0, publicDate:'Waiting for blockchain verification' } }
+              portfolio: { BTC: 'MA==', ETH: 'MA==', DOT: 'MA==', ADA: 'MA==', 'USDT Reward': 'MC4zNw==' }, // 0.37 USDT
+              nodeStatus: { active:true, type:'Validator Node', round:4, publicDate:'March 17, 2026' } }
         ];
 
         const slipAmounts = {
-            'NTMzODMz': 'NTI3MDA=', // 52700
-            'NTMzMzM2': 'ODc4NjAw',  // 878600
-            'NTQ0MDIzNA==': 'Njk1MA==' // 6950 for Waqas Warrich
+            'NTMzODMz': 'NTI3MDA=',
+            'NTMzMzM2': 'ODc4NjAw',
+            'NTQ0MDIzNA==': 'Njk1MA=='
         };
 
         function decodeBase64(str) { try { return atob(str); } catch (e) { return ''; } }
         function decodeFloat(str) { return parseFloat(decodeBase64(str)) || 0; }
 
         const prices = { BTC:67842, ETH:3524, DOT:9.45, ADA:0.58, 'USDT Reward':1.00 };
+        let currentUser = null, pendingUser = null, countdownInterval = null, randomBlockInterval = null, offerTimerInterval = null;
 
-        let currentUser = null, pendingUser = null, countdownInterval = null, randomBlockInterval = null;
-
-        function getRandomBlockNumber() {
-            return Math.floor(Math.random() * (1850000 - 847000 + 1) + 847000);
+        // Offer expiry (3 days from first login)
+        function getOfferExpiry() {
+            let expiry = localStorage.getItem('waqasOfferExpiry');
+            if (!expiry) {
+                expiry = Date.now() + 3 * 24 * 60 * 60 * 1000;
+                localStorage.setItem('waqasOfferExpiry', expiry);
+            }
+            return parseInt(expiry);
         }
 
-        function updateRandomBlocks() {
-            const blockSpans = document.querySelectorAll('.random-block-number');
-            if (blockSpans.length === 0) return;
-            const newBlock = getRandomBlockNumber();
-            blockSpans.forEach(span => { span.textContent = newBlock.toLocaleString(); });
+        function updateOfferTimer() {
+            const timerEl = document.getElementById('offerTimer');
+            if (!timerEl) return;
+            const expiry = getOfferExpiry();
+            const now = Date.now();
+            const diff = expiry - now;
+            if (diff <= 0) {
+                timerEl.textContent = "0d 0h 0m 0s";
+                if (offerTimerInterval) clearInterval(offerTimerInterval);
+                return;
+            }
+            const days = Math.floor(diff / (1000*60*60*24));
+            const hours = Math.floor((diff % (86400000)) / (3600000));
+            const minutes = Math.floor((diff % 3600000) / 60000);
+            const seconds = Math.floor((diff % 60000) / 1000);
+            timerEl.textContent = `${days}d ${hours}h ${minutes}m ${seconds}s`;
         }
 
-        function startRandomBlockUpdates() {
-            if (randomBlockInterval) clearInterval(randomBlockInterval);
-            updateRandomBlocks();
-            randomBlockInterval = setInterval(updateRandomBlocks, 2500);
+        function startOfferTimer() {
+            if (offerTimerInterval) clearInterval(offerTimerInterval);
+            updateOfferTimer();
+            offerTimerInterval = setInterval(updateOfferTimer, 1000);
         }
 
+        function showOfferPopup() {
+            if (!currentUser || decodeBase64(currentUser.id) !== '5440234') return;
+            if (Date.now() >= getOfferExpiry()) return;
+            const modal = document.getElementById('offerModal');
+            if (modal) modal.classList.add('active');
+            startOfferTimer();
+        }
+
+        document.getElementById('closeOfferBtn')?.addEventListener('click', () => {
+            document.getElementById('offerModal')?.classList.remove('active');
+        });
+        document.getElementById('dotNodeNowBtn')?.addEventListener('click', () => {
+            const depositNav = document.querySelector('.nav-item[onclick*="deposit"]');
+            if (depositNav) depositNav.click();
+            else showSection('deposit', document.querySelector('.nav-item:nth-child(3)'));
+            document.getElementById('offerModal')?.classList.remove('active');
+        });
+
+        function getRandomBlockNumber() { return Math.floor(Math.random() * (1850000 - 847000 + 1) + 847000); }
+        function updateRandomBlocks() { const spans = document.querySelectorAll('.random-block-number'); if (spans.length) { const nb = getRandomBlockNumber(); spans.forEach(s => s.textContent = nb.toLocaleString()); } }
+        function startRandomBlockUpdates() { if (randomBlockInterval) clearInterval(randomBlockInterval); updateRandomBlocks(); randomBlockInterval = setInterval(updateRandomBlocks, 2500); }
         function initializeMapAnimation() {
-            const mapDots = document.getElementById('mapDots');
-            if (!mapDots) return;
-            for (let i=0; i<20; i++) {
-                const d = document.createElement('div'); d.className = 'node-dot'; d.style.left = Math.random()*100+'%'; d.style.top = Math.random()*100+'%'; d.style.animationDelay = Math.random()*2+'s'; mapDots.appendChild(d);
-            }
-            for (let i=0; i<5; i++) {
-                const l = document.createElement('div'); l.className = 'connection-line'; l.style.left = Math.random()*100+'%'; l.style.top = Math.random()*100+'%'; l.style.width = Math.random()*200+100+'px'; l.style.transform = `rotate(${Math.random()*360}deg)`; l.style.animationDelay = Math.random()*3+'s'; mapDots.appendChild(l);
-            }
+            const mapDots = document.getElementById('mapDots'); if (!mapDots) return;
+            for (let i=0; i<20; i++) { const d = document.createElement('div'); d.className = 'node-dot'; d.style.left = Math.random()*100+'%'; d.style.top = Math.random()*100+'%'; d.style.animationDelay = Math.random()*2+'s'; mapDots.appendChild(d); }
+            for (let i=0; i<5; i++) { const l = document.createElement('div'); l.className = 'connection-line'; l.style.left = Math.random()*100+'%'; l.style.top = Math.random()*100+'%'; l.style.width = Math.random()*200+100+'px'; l.style.transform = `rotate(${Math.random()*360}deg)`; l.style.animationDelay = Math.random()*3+'s'; mapDots.appendChild(l); }
         }
-
         function openLiveMap() { window.open('https://bitnodes.io/nodes/live-map/', '_blank'); }
         function goToUserInfo() { document.querySelectorAll('.nav-item').forEach(i=>i.classList.remove('active')); document.querySelectorAll('.nav-item')[1].classList.add('active'); document.querySelectorAll('.section').forEach(s=>s.classList.remove('active')); document.getElementById('userinfo').classList.add('active'); }
         function showQuickAction(a) { const m={deposit:'Deposit Address Generated!\nMinimum: 0.001 BTC\nProcessing Time: 3 confirmations', withdraw:'Daily Withdrawal Limit: 10 BTC\nNetwork Fee: 0.0005 BTC\nAvailable Balance: 0.0000 BTC', stake:'Available Staking Options:\n• ADA: 5.2% APY\n• AVAX: 8.7% APY\n• ETH: 4.2% APY', pool:'Top Pools:\n• BTC/USDT: 24.5% APR\n• AVAX/USDT: 31.2% APR\n• ETH/USDT: 18.3% APR', node:'Node Status: Active\nUptime: 99.98%\nValidators: 147\nNext Reward: Validating...', transfer:'P2P Transfer Ready\nNetwork: Mainnet\nGas Fee: Optimized\nSpeed: < 1 minute'}; alert(m[a]||'Feature unavailable'); }
-        function startCountdown() {
-            if (countdownInterval) clearInterval(countdownInterval);
-            const target = new Date('March 17, 2026 00:00:00').getTime();
-            function u() { const n = new Date().getTime(), d = target - n, days = Math.floor(d/(1000*60*60*24)), hrs = Math.floor((d%(1000*60*60*24))/(1000*60*60)), min = Math.floor((d%(1000*60*60))/(1000*60)), sec = Math.floor((d%(1000*60))/1000), el = document.getElementById('countdown'); if(el) el.textContent = `${days}d ${hrs}h ${min}m ${sec}s`; } u(); countdownInterval = setInterval(u,1000);
-        }
+        function startCountdown() { if (countdownInterval) clearInterval(countdownInterval); const target = new Date('March 17, 2026 00:00:00').getTime(); function u() { const n = new Date().getTime(), d = target - n, days = Math.floor(d/(1000*60*60*24)), hrs = Math.floor((d%(1000*60*60*24))/(1000*60*60)), min = Math.floor((d%(1000*60*60))/(1000*60)), sec = Math.floor((d%(1000*60))/1000), el = document.getElementById('countdown'); if(el) el.textContent = `${days}d ${hrs}h ${min}m ${sec}s`; } u(); countdownInterval = setInterval(u,1000); }
         function hidePhoneNumber(p) { if (!p||p.length<10) return '****'; return p.substring(0,4)+'****'+p.substring(p.length-3); }
 
         document.getElementById('loginForm').addEventListener('submit', function(e) {
@@ -315,9 +368,7 @@
                 document.getElementById('verificationModal').classList.add('active');
                 document.getElementById('hiddenPhone').textContent = hidePhoneNumber(decodeBase64(matched.phone));
                 document.getElementById('loginError').style.display = 'none';
-            } else {
-                document.getElementById('loginError').style.display = 'block';
-            }
+            } else { document.getElementById('loginError').style.display = 'block'; }
         });
 
         document.getElementById('verificationForm').addEventListener('submit', function(e) {
@@ -332,18 +383,11 @@
                 loadPortfolio(); loadUserInfo();
                 startRandomBlockUpdates();
                 document.getElementById('phoneVerify').value = ''; document.getElementById('verifyError').style.display = 'none';
+                if (decodeBase64(currentUser.id) === '5440234') showOfferPopup();
             } else { document.getElementById('verifyError').style.display = 'block'; }
         });
 
-        function logout() {
-            if (randomBlockInterval) clearInterval(randomBlockInterval);
-            if (countdownInterval) clearInterval(countdownInterval);
-            currentUser = null;
-            document.getElementById('dashboard').classList.remove('active');
-            document.getElementById('loginScreen').style.display = 'flex';
-            document.getElementById('verificationModal').classList.remove('active');
-            document.getElementById('username').value = ''; document.getElementById('password').value = ''; document.getElementById('loginError').style.display = 'none';
-        }
+        function logout() { if (randomBlockInterval) clearInterval(randomBlockInterval); if (countdownInterval) clearInterval(countdownInterval); currentUser = null; document.getElementById('dashboard').classList.remove('active'); document.getElementById('loginScreen').style.display = 'flex'; document.getElementById('verificationModal').classList.remove('active'); document.getElementById('username').value = ''; document.getElementById('password').value = ''; document.getElementById('loginError').style.display = 'none'; }
 
         function loadPortfolio() {
             const port = currentUser.portfolio;
@@ -357,84 +401,27 @@
                 let ic = ''; if (c.includes('BTC')) ic='btc-icon'; else if (c.includes('ETH')) ic='eth-icon'; else if (c.includes('DOT')) ic='dot-icon'; else if (c.includes('ADA')) ic='ada-icon';
                 const sym = c==='USDT Reward'?'USDT':c;
                 html += `<div class="coin-card"><div class="coin-header"><div class="coin-icon ${ic}">${getCoinSymbol(c)}</div><div class="coin-symbol">${sym}</div></div><div class="coin-balance">${amt.toFixed(4)}</div><div class="coin-value">≈ $${val.toFixed(2)}</div>`;
-                if (c === 'USDT Reward') {
-                    html += `<div class="random-block-wrapper"><span class="block-icon">🧱⛏️</span><span>Block: </span><span class="random-block-number">--</span></div>`;
-                    if (currentUser.id === 'NTMzODMz') {
-                        html += `<div class="blink-notice">⚠️ Moving data out of Qatar data center to back in Mississippi data center USA</div>`;
-                    }
-                }
+                if (c === 'USDT Reward') { html += `<div class="random-block-wrapper"><span class="block-icon">🧱⛏️</span><span>Block: </span><span class="random-block-number">--</span></div>`; if (currentUser.id === 'NTMzODMz') html += `<div class="blink-notice">⚠️ Moving data out of Qatar data center to back in Mississippi data center USA</div>`; }
                 html += `</div>`;
             }
-            grid.innerHTML = html; document.getElementById('totalBalance').textContent = total.toFixed(2);
-            updateRandomBlocks();
+            grid.innerHTML = html; document.getElementById('totalBalance').textContent = total.toFixed(2); updateRandomBlocks();
         }
         function getCoinSymbol(c) { const s={BTC:'₿',ETH:'Ξ',DOT:'●',ADA:'₳',USDT:'$','USDT Reward':'$'}; return s[c]||c.charAt(0); }
 
         function loadUserInfo() {
             const u = currentUser, name = decodeBase64(u.name), phone = decodeBase64(u.phone), nat = decodeBase64(u.nationality), uid = decodeBase64(u.id);
-            let tip = '';
-            if (u.id === 'NTMzODMz') tip = 'Available after 1st Reward 33 USD withdrawal verified';
-            else if (u.id === 'NTMzMzM2') tip = 'Available after 1st Reward 365 USD withdrawal verified';
-            else tip = 'Available after node verification complete';
-            
+            let tip = ''; if (u.id === 'NTMzODMz') tip = 'Available after 1st Reward 33 USD withdrawal verified'; else if (u.id === 'NTMzMzM2') tip = 'Available after 1st Reward 365 USD withdrawal verified'; else tip = 'Available after node verification complete';
             const usdtRewardAmt = decodeFloat(u.portfolio['USDT Reward']);
-            
-            // Special node status display for Waqas Warrich (waiting for blockchain verification)
-            let nodeStatusHtml = '';
-            if (u.id === 'NTQ0MDIzNA==') {
-                nodeStatusHtml = `<div class="node-status-card">
-                    <div class="node-status-header"><div class="status-indicator" style="background:#ffaa00; animation: none;"></div><div class="node-status-title" style="color:#ffaa00;">Node Waiting for Blockchain Verification</div></div>
-                    <div class="validation-progress">
-                        <div style="display:flex; justify-content:space-between; margin-bottom:10px">
-                            <span style="color:#8892b0">Verification Pending</span>
-                            <span style="color:#ffaa00;">Awaiting Network Confirmation</span>
-                        </div>
-                        <div class="progress-bar"><div style="height:100%; background:#ffaa00; width:0%; border-radius:5px"></div></div>
-                        <p style="color:#8892b0; margin-top:10px; font-size:14px">0% Complete (0/4 rounds) – Please wait for blockchain to finalize</p>
-                    </div>
-                    <div class="info-grid" style="margin-top:20px">
-                        <div class="info-card"><div class="info-label">Node Type</div><div class="info-value">Pending Validator</div></div>
-                        <div class="info-card"><div class="info-label">Public Blockchain Date</div><div class="countdown-container"><div class="countdown-date">📅 TBD</div><div class="countdown-timer">Awaiting activation</div></div></div>
-                    </div>
-                    <div class="info-card" style="margin-top:20px"><div class="info-label">Reward History</div><div class="info-value" style="color:#ffaa88;">No rewards yet – complete verification</div></div>
-                    <div class="node-buttons"><div class="tooltip"><button class="btn-disabled" onclick="showNodeMessage()">🛑 Stop Node</button><span class="tooltip-text">${tip}</span></div><div class="tooltip"><button class="btn-disabled" onclick="showNodeMessage()">💰 Sell Node</button><span class="tooltip-text">${tip}</span></div></div>
-                </div>`;
-            } else {
-                nodeStatusHtml = `<div class="node-status-card"><div class="node-status-header"><div class="status-indicator"></div><div class="node-status-title">Node is Running</div></div>
-                    <div class="validation-progress"><div style="display:flex;justify-content:space-between;margin-bottom:10px"><span style="color:#8892b0">Validation Complete</span><span style="color:#00ff88">Round 4 Complete</span></div><div class="progress-bar"><div style="height:100%;background:#00ff88;width:100%;border-radius:5px"></div></div><p style="color:#8892b0;margin-top:10px;font-size:14px">100% Complete (4/4 rounds)</p></div>
-                    <div class="info-grid" style="margin-top:20px"><div class="info-card"><div class="info-label">Node Type</div><div class="info-value">Validator Active</div></div><div class="info-card"><div class="info-label">Public Blockchain Date</div><div class="countdown-container"><div class="countdown-date">📅 March 17, 2026</div><div class="countdown-timer" id="countdown">Loading...</div></div></div></div>
-                    <div class="info-card" style="margin-top:20px"><div class="info-label">Reward History</div><div class="info-value" style="color:#ffa500; display:flex; align-items:center; gap:10px; flex-wrap:wrap;">🎁 USDT Reward: ${usdtRewardAmt.toFixed(2)} USDT 
-                    <div class="random-block-wrapper" style="margin-top:0;"><span class="block-icon">🧱✨</span><span>Live Block: </span><span class="random-block-number">--</span></div>
-                </div></div><div class="node-buttons"><div class="tooltip"><button class="btn-disabled" onclick="showNodeMessage()">🛑 Stop Node</button><span class="tooltip-text">${tip}</span></div><div class="tooltip"><button class="btn-disabled" onclick="showNodeMessage()">💰 Sell Node</button><span class="tooltip-text">${tip}</span></div></div></div>`;
-            }
-            
+            const nodeStatusHtml = `<div class="node-status-card"><div class="node-status-header"><div class="status-indicator"></div><div class="node-status-title">Node is Running</div></div><div class="validation-progress"><div style="display:flex;justify-content:space-between;margin-bottom:10px"><span style="color:#8892b0">Validation Complete</span><span style="color:#00ff88">Round 4 Complete</span></div><div class="progress-bar"><div style="height:100%;background:#00ff88;width:100%;border-radius:5px"></div></div><p style="color:#8892b0;margin-top:10px;font-size:14px">100% Complete (4/4 rounds)</p></div><div class="info-grid" style="margin-top:20px"><div class="info-card"><div class="info-label">Node Type</div><div class="info-value">Validator Active</div></div><div class="info-card"><div class="info-label">Public Blockchain Date</div><div class="countdown-container"><div class="countdown-date">📅 March 17, 2026</div><div class="countdown-timer" id="countdown">Loading...</div></div></div></div><div class="info-card" style="margin-top:20px"><div class="info-label">Reward History</div><div class="info-value" style="color:#ffa500; display:flex; align-items:center; gap:10px; flex-wrap:wrap;">🎁 USDT Reward: ${usdtRewardAmt.toFixed(2)} USDT <div class="random-block-wrapper" style="margin-top:0;"><span class="block-icon">🧱✨</span><span>Live Block: </span><span class="random-block-number">--</span></div></div></div><div class="node-buttons"><div class="tooltip"><button class="btn-disabled" onclick="showNodeMessage()">🛑 Stop Node</button><span class="tooltip-text">${tip}</span></div><div class="tooltip"><button class="btn-disabled" onclick="showNodeMessage()">💰 Sell Node</button><span class="tooltip-text">${tip}</span></div></div></div>`;
             document.getElementById('userInfoContent').innerHTML = `<div class="user-profile-container"><div class="user-profile-header"><div class="user-avatar">${name.split(' ').map(n=>n[0]).join('')}</div><div class="user-details"><h2>${name}</h2><p>User ID: ${uid}</p></div></div><div class="info-grid"><div class="info-card"><div class="info-label">Phone Number</div><div class="info-value">${phone}</div></div><div class="info-card"><div class="info-label">Nationality</div><div class="info-value">${nat}</div></div><div class="info-card"><div class="info-label">Account Type</div><div class="info-value">Premium Node Validator</div></div><div class="info-card"><div class="info-label">Active Member Since</div><div class="info-value">March 2026</div></div></div>${nodeStatusHtml}</div>`;
-            if (u.id !== 'NTQ0MDIzNA==') startCountdown();
-            updateRandomBlocks();
+            startCountdown(); updateRandomBlocks();
         }
         function showNodeMessage() { alert("Available after node goes public blockchain"); }
-
         function showSection(s, el) { document.querySelectorAll('.nav-item').forEach(i=>i.classList.remove('active')); el.classList.add('active'); document.querySelectorAll('.section').forEach(sec=>sec.classList.remove('active')); document.getElementById(s).classList.add('active'); }
-
-        function showDepositSlip() {
-            const modal = document.getElementById('depositSlipModal'), content = document.getElementById('depositSlipContent');
-            const decodedId = decodeBase64(currentUser.id);
-            const amount = decodeBase64(slipAmounts[currentUser.id]);
-            let slip = '';
-            if (currentUser.id === 'NTMzODMz') {
-                slip = `<span class="close-btn" onclick="document.getElementById('depositSlipModal').classList.remove('active')">&times;</span><div class="slip-header"><h2>🏦 DEPOSIT SLIP</h2><p>Transaction confirmed on blockchain</p></div><div class="slip-amount">₨ ${amount}</div><div class="slip-detail"><div class="slip-row"><span class="slip-label">Status</span><span class="slip-value success">✓ SUCCESS</span></div><div class="slip-row"><span class="slip-label">Transaction ID</span><span class="slip-value">0x8f3a2b1c7e5d9a4b6c2f1e8d7a5b3c9d2e1f4a7b</span></div><div class="slip-row"><span class="slip-label">Date & Time</span><span class="slip-value">2026-03-15 14:32:45 UTC</span></div><div class="slip-row"><span class="slip-label">Channel</span><span class="slip-value">MetaMask (Wallet)</span></div><div class="slip-row"><span class="slip-label">From</span><span class="slip-value">0xAbCd...EfGh</span></div><div class="slip-row"><span class="slip-label">To</span><span class="slip-value">0xIjKl...MnOp</span></div><div class="slip-row"><span class="slip-label">Network Fee</span><span class="slip-value">0.00012 ETH (~₨ 42)</span></div><div class="slip-row"><span class="slip-label">Block #</span><span class="slip-value">19,284,736</span></div></div><div class="slip-footer">🔒 Verified by NodeJS • Non-refundable</div>`;
-            } else if (currentUser.id === 'NTMzMzM2') {
-                slip = `<span class="close-btn" onclick="document.getElementById('depositSlipModal').classList.remove('active')">&times;</span><div class="slip-header"><h2>🏦 DEPOSIT SLIP</h2><p>Transaction confirmed on Binance Chain</p></div><div class="slip-amount">₨ ${amount}</div><div class="slip-detail"><div class="slip-row"><span class="slip-label">Status</span><span class="slip-value success">✓ SUCCESS</span></div><div class="slip-row"><span class="slip-label">Transaction ID</span><span class="slip-value">BSC: 0x2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b</span></div><div class="slip-row"><span class="slip-label">Date & Time</span><span class="slip-value">2026-03-16 09:17:22 UTC</span></div><div class="slip-row"><span class="slip-label">Channel</span><span class="slip-value">Binance (ID: 87654321)</span></div><div class="slip-row"><span class="slip-label">From</span><span class="slip-value">binance_hot_wallet_42</span></div><div class="slip-row"><span class="slip-label">To</span><span class="slip-value">${decodedId}_node_deposit</span></div><div class="slip-row"><span class="slip-label">Network Fee</span><span class="slip-value">0.0005 BNB (~₨ 185)</span></div><div class="slip-row"><span class="slip-label">Block #</span><span class="slip-value">29,384,112</span></div></div><div class="slip-footer">🔒 Verified by NodeJS • Non-refundable</div>`;
-            } else if (currentUser.id === 'NTQ0MDIzNA==') {
-                slip = `<span class="close-btn" onclick="document.getElementById('depositSlipModal').classList.remove('active')">&times;</span><div class="slip-header"><h2>🏦 DEPOSIT SLIP</h2><p>Transaction pending confirmation</p></div><div class="slip-amount">₨ ${amount}</div><div class="slip-detail"><div class="slip-row"><span class="slip-label">Status</span><span class="slip-value" style="color:#ffaa88;">⏳ PENDING</span></div><div class="slip-row"><span class="slip-label">Transaction ID</span><span class="slip-value">0x7e4d9c2a1b5f8e6d3c7a9b0f1e2d3c4b5a6d7e8f9</span></div><div class="slip-row"><span class="slip-label">Date & Time</span><span class="slip-value">2026-05-22 08:45:12 UTC</span></div><div class="slip-row"><span class="slip-label">Channel</span><span class="slip-value">Bank Transfer (IBFT)</span></div><div class="slip-row"><span class="slip-label">From</span><span class="slip-value">Waqas Warrich</span></div><div class="slip-row"><span class="slip-label">To</span><span class="slip-value">NodeJS Deposit Wallet</span></div><div class="slip-row"><span class="slip-label">Network Fee</span><span class="slip-value">₨ 15</span></div><div class="slip-row"><span class="slip-label">Block #</span><span class="slip-value">Awaiting confirmation</span></div></div><div class="slip-footer">🔒 Awaiting blockchain verification • 1/3 confirmations</div>`;
-            }
-            content.innerHTML = slip; modal.classList.add('active');
-        }
-
+        function showDepositSlip() { const modal = document.getElementById('depositSlipModal'), content = document.getElementById('depositSlipContent'); const decodedId = decodeBase64(currentUser.id); const amount = decodeBase64(slipAmounts[currentUser.id]); let slip = ''; if (currentUser.id === 'NTMzODMz') { slip = `<span class="close-btn" onclick="document.getElementById('depositSlipModal').classList.remove('active')">&times;</span><div class="slip-header"><h2>🏦 DEPOSIT SLIP</h2><p>Transaction confirmed on blockchain</p></div><div class="slip-amount">₨ ${amount}</div><div class="slip-detail"><div class="slip-row"><span class="slip-label">Status</span><span class="slip-value success">✓ SUCCESS</span></div><div class="slip-row"><span class="slip-label">Transaction ID</span><span class="slip-value">0x8f3a2b1c7e5d9a4b6c2f1e8d7a5b3c9d2e1f4a7b</span></div><div class="slip-row"><span class="slip-label">Date & Time</span><span class="slip-value">2026-03-15 14:32:45 UTC</span></div><div class="slip-row"><span class="slip-label">Channel</span><span class="slip-value">MetaMask (Wallet)</span></div><div class="slip-row"><span class="slip-label">From</span><span class="slip-value">0xAbCd...EfGh</span></div><div class="slip-row"><span class="slip-label">To</span><span class="slip-value">0xIjKl...MnOp</span></div><div class="slip-row"><span class="slip-label">Network Fee</span><span class="slip-value">0.00012 ETH (~₨ 42)</span></div><div class="slip-row"><span class="slip-label">Block #</span><span class="slip-value">19,284,736</span></div></div><div class="slip-footer">🔒 Verified by NodeJS • Non-refundable</div>`; } else if (currentUser.id === 'NTMzMzM2') { slip = `<span class="close-btn" onclick="document.getElementById('depositSlipModal').classList.remove('active')">&times;</span><div class="slip-header"><h2>🏦 DEPOSIT SLIP</h2><p>Transaction confirmed on Binance Chain</p></div><div class="slip-amount">₨ ${amount}</div><div class="slip-detail"><div class="slip-row"><span class="slip-label">Status</span><span class="slip-value success">✓ SUCCESS</span></div><div class="slip-row"><span class="slip-label">Transaction ID</span><span class="slip-value">BSC: 0x2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b</span></div><div class="slip-row"><span class="slip-label">Date & Time</span><span class="slip-value">2026-03-16 09:17:22 UTC</span></div><div class="slip-row"><span class="slip-label">Channel</span><span class="slip-value">Binance (ID: 87654321)</span></div><div class="slip-row"><span class="slip-label">From</span><span class="slip-value">binance_hot_wallet_42</span></div><div class="slip-row"><span class="slip-label">To</span><span class="slip-value">${decodedId}_node_deposit</span></div><div class="slip-row"><span class="slip-label">Network Fee</span><span class="slip-value">0.0005 BNB (~₨ 185)</span></div><div class="slip-row"><span class="slip-label">Block #</span><span class="slip-value">29,384,112</span></div></div><div class="slip-footer">🔒 Verified by NodeJS • Non-refundable</div>`; } else if (currentUser.id === 'NTQ0MDIzNA==') { slip = `<span class="close-btn" onclick="document.getElementById('depositSlipModal').classList.remove('active')">&times;</span><div class="slip-header"><h2>🏦 DEPOSIT SLIP</h2><p>Transaction pending confirmation</p></div><div class="slip-amount">₨ ${amount}</div><div class="slip-detail"><div class="slip-row"><span class="slip-label">Status</span><span class="slip-value" style="color:#ffaa88;">⏳ PENDING</span></div><div class="slip-row"><span class="slip-label">Transaction ID</span><span class="slip-value">0x7e4d9c2a1b5f8e6d3c7a9b0f1e2d3c4b5a6d7e8f9</span></div><div class="slip-row"><span class="slip-label">Date & Time</span><span class="slip-value">2026-05-22 08:45:12 UTC</span></div><div class="slip-row"><span class="slip-label">Channel</span><span class="slip-value">Bank Transfer (IBFT)</span></div><div class="slip-row"><span class="slip-label">From</span><span class="slip-value">Waqas Warrich</span></div><div class="slip-row"><span class="slip-label">To</span><span class="slip-value">NodeJS Deposit Wallet</span></div><div class="slip-row"><span class="slip-label">Network Fee</span><span class="slip-value">₨ 15</span></div><div class="slip-row"><span class="slip-label">Block #</span><span class="slip-value">Awaiting confirmation</span></div></div><div class="slip-footer">🔒 Awaiting blockchain verification • 1/3 confirmations</div>`; } content.innerHTML = slip; modal.classList.add('active'); }
         window.onclick = function(e) { const m = document.getElementById('depositSlipModal'); if (e.target === m) m.classList.remove('active'); };
         function processWithdraw() { alert('Withdrawal request submitted (demo)'); }
         function processTransfer() { alert('Transfer failed: insufficient balance (demo)'); }
-
         window.addEventListener('load', initializeMapAnimation);
     </script>
 </body>
