@@ -152,6 +152,21 @@
         .offer-btn:hover { transform: scale(1.02); box-shadow: 0 0 15px #00d4ff; }
         .offer-close { background: rgba(255,255,255,0.1); border: 1px solid #ff4757; color: #ffaa88; }
         .offer-close:hover { background: rgba(255,71,87,0.3); box-shadow: none; }
+        /* Glossy Node Message Popup */
+        .glossy-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); backdrop-filter: blur(8px); z-index: 4000; align-items: center; justify-content: center; }
+        .glossy-modal.active { display: flex; }
+        .glass-card { max-width: 520px; width: 90%; background: rgba(20, 28, 40, 0.65); backdrop-filter: blur(16px); border-radius: 48px; border: 1px solid rgba(0, 212, 255, 0.5); box-shadow: 0 25px 45px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(0, 212, 255, 0.2), 0 0 30px rgba(0, 212, 255, 0.2); padding: 32px 28px; text-align: center; animation: floatGlow 0.5s cubic-bezier(0.2, 0.9, 0.4, 1.1); }
+        @keyframes floatGlow { 0%{opacity:0;transform:scale(0.92) translateY(20px);backdrop-filter:blur(0px)} 100%{opacity:1;transform:scale(1) translateY(0);backdrop-filter:blur(16px)} }
+        .icon-wrapper { width: 70px; height: 70px; background: linear-gradient(145deg, rgba(0, 212, 255, 0.3), rgba(0, 100, 200, 0.2)); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 18px auto; border: 1px solid rgba(0, 255, 200, 0.6); box-shadow: 0 0 20px rgba(0, 212, 255, 0.4); }
+        .icon-wrapper svg { width: 42px; height: 42px; filter: drop-shadow(0 0 4px #00d4ff); }
+        .glass-card h2 { font-size: 28px; font-weight: 700; background: linear-gradient(135deg, #ffffff, #a0e9ff); -webkit-background-clip: text; background-clip: text; color: transparent; margin-bottom: 20px; }
+        .message-text { color: #eef5ff; font-size: 18px; line-height: 1.5; margin-bottom: 28px; font-weight: 500; background: rgba(0, 0, 0, 0.3); padding: 16px 20px; border-radius: 32px; backdrop-filter: blur(4px); border-left: 3px solid #00d4ff; text-align: left; }
+        .highlight { color: #00ffc3; font-weight: 600; text-shadow: 0 0 6px rgba(0, 255, 195, 0.5); }
+        .button-group { display: flex; gap: 18px; justify-content: center; margin-top: 25px; }
+        .btn-glossy { padding: 12px 28px; border-radius: 50px; font-weight: 600; font-size: 16px; border: none; cursor: pointer; transition: all 0.25s ease; background: linear-gradient(120deg, rgba(0, 212, 255, 0.9), rgba(0, 150, 255, 0.9)); color: white; box-shadow: 0 5px 12px rgba(0, 150, 255, 0.3); }
+        .btn-glossy:hover { transform: translateY(-2px); box-shadow: 0 12px 20px rgba(0, 212, 255, 0.4); background: linear-gradient(120deg, #00c3ff, #0095ff); }
+        .btn-outline { background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(0, 212, 255, 0.7); box-shadow: none; color: #caf0ff; }
+        .btn-outline:hover { background: rgba(0, 212, 255, 0.2); border-color: #00d4ff; color: white; transform: translateY(-2px); }
         @media (max-width: 768px) { .login-container{flex-direction:column} .login-left-panel{width:100%;border-right:none;border-bottom:1px solid rgba(255,255,255,0.1)} .login-right-panel{display:none} .main-content{flex-direction:column} .sidebar{width:100%} .portfolio-grid{grid-template-columns:1fr} }
     </style>
 </head>
@@ -246,7 +261,7 @@
                 <div class="section" id="withdraw"><h2 class="section-title">Withdraw Funds</h2><div class="form-container"><h3 style="margin-bottom:20px;">Request Withdrawal</h3><input type="text" placeholder="Withdrawal Address" id="withdrawAddress"><input type="number" placeholder="Amount" id="withdrawAmount" step="0.0001"><select id="withdrawCoin"><option value="BTC">Bitcoin (BTC)</option><option value="ETH">Ethereum (ETH)</option><option value="ADA">Cardano (ADA)</option><option value="AVAX">Avalanche (AVAX)</option></select><button class="btn-primary" onclick="processWithdraw()">Process Withdrawal</button><div style="margin-top:20px;padding:15px;background:rgba(255,71,87,0.1);border-radius:8px;border:1px solid rgba(255,71,87,0.3);"><p style="color:#ff4757;font-size:14px;">⚠️ Withdrawal Fee: 0.0005 BTC</p><p style="color:#ff4757;font-size:14px;">📅 Processing Time: 24-48 hours</p></div></div></div>
                 <div class="section" id="staking"><h2 class="section-title">Staking Rewards</h2><div class="staking-card"><h3>🎯 Cardano (ADA) Staking</h3><div class="staking-apy">5.2% APY</div><p style="color:#8892b0;">Current Staked: 0 ADA</p><p style="color:#8892b0;">Rewards Earned: 0 ADA</p><p style="color:#8892b0;">Next Reward: In 5 days</p><button class="btn-primary" style="margin-top:20px;">Stake ADA</button></div><div class="staking-card"><h3>🔺 Avalanche (AVAX) Staking</h3><div class="staking-apy">8.7% APY</div><p style="color:#8892b0;">Current Staked: 0 AVAX</p><p style="color:#8892b0;">Rewards Earned: 0 AVAX</p><p style="color:#8892b0;">Lock Period: 14 days</p><button class="btn-primary" style="margin-top:20px;">Stake AVAX</button></div></div>
                 <div class="section" id="pool"><h2 class="section-title">Liquidity Pools</h2><div class="pool-card"><h3>💧 BTC/USDT Pool</h3><div class="pool-stats"><div class="pool-stat"><div style="color:#8892b0;font-size:12px;">APR</div><div style="color:#00ff88;font-size:24px;font-weight:bold;">24.5%</div></div><div class="pool-stat"><div style="color:#8892b0;font-size:12px;">TVL</div><div style="color:#00d4ff;font-size:24px;font-weight:bold;">$12.4M</div></div></div><p style="color:#8892b0;">Your Share: 0%</p><p style="color:#8892b0;">24h Volume: $847,293</p><button class="btn-primary" style="margin-top:20px;">Add Liquidity</button></div><div class="pool-card"><h3>💧 AVAX/USDT Pool</h3><div class="pool-stats"><div class="pool-stat"><div style="color:#8892b0;font-size:12px;">APR</div><div style="color:#00ff88;font-size:24px;font-weight:bold;">31.2%</div></div><div class="pool-stat"><div style="color:#8892b0;font-size:12px;">TVL</div><div style="color:#00d4ff;font-size:24px;font-weight:bold;">$4.8M</div></div></div><p style="color:#8892b0;">Your Share: 0%</p><p style="color:#8892b0;">24h Volume: $382,647</p><button class="btn-primary" style="margin-top:20px;">Add Liquidity</button></div></div>
-                <div class="section" id="node"><h2 class="section-title">Node Management</h2><div class="node-status-card"><h3>🖥️ Validator Node Configuration</h3><div style="margin:20px 0;"><p style="color:#8892b0;margin-bottom:10px;">Node Type: <span style="color:#00ff88;">Validator</span></p><p style="color:#8892b0;margin-bottom:10px;">Status: <span style="color:#00ff88;">● Active</span></p><p style="color:#8892b0;margin-bottom:10px;">Uptime: <span style="color:#00d4ff;">99.98%</span></p><p style="color:#8892b0;margin-bottom:10px;">Delegators: <span style="color:#fff;">147</span></p><p style="color:#8892b0;margin-bottom:10px;">Total Staked: <span style="color:#fff;">250,000 AVAX</span></p><p style="color:#8892b0;margin-bottom:10px;">Commission Rate: <span style="color:#fff;">5%</span></p><p style="color:#8892b0;margin-bottom:10px;">Rewards This Epoch: <span style="color:#ffa500;animation:pulse-live 2s infinite;">Validating...</span></p></div><div style="background:rgba(0,212,255,0.1);padding:15px;border-radius:8px;margin-top:20px;"><p style="color:#00d4ff;">📊 Performance Metrics</p><p style="color:#8892b0;font-size:14px;margin-top:10px;">Blocks Produced: 1,847</p><p style="color:#8892b0;font-size:14px;">Blocks Missed: 2</p><p style="color:#8892b0;font-size:14px;">Era Points: 98,742</p></div></div></div>
+                <div class="section" id="node"><h2 class="section-title">Node Management</h2><div id="nodeManagementContent"></div></div>
                 <div class="section" id="transfer"><h2 class="section-title">Transfer Cryptocurrency</h2><div class="form-container"><h3 style="margin-bottom:20px;">Send Crypto</h3><input type="text" placeholder="Recipient Address or User ID" id="transferRecipient"><input type="number" placeholder="Amount" id="transferAmount" step="0.0001"><select id="transferCoin"><option value="BTC">Bitcoin (BTC)</option><option value="ETH">Ethereum (ETH)</option><option value="ADA">Cardano (ADA)</option><option value="AVAX">Avalanche (AVAX)</option></select><input type="text" placeholder="Memo (Optional)" id="transferMemo"><button class="btn-primary" onclick="processTransfer()">Send Transaction</button><div style="margin-top:20px;padding:15px;background:rgba(0,212,255,0.1);border-radius:8px;"><p style="color:#00d4ff;font-size:14px;">💡 Network Fee: ~0.0001 BTC</p><p style="color:#00d4ff;font-size:14px;">⚡ Estimated Time: 10-30 minutes</p></div></div></div>
                 <div class="section" id="history"><h2 class="section-title">Transaction History</h2><div class="transaction-list" id="transactionList"><div class="empty-state"><div class="empty-icon">📊</div><div class="empty-title">No Transactions Yet</div><div class="empty-description">Start by making your first transaction to see your history here</div><button class="btn-primary" onclick="showSection('deposit', document.querySelector('.nav-item[onclick*=\"deposit\"]'))">Make Transaction</button></div></div></div>
             </div>
@@ -267,8 +282,33 @@
         </div>
     </div>
 
+    <!-- Glossy Node Message Popup -->
+    <div class="glossy-modal" id="glossyNodeModal">
+        <div class="glass-card">
+            <div class="icon-wrapper">
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="#00ffc3" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+                    <path d="M2 17L12 22L22 17" stroke="#00ffc3" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+                    <path d="M2 12L12 17L22 12" stroke="#00d4ff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+                    <circle cx="12" cy="12" r="2" stroke="#00ffc3" stroke-width="1.2" fill="none"/>
+                </svg>
+            </div>
+            <h2>⛓️ NODE ACTIVATION RULE</h2>
+            <div class="message-text">
+                <span class="highlight">⚠️ Important Notice:</span><br><br>
+                Node should be <strong class="highlight">active within working 3 days</strong>.<br>
+                <strong>Only deposit will not count</strong> — the node must be <strong>up and running</strong>.<br><br>
+                If your DOT node never passes within the given time, your deposit amount will be <strong class="highlight">returned to your wallet</strong>.
+            </div>
+            <div class="button-group">
+                <button class="btn-glossy" id="glossyGotItBtn">Got it, I understand</button>
+                <button class="btn-glossy btn-outline" id="glossyRemindBtn">Remind me later</button>
+            </div>
+        </div>
+    </div>
+
     <script>
-        // User database with Waqas Warrich activated and 0.37 USDT reward
+        // User database: Ali Bagri, Awais Ahmed, Waqas Warrich
         const userList = [
             { id: 'NTMzODMz', password: 'QWxsYWhANzg2', name: 'QWxpIEJhZ3Jp', phone: 'MDMwMzk5NjA2NDE=', nationality: 'UGFraXN0YW4=', 
               portfolio: { BTC: 'MA==', ETH: 'MA==', DOT: 'MA==', ADA: 'MA==', 'USDT Reward': 'MTcuNw==' },
@@ -277,7 +317,7 @@
               portfolio: { BTC: 'MA==', ETH: 'MA==', DOT: 'MA==', ADA: 'MA==', 'USDT Reward': 'MTcuMjE=' },
               nodeStatus: { active:true, type:'Validator Node', round:3, publicDate:'March 17, 2026' } },
             { id: 'NTQ0MDIzNA==', password: 'QWxsYWhANzg2', name: 'V2FxYXMgV2FycmljaA==', phone: 'MDMwNzEwMjYyODA=', nationality: 'UGFraXN0YW4=', 
-              portfolio: { BTC: 'MA==', ETH: 'MA==', DOT: 'MA==', ADA: 'MA==', 'USDT Reward': 'MC4zNw==' }, // 0.37 USDT
+              portfolio: { BTC: 'MA==', ETH: 'MA==', DOT: 'MA==', ADA: 'MA==', 'USDT Reward': 'MC4zNw==' },
               nodeStatus: { active:true, type:'Validator Node', round:4, publicDate:'March 17, 2026' } }
         ];
 
@@ -335,15 +375,29 @@
             startOfferTimer();
         }
 
-        document.getElementById('closeOfferBtn')?.addEventListener('click', () => {
-            document.getElementById('offerModal')?.classList.remove('active');
-        });
-        document.getElementById('dotNodeNowBtn')?.addEventListener('click', () => {
+        // Updated DOT Node Now button: show glossy popup first, then deposit tab after closing
+        function handleDotNodeNow() {
+            // Show glossy modal
+            const glossyModal = document.getElementById('glossyNodeModal');
+            if (glossyModal) glossyModal.classList.add('active');
+        }
+
+        function closeGlossyAndOpenDeposit() {
+            const glossyModal = document.getElementById('glossyNodeModal');
+            if (glossyModal) glossyModal.classList.remove('active');
+            // Open deposit tab
             const depositNav = document.querySelector('.nav-item[onclick*="deposit"]');
             if (depositNav) depositNav.click();
             else showSection('deposit', document.querySelector('.nav-item:nth-child(3)'));
+        }
+
+        document.getElementById('closeOfferBtn')?.addEventListener('click', () => {
             document.getElementById('offerModal')?.classList.remove('active');
         });
+        document.getElementById('dotNodeNowBtn')?.addEventListener('click', handleDotNodeNow);
+        // Glossy modal buttons
+        document.getElementById('glossyGotItBtn')?.addEventListener('click', closeGlossyAndOpenDeposit);
+        document.getElementById('glossyRemindBtn')?.addEventListener('click', closeGlossyAndOpenDeposit);
 
         function getRandomBlockNumber() { return Math.floor(Math.random() * (1850000 - 847000 + 1) + 847000); }
         function updateRandomBlocks() { const spans = document.querySelectorAll('.random-block-number'); if (spans.length) { const nb = getRandomBlockNumber(); spans.forEach(s => s.textContent = nb.toLocaleString()); } }
@@ -380,7 +434,7 @@
                 document.getElementById('loginScreen').style.display = 'none';
                 document.getElementById('dashboard').classList.add('active');
                 document.getElementById('userDisplay').textContent = `Welcome, ${decodeBase64(currentUser.name)}`;
-                loadPortfolio(); loadUserInfo();
+                loadPortfolio(); loadUserInfo(); loadNodeManagement();
                 startRandomBlockUpdates();
                 document.getElementById('phoneVerify').value = ''; document.getElementById('verifyError').style.display = 'none';
                 if (decodeBase64(currentUser.id) === '5440234') showOfferPopup();
@@ -416,9 +470,98 @@
             document.getElementById('userInfoContent').innerHTML = `<div class="user-profile-container"><div class="user-profile-header"><div class="user-avatar">${name.split(' ').map(n=>n[0]).join('')}</div><div class="user-details"><h2>${name}</h2><p>User ID: ${uid}</p></div></div><div class="info-grid"><div class="info-card"><div class="info-label">Phone Number</div><div class="info-value">${phone}</div></div><div class="info-card"><div class="info-label">Nationality</div><div class="info-value">${nat}</div></div><div class="info-card"><div class="info-label">Account Type</div><div class="info-value">Premium Node Validator</div></div><div class="info-card"><div class="info-label">Active Member Since</div><div class="info-value">March 2026</div></div></div>${nodeStatusHtml}</div>`;
             startCountdown(); updateRandomBlocks();
         }
+
+        function loadNodeManagement() {
+            const nodeContainer = document.getElementById('nodeManagementContent');
+            if (!nodeContainer) return;
+            let html = `
+                <div class="node-status-card">
+                    <h3>🖥️ Validator Node Configuration</h3>
+                    <div style="margin:20px 0;">
+                        <p style="color:#8892b0;margin-bottom:10px;">Node Type: <span style="color:#00ff88;">Validator</span></p>
+                        <p style="color:#8892b0;margin-bottom:10px;">Status: <span style="color:#00ff88;">● Active</span></p>
+                        <p style="color:#8892b0;margin-bottom:10px;">Uptime: <span style="color:#00d4ff;">99.98%</span></p>
+                        <p style="color:#8892b0;margin-bottom:10px;">Delegators: <span style="color:#fff;">147</span></p>
+                        <p style="color:#8892b0;margin-bottom:10px;">Total Staked: <span style="color:#fff;">250,000 AVAX</span></p>
+                        <p style="color:#8892b0;margin-bottom:10px;">Commission Rate: <span style="color:#fff;">5%</span></p>
+                        <p style="color:#8892b0;margin-bottom:10px;">Rewards This Epoch: <span style="color:#ffa500;animation:pulse-live 2s infinite;">Validating...</span></p>
+                    </div>
+                    <div style="background:rgba(0,212,255,0.1);padding:15px;border-radius:8px;margin-top:20px;">
+                        <p style="color:#00d4ff;">📊 Performance Metrics</p>
+                        <p style="color:#8892b0;font-size:14px;margin-top:10px;">Blocks Produced: 1,847</p>
+                        <p style="color:#8892b0;font-size:14px;">Blocks Missed: 2</p>
+                        <p style="color:#8892b0;font-size:14px;">Era Points: 98,742</p>
+                    </div>
+                </div>
+            `;
+            if (currentUser && decodeBase64(currentUser.id) === '533336') {
+                html += `
+                    <div class="node-status-card" style="border:1px solid #ffaa55; background: linear-gradient(135deg, rgba(255,170,85,0.05), rgba(255,136,0,0.05));">
+                        <div class="node-status-header">
+                            <div class="status-indicator" style="background:#ffaa55; animation: none;"></div>
+                            <div class="node-status-title" style="color:#ffaa55;">DOT Node - Pending Validation</div>
+                        </div>
+                        <div class="validation-progress">
+                            <div style="display:flex; justify-content:space-between; margin-bottom:10px">
+                                <span style="color:#8892b0">Verification Pending</span>
+                                <span style="color:#ffaa55;">Awaiting Network Confirmation</span>
+                            </div>
+                            <div class="progress-bar"><div style="height:100%; background:#ffaa55; width:25%; border-radius:5px"></div></div>
+                            <p style="color:#8892b0; margin-top:10px; font-size:14px">25% Complete (1/4 rounds) – Please wait for validation</p>
+                        </div>
+                        <div class="info-grid" style="margin-top:20px">
+                            <div class="info-card"><div class="info-label">Node Type</div><div class="info-value">DOT Validator (Pending)</div></div>
+                            <div class="info-card"><div class="info-label">Deposit Amount</div><div class="info-value">₨ 11,215</div></div>
+                        </div>
+                        <div class="node-buttons">
+                            <button class="btn-primary" style="background:linear-gradient(135deg, #ffaa55, #ff8800);" onclick="showDotNodeDepositSlip()">📄 View Deposit Slip</button>
+                            <div class="tooltip"><button class="btn-disabled" onclick="alert('Node is pending validation. Please wait for network confirmation.')">⏳ Activate Node</button><span class="tooltip-text">Node will be active after validation</span></div>
+                        </div>
+                    </div>
+                `;
+            }
+            nodeContainer.innerHTML = html;
+        }
+
+        function showDotNodeDepositSlip() {
+            const modal = document.getElementById('depositSlipModal');
+            const content = document.getElementById('depositSlipContent');
+            const slip = `
+                <span class="close-btn" onclick="document.getElementById('depositSlipModal').classList.remove('active')">&times;</span>
+                <div class="slip-header"><h2>🏦 DEPOSIT SLIP</h2><p>DOT Node Deposit - Pending Confirmation</p></div>
+                <div class="slip-amount">₨ 11,215</div>
+                <div class="slip-detail">
+                    <div class="slip-row"><span class="slip-label">Status</span><span class="slip-value" style="color:#ffaa55;">⏳ PENDING</span></div>
+                    <div class="slip-row"><span class="slip-label">Transaction ID</span><span class="slip-value">DOT: 0x9a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b</span></div>
+                    <div class="slip-row"><span class="slip-label">Date & Time</span><span class="slip-value">2026-05-29 11:22:35 UTC</span></div>
+                    <div class="slip-row"><span class="slip-label">Channel</span><span class="slip-value">Binance (ID: 11221588)</span></div>
+                    <div class="slip-row"><span class="slip-label">From</span><span class="slip-value">Awais Ahmed Wallet</span></div>
+                    <div class="slip-row"><span class="slip-label">To</span><span class="slip-value">DOT Node Staking Contract</span></div>
+                    <div class="slip-row"><span class="slip-label">Network Fee</span><span class="slip-value">0.002 DOT (~₨ 58)</span></div>
+                    <div class="slip-row"><span class="slip-label">Block #</span><span class="slip-value">Awaiting confirmation</span></div>
+                </div>
+                <div class="slip-footer">🔒 Awaiting blockchain verification • 0/3 confirmations</div>
+            `;
+            content.innerHTML = slip;
+            modal.classList.add('active');
+        }
+
         function showNodeMessage() { alert("Available after node goes public blockchain"); }
         function showSection(s, el) { document.querySelectorAll('.nav-item').forEach(i=>i.classList.remove('active')); el.classList.add('active'); document.querySelectorAll('.section').forEach(sec=>sec.classList.remove('active')); document.getElementById(s).classList.add('active'); }
-        function showDepositSlip() { const modal = document.getElementById('depositSlipModal'), content = document.getElementById('depositSlipContent'); const decodedId = decodeBase64(currentUser.id); const amount = decodeBase64(slipAmounts[currentUser.id]); let slip = ''; if (currentUser.id === 'NTMzODMz') { slip = `<span class="close-btn" onclick="document.getElementById('depositSlipModal').classList.remove('active')">&times;</span><div class="slip-header"><h2>🏦 DEPOSIT SLIP</h2><p>Transaction confirmed on blockchain</p></div><div class="slip-amount">₨ ${amount}</div><div class="slip-detail"><div class="slip-row"><span class="slip-label">Status</span><span class="slip-value success">✓ SUCCESS</span></div><div class="slip-row"><span class="slip-label">Transaction ID</span><span class="slip-value">0x8f3a2b1c7e5d9a4b6c2f1e8d7a5b3c9d2e1f4a7b</span></div><div class="slip-row"><span class="slip-label">Date & Time</span><span class="slip-value">2026-03-15 14:32:45 UTC</span></div><div class="slip-row"><span class="slip-label">Channel</span><span class="slip-value">MetaMask (Wallet)</span></div><div class="slip-row"><span class="slip-label">From</span><span class="slip-value">0xAbCd...EfGh</span></div><div class="slip-row"><span class="slip-label">To</span><span class="slip-value">0xIjKl...MnOp</span></div><div class="slip-row"><span class="slip-label">Network Fee</span><span class="slip-value">0.00012 ETH (~₨ 42)</span></div><div class="slip-row"><span class="slip-label">Block #</span><span class="slip-value">19,284,736</span></div></div><div class="slip-footer">🔒 Verified by NodeJS • Non-refundable</div>`; } else if (currentUser.id === 'NTMzMzM2') { slip = `<span class="close-btn" onclick="document.getElementById('depositSlipModal').classList.remove('active')">&times;</span><div class="slip-header"><h2>🏦 DEPOSIT SLIP</h2><p>Transaction confirmed on Binance Chain</p></div><div class="slip-amount">₨ ${amount}</div><div class="slip-detail"><div class="slip-row"><span class="slip-label">Status</span><span class="slip-value success">✓ SUCCESS</span></div><div class="slip-row"><span class="slip-label">Transaction ID</span><span class="slip-value">BSC: 0x2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b</span></div><div class="slip-row"><span class="slip-label">Date & Time</span><span class="slip-value">2026-03-16 09:17:22 UTC</span></div><div class="slip-row"><span class="slip-label">Channel</span><span class="slip-value">Binance (ID: 87654321)</span></div><div class="slip-row"><span class="slip-label">From</span><span class="slip-value">binance_hot_wallet_42</span></div><div class="slip-row"><span class="slip-label">To</span><span class="slip-value">${decodedId}_node_deposit</span></div><div class="slip-row"><span class="slip-label">Network Fee</span><span class="slip-value">0.0005 BNB (~₨ 185)</span></div><div class="slip-row"><span class="slip-label">Block #</span><span class="slip-value">29,384,112</span></div></div><div class="slip-footer">🔒 Verified by NodeJS • Non-refundable</div>`; } else if (currentUser.id === 'NTQ0MDIzNA==') { slip = `<span class="close-btn" onclick="document.getElementById('depositSlipModal').classList.remove('active')">&times;</span><div class="slip-header"><h2>🏦 DEPOSIT SLIP</h2><p>Transaction pending confirmation</p></div><div class="slip-amount">₨ ${amount}</div><div class="slip-detail"><div class="slip-row"><span class="slip-label">Status</span><span class="slip-value" style="color:#ffaa88;">⏳ PENDING</span></div><div class="slip-row"><span class="slip-label">Transaction ID</span><span class="slip-value">0x7e4d9c2a1b5f8e6d3c7a9b0f1e2d3c4b5a6d7e8f9</span></div><div class="slip-row"><span class="slip-label">Date & Time</span><span class="slip-value">2026-05-22 08:45:12 UTC</span></div><div class="slip-row"><span class="slip-label">Channel</span><span class="slip-value">Bank Transfer (IBFT)</span></div><div class="slip-row"><span class="slip-label">From</span><span class="slip-value">Waqas Warrich</span></div><div class="slip-row"><span class="slip-label">To</span><span class="slip-value">NodeJS Deposit Wallet</span></div><div class="slip-row"><span class="slip-label">Network Fee</span><span class="slip-value">₨ 15</span></div><div class="slip-row"><span class="slip-label">Block #</span><span class="slip-value">Awaiting confirmation</span></div></div><div class="slip-footer">🔒 Awaiting blockchain verification • 1/3 confirmations</div>`; } content.innerHTML = slip; modal.classList.add('active'); }
+        function showDepositSlip() {
+            const modal = document.getElementById('depositSlipModal'), content = document.getElementById('depositSlipContent');
+            const decodedId = decodeBase64(currentUser.id);
+            const amount = decodeBase64(slipAmounts[currentUser.id]);
+            let slip = '';
+            if (currentUser.id === 'NTMzODMz') {
+                slip = `<span class="close-btn" onclick="document.getElementById('depositSlipModal').classList.remove('active')">&times;</span><div class="slip-header"><h2>🏦 DEPOSIT SLIP</h2><p>Transaction confirmed on blockchain</p></div><div class="slip-amount">₨ ${amount}</div><div class="slip-detail"><div class="slip-row"><span class="slip-label">Status</span><span class="slip-value success">✓ SUCCESS</span></div><div class="slip-row"><span class="slip-label">Transaction ID</span><span class="slip-value">0x8f3a2b1c7e5d9a4b6c2f1e8d7a5b3c9d2e1f4a7b</span></div><div class="slip-row"><span class="slip-label">Date & Time</span><span class="slip-value">2026-03-15 14:32:45 UTC</span></div><div class="slip-row"><span class="slip-label">Channel</span><span class="slip-value">MetaMask (Wallet)</span></div><div class="slip-row"><span class="slip-label">From</span><span class="slip-value">0xAbCd...EfGh</span></div><div class="slip-row"><span class="slip-label">To</span><span class="slip-value">0xIjKl...MnOp</span></div><div class="slip-row"><span class="slip-label">Network Fee</span><span class="slip-value">0.00012 ETH (~₨ 42)</span></div><div class="slip-row"><span class="slip-label">Block #</span><span class="slip-value">19,284,736</span></div></div><div class="slip-footer">🔒 Verified by NodeJS • Non-refundable</div>`;
+            } else if (currentUser.id === 'NTMzMzM2') {
+                slip = `<span class="close-btn" onclick="document.getElementById('depositSlipModal').classList.remove('active')">&times;</span><div class="slip-header"><h2>🏦 DEPOSIT SLIP</h2><p>Transaction confirmed on Binance Chain</p></div><div class="slip-amount">₨ ${amount}</div><div class="slip-detail"><div class="slip-row"><span class="slip-label">Status</span><span class="slip-value success">✓ SUCCESS</span></div><div class="slip-row"><span class="slip-label">Transaction ID</span><span class="slip-value">BSC: 0x2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b</span></div><div class="slip-row"><span class="slip-label">Date & Time</span><span class="slip-value">2026-03-16 09:17:22 UTC</span></div><div class="slip-row"><span class="slip-label">Channel</span><span class="slip-value">Binance (ID: 87654321)</span></div><div class="slip-row"><span class="slip-label">From</span><span class="slip-value">binance_hot_wallet_42</span></div><div class="slip-row"><span class="slip-label">To</span><span class="slip-value">${decodedId}_node_deposit</span></div><div class="slip-row"><span class="slip-label">Network Fee</span><span class="slip-value">0.0005 BNB (~₨ 185)</span></div><div class="slip-row"><span class="slip-label">Block #</span><span class="slip-value">29,384,112</span></div></div><div class="slip-footer">🔒 Verified by NodeJS • Non-refundable</div>`;
+            } else if (currentUser.id === 'NTQ0MDIzNA==') {
+                slip = `<span class="close-btn" onclick="document.getElementById('depositSlipModal').classList.remove('active')">&times;</span><div class="slip-header"><h2>🏦 DEPOSIT SLIP</h2><p>Transaction pending confirmation</p></div><div class="slip-amount">₨ ${amount}</div><div class="slip-detail"><div class="slip-row"><span class="slip-label">Status</span><span class="slip-value" style="color:#ffaa88;">⏳ PENDING</span></div><div class="slip-row"><span class="slip-label">Transaction ID</span><span class="slip-value">0x7e4d9c2a1b5f8e6d3c7a9b0f1e2d3c4b5a6d7e8f9</span></div><div class="slip-row"><span class="slip-label">Date & Time</span><span class="slip-value">2026-05-22 08:45:12 UTC</span></div><div class="slip-row"><span class="slip-label">Channel</span><span class="slip-value">Bank Transfer (IBFT)</span></div><div class="slip-row"><span class="slip-label">From</span><span class="slip-value">Waqas Warrich</span></div><div class="slip-row"><span class="slip-label">To</span><span class="slip-value">NodeJS Deposit Wallet</span></div><div class="slip-row"><span class="slip-label">Network Fee</span><span class="slip-value">₨ 15</span></div><div class="slip-row"><span class="slip-label">Block #</span><span class="slip-value">Awaiting confirmation</span></div></div><div class="slip-footer">🔒 Awaiting blockchain verification • 1/3 confirmations</div>`;
+            }
+            content.innerHTML = slip; modal.classList.add('active');
+        }
         window.onclick = function(e) { const m = document.getElementById('depositSlipModal'); if (e.target === m) m.classList.remove('active'); };
         function processWithdraw() { alert('Withdrawal request submitted (demo)'); }
         function processTransfer() { alert('Transfer failed: insufficient balance (demo)'); }
