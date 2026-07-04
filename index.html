@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
     <title>NodeJS - Turn your connection into crypto</title>
     <style>
-        /* ========== ALL ORIGINAL STYLES (unchanged) ========== */
+        /* ========== ORIGINAL STYLES (unchanged) ========== */
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif; background: #0a0b0d; color: #fff; overflow-x: hidden; }
         .login-container { min-height: 100vh; display: flex; background: linear-gradient(135deg, #0a0b0d 0%, #1a1a2e 100%); }
@@ -202,6 +202,141 @@
         .history-btn:hover, .deposit-slip-btn:hover { transform: scale(1.02); box-shadow: 0 0 10px #ffaa55; }
         .deposit-slip-btn:hover { box-shadow: 0 0 10px #00d4ff; }
         @media (max-width: 768px) { .login-container{flex-direction:column} .login-left-panel{width:100%;border-right:none;border-bottom:1px solid rgba(255,255,255,0.1)} .login-right-panel{display:none} .main-content{flex-direction:column} .sidebar{width:100%} .portfolio-grid{grid-template-columns:1fr} .google-form-content iframe { height: 500px; } .nft-grid { grid-template-columns: 1fr; } }
+
+        /* ========== AWAIS SOFT WHITE PROFESSIONAL THEME ========== */
+        body.awais-theme .login-container { background: linear-gradient(135deg, #f5f2ed 0%, #e8e4de 100%); }
+        body.awais-theme .login-left-panel { background: rgba(255, 252, 248, 0.95); border-right: 1px solid rgba(200, 190, 180, 0.3); }
+        body.awais-theme .logo-section h1 { background: linear-gradient(135deg, #2c3e50, #34495e); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        body.awais-theme .login-box .btn-primary { background: linear-gradient(135deg, #2c3e50, #34495e); color: #fff; }
+        body.awais-theme .login-box .btn-primary:hover { box-shadow: 0 10px 30px rgba(44, 62, 80, 0.3); }
+        body.awais-theme .login-box .btn-secondary { color: #2c3e50; border-color: rgba(44, 62, 80, 0.3); }
+        body.awais-theme .login-box .btn-secondary:hover { background: rgba(44, 62, 80, 0.08); border-color: #2c3e50; }
+        body.awais-theme .form-group input { background: rgba(255, 255, 255, 0.8); border: 1px solid #d5cfc8; color: #1a1a1a; }
+        body.awais-theme .form-group input:focus { border-color: #2c3e50; box-shadow: 0 0 0 3px rgba(44, 62, 80, 0.15); }
+        body.awais-theme .form-group label { color: #2c3e50; }
+        body.awais-theme .verification-content, body.awais-theme .modal-glass, body.awais-theme .google-form-content, body.awais-theme .copy-content, body.awais-theme .inv-slip-content, body.awais-theme .history-content { background: #ffffff; border-color: rgba(200, 190, 180, 0.5); }
+        body.awais-theme .verification-title { color: #2c3e50; }
+        body.awais-theme .phone-display { border-color: rgba(200, 190, 180, 0.3); background: rgba(245, 242, 237, 0.5); }
+        body.awais-theme .phone-display p { color: #555; }
+        body.awais-theme .phone-display .phone-number { color: #2c3e50; }
+        body.awais-theme .close-modal-icon { color: #666; }
+        body.awais-theme .close-modal-icon:hover { color: #2c3e50; }
+        body.awais-theme .error-message { color: #c0392b; }
+        body.awais-theme .dashboard { background: #f5f2ed; }
+        body.awais-theme .header { background: rgba(255, 252, 248, 0.95); border-bottom: 1px solid rgba(200, 190, 180, 0.2); }
+        body.awais-theme .header-logo { background: linear-gradient(135deg, #2c3e50, #34495e); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        body.awais-theme .user-name { color: #555; }
+        body.awais-theme .user-balance { color: #2c3e50; }
+        body.awais-theme .btn-logout { border-color: rgba(44, 62, 80, 0.2); color: #2c3e50; }
+        body.awais-theme .btn-logout:hover { background: rgba(44, 62, 80, 0.08); border-color: #2c3e50; }
+        body.awais-theme .node-status-bar { background: rgba(255, 252, 248, 0.95); border-bottom: 1px solid rgba(200, 190, 180, 0.15); }
+        body.awais-theme .node-status-bar:hover { background: rgba(245, 242, 237, 0.8); }
+        body.awais-theme .node-status-text { color: #2c3e50; }
+        body.awais-theme .live-badge { background: #2c3e50; color: #ffffff; }
+        body.awais-theme .node-progress-fill { background: linear-gradient(90deg, #2c3e50, #5d6d7e); }
+        body.awais-theme .node-progress-bar { background: rgba(200, 190, 180, 0.3); }
+        body.awais-theme .node-core { background: #2c3e50; box-shadow: 0 0 20px rgba(44, 62, 80, 0.4); }
+        body.awais-theme .node-ring { border-color: #2c3e50; }
+        body.awais-theme .sidebar { background: rgba(255, 252, 248, 0.95); border: 1px solid rgba(200, 190, 180, 0.15); }
+        body.awais-theme .nav-item { color: #555; }
+        body.awais-theme .nav-item:hover { color: #2c3e50; background: rgba(44, 62, 80, 0.05); }
+        body.awais-theme .nav-item.active { background: linear-gradient(135deg, rgba(44, 62, 80, 0.1), rgba(52, 73, 94, 0.08)); color: #2c3e50; border: 1px solid rgba(44, 62, 80, 0.25); }
+        body.awais-theme .content-area { background: rgba(255, 252, 248, 0.95); border: 1px solid rgba(200, 190, 180, 0.15); }
+        body.awais-theme .section-title { color: #2c3e50; }
+        body.awais-theme .btn-primary { background: linear-gradient(135deg, #2c3e50, #34495e); color: #fff; }
+        body.awais-theme .btn-primary:hover { box-shadow: 0 10px 30px rgba(44, 62, 80, 0.3); }
+        body.awais-theme .info-card { border-color: rgba(200, 190, 180, 0.2); background: rgba(255, 255, 255, 0.5); }
+        body.awais-theme .info-label { color: #888; }
+        body.awais-theme .info-value { color: #1a1a1a; }
+        body.awais-theme .coin-card { border-color: rgba(200, 190, 180, 0.2); background: rgba(255, 255, 255, 0.5); }
+        body.awais-theme .coin-card:hover { border-color: rgba(44, 62, 80, 0.3); box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05); }
+        body.awais-theme .coin-balance { color: #2c3e50; }
+        body.awais-theme .coin-value { color: #666; }
+        body.awais-theme .coin-symbol { color: #1a1a1a; }
+        body.awais-theme .random-block-wrapper { background: rgba(44, 62, 80, 0.08); border-color: rgba(44, 62, 80, 0.15); }
+        body.awais-theme .random-block-number { color: #2c3e50; background: #f5f2ed; }
+        body.awais-theme .blink-notice { background: rgba(192, 57, 43, 0.06); border-left: 3px solid #c0392b; color: #c0392b; }
+        body.awais-theme .action-btn { border-color: rgba(200, 190, 180, 0.2); color: #1a1a1a; background: rgba(255, 255, 255, 0.5); }
+        body.awais-theme .action-btn:hover { background: rgba(44, 62, 80, 0.05); border-color: #2c3e50; }
+        body.awais-theme .action-detail { color: #888; }
+        body.awais-theme .slip-content { border-color: #2c3e50; background: #ffffff; }
+        body.awais-theme .slip-header h2 { color: #2c3e50; }
+        body.awais-theme .slip-amount { color: #2c3e50; }
+        body.awais-theme .slip-value.success { color: #27ae60; }
+        body.awais-theme .slip-row { border-color: rgba(200, 190, 180, 0.2); }
+        body.awais-theme .slip-label { color: #888; }
+        body.awais-theme .slip-value { color: #1a1a1a; }
+        body.awais-theme .slip-footer { color: #888; border-top-color: rgba(200, 190, 180, 0.2); }
+        body.awais-theme .history-btn { background: linear-gradient(135deg, #2c3e50, #34495e); color: #fff; }
+        body.awais-theme .history-btn:hover { box-shadow: 0 0 10px rgba(44, 62, 80, 0.3); }
+        body.awais-theme .deposit-slip-btn { background: linear-gradient(135deg, #2c3e50, #34495e); color: #fff; }
+        body.awais-theme .deposit-slip-btn:hover { box-shadow: 0 0 10px rgba(44, 62, 80, 0.3); }
+        body.awais-theme .glowing-text { animation: glowAwaisLight 1.5s ease-in-out infinite alternate; }
+        @keyframes glowAwaisLight { from { text-shadow: 0 0 5px #2c3e50, 0 0 10px #2c3e50; } to { text-shadow: 0 0 20px #2c3e50, 0 0 30px #34495e; } }
+        body.awais-theme .offer-content { border-color: #2c3e50; box-shadow: 0 0 40px rgba(44, 62, 80, 0.15); background: #ffffff; }
+        body.awais-theme .offer-content h2 { color: #2c3e50; }
+        body.awais-theme .offer-content p { color: #444; }
+        body.awais-theme .offer-btn { background: linear-gradient(135deg, #2c3e50, #34495e); color: #fff; }
+        body.awais-theme .offer-btn:hover { box-shadow: 0 0 15px rgba(44, 62, 80, 0.3); }
+        body.awais-theme .offer-timer { background: rgba(44, 62, 80, 0.08); color: #2c3e50; }
+        body.awais-theme .glass-card { border-color: rgba(200, 190, 180, 0.5); box-shadow: 0 0 30px rgba(0, 0, 0, 0.05); background: rgba(255, 255, 255, 0.95); }
+        body.awais-theme .glass-card h2 { background: linear-gradient(135deg, #2c3e50, #34495e); -webkit-background-clip: text; background-clip: text; color: transparent; }
+        body.awais-theme .message-text { color: #1a1a1a; background: rgba(245, 242, 237, 0.5); border-left-color: #2c3e50; }
+        body.awais-theme .highlight { color: #2c3e50; }
+        body.awais-theme .btn-glossy { background: linear-gradient(120deg, #2c3e50, #34495e); color: #fff; }
+        body.awais-theme .btn-glossy:hover { box-shadow: 0 12px 20px rgba(44, 62, 80, 0.3); }
+        body.awais-theme .btn-outline { border-color: rgba(44, 62, 80, 0.3); color: #2c3e50; }
+        body.awais-theme .btn-outline:hover { background: rgba(44, 62, 80, 0.05); border-color: #2c3e50; }
+        body.awais-theme .user-profile-container { border-color: rgba(200, 190, 180, 0.2); background: rgba(255, 255, 255, 0.5); }
+        body.awais-theme .user-avatar { background: linear-gradient(135deg, #2c3e50, #34495e); color: #fff; }
+        body.awais-theme .user-details h2 { color: #2c3e50; }
+        body.awais-theme .user-details p { color: #555; }
+        body.awais-theme .countdown-container { border-color: rgba(200, 190, 180, 0.3); background: rgba(245, 242, 237, 0.5); }
+        body.awais-theme .countdown-date { color: #2c3e50; }
+        body.awais-theme .countdown-timer { color: #2c3e50; }
+        body.awais-theme .node-status-card { border-color: rgba(200, 190, 180, 0.2); background: rgba(255, 255, 255, 0.5); }
+        body.awais-theme .node-status-title { color: #2c3e50; }
+        body.awais-theme .status-indicator { background: #2c3e50; animation: pulse-gold-light 2s infinite; }
+        @keyframes pulse-gold-light { 0%{box-shadow:0 0 0 0 rgba(44,62,80,0.4)} 70%{box-shadow:0 0 0 10px rgba(44,62,80,0)} 100%{box-shadow:0 0 0 0 rgba(44,62,80,0)} }
+        body.awais-theme .inventory-container { border-color: rgba(44, 62, 80, 0.3); box-shadow: 0 0 20px rgba(0, 0, 0, 0.05); background: rgba(255, 255, 255, 0.8); }
+        body.awais-theme .inventory-title { color: #2c3e50; text-shadow: 0 0 5px rgba(44, 62, 80, 0.1); }
+        body.awais-theme .owned-nft-name { color: #2c3e50; }
+        body.awais-theme .owned-nft-price { color: #2c3e50; }
+        body.awais-theme .owned-nft-card { background: rgba(245, 242, 237, 0.5); border-color: rgba(200, 190, 180, 0.2); }
+        body.awais-theme .pending-text { color: #c0392b; }
+        body.awais-theme .nft-name { color: #2c3e50; }
+        body.awais-theme .nft-price { color: #2c3e50; }
+        body.awais-theme .nft-card { border-color: rgba(200, 190, 180, 0.2); background: rgba(255, 255, 255, 0.5); }
+        body.awais-theme .nft-card:hover { border-color: rgba(44, 62, 80, 0.3); }
+        body.awais-theme .nft-card.sold-out { opacity: 0.5; background: rgba(200, 190, 180, 0.2); border-color: #ccc; }
+        body.awais-theme .nft-card.sold-out .nft-name { color: #888; }
+        body.awais-theme .nft-card.sold-out .nft-price { color: #aaa; }
+        body.awais-theme .total-price-container { border-color: rgba(44, 62, 80, 0.2); background: rgba(255, 255, 255, 0.5); }
+        body.awais-theme .total-price { color: #2c3e50; }
+        body.awais-theme .offer-timer-small { background: rgba(44, 62, 80, 0.08); color: #2c3e50; }
+        body.awais-theme .btn-secondary { color: #2c3e50; border-color: rgba(44, 62, 80, 0.3); }
+        body.awais-theme .btn-secondary:hover { background: rgba(44, 62, 80, 0.05); border-color: #2c3e50; }
+        body.awais-theme .copy-btn { background: #2c3e50; color: #fff; }
+        body.awais-theme .copy-btn:hover { background: #34495e; }
+        body.awais-theme .address-box { background: #f5f2ed; border-color: rgba(200, 190, 180, 0.3); color: #2c3e50; }
+        body.awais-theme .map-title { background: linear-gradient(135deg, #2c3e50, #34495e); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        body.awais-theme .live-map-container { background: radial-gradient(circle at center, #f5f2ed 0%, #e8e4de 100%); }
+        body.awais-theme .node-dot { background: #2c3e50; box-shadow: 0 0 10px #2c3e50; }
+        body.awais-theme .connection-line { background: linear-gradient(90deg, transparent, #2c3e50, transparent); }
+        body.awais-theme .validation-progress { background: rgba(200, 190, 180, 0.2); }
+        body.awais-theme .progress-bar { background: rgba(200, 190, 180, 0.2); }
+        body.awais-theme .progress-fill { background: linear-gradient(90deg, #2c3e50, #5d6d7e); }
+        body.awais-theme .btn-disabled { color: #999; background: rgba(200, 190, 180, 0.2); border-color: #ccc; }
+        body.awais-theme .tooltip-text { background: #ffffff; color: #c0392b; border-color: #c0392b; }
+        body.awais-theme .tooltip-text::after { border-color: #c0392b transparent transparent transparent; }
+        body.awais-theme .empty-state .empty-title { color: #2c3e50; }
+        body.awais-theme .empty-state .empty-description { color: #888; }
+        body.awais-theme .staking-card { background: rgba(255, 255, 255, 0.5); border-color: rgba(200, 190, 180, 0.2); }
+        body.awais-theme .staking-apy { color: #2c3e50; }
+        body.awais-theme .pool-card { background: rgba(255, 255, 255, 0.5); border-color: rgba(200, 190, 180, 0.2); }
+        body.awais-theme .pool-stat { background: rgba(245, 242, 237, 0.5); }
+        body.awais-theme .blink-notice { animation: blinkWarningLight 1.2s step-start infinite; }
+        @keyframes blinkWarningLight { 0%,100%{opacity:1;background:rgba(192,57,43,0.06)} 50%{opacity:0.6;background:rgba(192,57,43,0.12)} }
     </style>
 </head>
 <body oncontextmenu="return false;">
@@ -263,7 +398,7 @@
         <div class="slip-content" id="depositSlipContent"></div>
     </div>
 
-    <!-- Inventory Deposit Slip Modal (for historical receipt) -->
+    <!-- Inventory Deposit Slip Modal -->
     <div class="deposit-slip-modal-inv" id="invDepositSlipModal">
         <div class="inv-slip-content">
             <span class="close-modal-icon" onclick="closeInvDepositSlip()">&times;</span>
@@ -453,7 +588,7 @@
             });
         }
 
-        // Inventory deposit slip modal (for historical receipt)
+        // Inventory deposit slip modal
         function showInvDepositSlip() {
             const slipContent = `
                 <span class="close-btn" onclick="closeInvDepositSlip()">&times;</span>
@@ -595,7 +730,7 @@
                 return;
             }
             if (isAwais()) {
-                container.innerHTML = `<div style="text-align:center; padding:40px; color:#8892b0;">
+                container.innerHTML = `<div style="text-align:center; padding:40px; color:#666;">
                     <p>✨ All NFTs are currently sold out.</p>
                     <p>Check back later for new collections!</p>
                 </div>`;
@@ -621,7 +756,7 @@
             container.innerHTML = html;
         }
 
-        // ========== INVENTORY FOR AWAIS (Opal Dream with $275, new text, deposit slip button) ==========
+        // ========== INVENTORY FOR AWAIS ==========
         function renderInventory() {
             const invContainer = document.getElementById('inventoryContainer');
             if (!invContainer) return;
@@ -634,7 +769,7 @@
                             <div>
                                 <div class="owned-nft-name">✨ Opal Dream</div>
                                 <div class="owned-nft-price">💰 Current Value: $275.00</div>
-                                <div style="font-size:12px; color:#aaffcc;">Acquired: 29/06/2026 • Rarity: Legendary</div>
+                                <div style="font-size:12px; color:#666;">Acquired: 29/06/2026 • Rarity: Legendary</div>
                                 <div class="pending-text">⏳ Payment confirmed sale transfer halt temporarily for security.</div>
                             </div>
                             <div style="display: flex; gap: 10px;">
@@ -642,7 +777,7 @@
                                 <button class="btn-sell-transfer" disabled title="Coming soon">🔄 Transfer</button>
                             </div>
                         </div>
-                        <p style="color:#aaffcc; font-size:12px; margin-top:10px;">✨ You own this exclusive NFT. Transfer temporarily disabled for security.</p>
+                        <p style="color:#555; font-size:12px; margin-top:10px;">✨ You own this exclusive NFT. Transfer temporarily disabled for security.</p>
                     </div>
                 `;
             } else {
@@ -651,58 +786,54 @@
             }
         }
 
-        // ========== LOGIN & VERIFICATION (fixed) ==========
+        // ========== LOGIN & VERIFICATION ==========
         document.getElementById('loginForm').addEventListener('submit', function(e) {
             e.preventDefault();
-            console.log("Login form submitted");
             const uid = document.getElementById('username').value.trim();
             const pwd = document.getElementById('password').value.trim();
-            console.log("Attempting login with UID:", uid);
             
             const matched = userList.find(u => {
                 const decodedId = decodeBase64(u.id);
                 const decodedPwd = decodeBase64(u.password);
-                console.log("Checking:", decodedId, decodedPwd);
                 return decodedId === uid && decodedPwd === pwd;
             });
             
             if (matched) {
-                console.log("Match found for user:", matched.name);
                 pendingUser = matched;
                 document.getElementById('verificationModal').classList.add('active');
                 document.getElementById('hiddenPhone').textContent = hidePhoneNumber(decodeBase64(matched.phone));
                 document.getElementById('loginError').style.display = 'none';
             } else {
-                console.log("No match found");
                 document.getElementById('loginError').style.display = 'block';
             }
         });
 
         document.getElementById('verificationForm').addEventListener('submit', function(e) {
             e.preventDefault();
-            console.log("Verification form submitted");
             const ph = document.getElementById('phoneVerify').value.trim();
-            console.log("Entered phone:", ph);
             
             if (pendingUser && decodeBase64(pendingUser.phone) === ph) {
-                console.log("Phone verified, logging in");
                 currentUser = pendingUser;
                 pendingUser = null;
                 document.getElementById('verificationModal').classList.remove('active');
                 document.getElementById('loginScreen').style.display = 'none';
                 document.getElementById('dashboard').classList.add('active');
                 document.getElementById('userDisplay').textContent = `Welcome, ${decodeBase64(currentUser.name)}`;
+                
+                // Apply Awais theme if user is Awais
+                if (isAwais()) {
+                    document.body.classList.add('awais-theme');
+                } else {
+                    document.body.classList.remove('awais-theme');
+                }
+                
                 loadPortfolio();
                 loadUserInfo();
                 loadNodeManagement();
                 startRandomBlockUpdates();
                 document.getElementById('phoneVerify').value = '';
                 document.getElementById('verifyError').style.display = 'none';
-                // Waqas offer popup disabled completely
-                // No showOfferPopup call for any user
-                console.log("Login successful for:", currentUser.name);
             } else {
-                console.log("Phone verification failed");
                 document.getElementById('verifyError').style.display = 'block';
             }
         });
@@ -720,7 +851,6 @@
         function getOfferExpiry() { let expiry = localStorage.getItem('waqasOfferExpiry'); if (!expiry) { expiry = Date.now() + 3 * 24 * 60 * 60 * 1000; localStorage.setItem('waqasOfferExpiry', expiry); } return parseInt(expiry); }
         function updateOfferTimer() { const timerEl = document.getElementById('offerTimer'); if (!timerEl) return; const expiry = getOfferExpiry(); const now = Date.now(); const diff = expiry - now; if (diff <= 0) { timerEl.textContent = "0d 0h 0m 0s"; if (offerTimerInterval) clearInterval(offerTimerInterval); return; } const days = Math.floor(diff / (1000*60*60*24)); const hours = Math.floor((diff % (86400000)) / (3600000)); const minutes = Math.floor((diff % 3600000) / 60000); const seconds = Math.floor((diff % 60000) / 1000); timerEl.textContent = `${days}d ${hours}h ${minutes}m ${seconds}s`; }
         function startOfferTimer() { if (offerTimerInterval) clearInterval(offerTimerInterval); updateOfferTimer(); offerTimerInterval = setInterval(updateOfferTimer, 1000); }
-        // Offer popup removed for Waqas (no call)
         function closeGlossyAndOpenDeposit() { const glossyModal = document.getElementById('glossyNodeModal'); if (glossyModal) glossyModal.classList.remove('active'); const depositNav = document.querySelector('.nav-item[onclick*="deposit"]'); if (depositNav) depositNav.click(); else showSection('deposit', document.querySelector('.nav-item:nth-child(3)')); }
         document.getElementById('closeOfferBtn')?.addEventListener('click', () => { document.getElementById('offerModal')?.classList.remove('active'); });
         document.getElementById('dotNodeNowBtn')?.addEventListener('click', handleDotNodeNow);
@@ -735,10 +865,22 @@
         function showQuickAction(a) { const m={deposit:'Deposit Address Generated!\nMinimum: 0.001 BTC\nProcessing Time: 3 confirmations', withdraw:'Daily Withdrawal Limit: 10 BTC\nNetwork Fee: 0.0005 BTC\nAvailable Balance: 0.0000 BTC', stake:'Available Staking Options:\n• ADA: 5.2% APY\n• AVAX: 8.7% APY\n• ETH: 4.2% APY', pool:'Top Pools:\n• BTC/USDT: 24.5% APR\n• AVAX/USDT: 31.2% APR\n• ETH/USDT: 18.3% APR', node:'Node Status: Active\nUptime: 99.98%\nValidators: 147\nNext Reward: Validating...', transfer:'P2P Transfer Ready\nNetwork: Mainnet\nGas Fee: Optimized\nSpeed: < 1 minute'}; alert(m[a]||'Feature unavailable'); }
         function startCountdown() { if (countdownInterval) clearInterval(countdownInterval); const target = new Date('March 17, 2026 00:00:00').getTime(); function u() { const n = new Date().getTime(), d = target - n, days = Math.floor(d/(1000*60*60*24)), hrs = Math.floor((d%(1000*60*60*24))/(1000*60*60)), min = Math.floor((d%(1000*60*60))/(1000*60)), sec = Math.floor((d%(1000*60))/1000), el = document.getElementById('countdown'); if(el) el.textContent = `${days}d ${hrs}h ${min}m ${sec}s`; } u(); countdownInterval = setInterval(u,1000); }
         function hidePhoneNumber(p) { if (!p||p.length<10) return '****'; return p.substring(0,4)+'****'+p.substring(p.length-3); }
-        function logout() { if (randomBlockInterval) clearInterval(randomBlockInterval); if (countdownInterval) clearInterval(countdownInterval); currentUser = null; document.getElementById('dashboard').classList.remove('active'); document.getElementById('loginScreen').style.display = 'flex'; document.getElementById('verificationModal').classList.remove('active'); document.getElementById('username').value = ''; document.getElementById('password').value = ''; document.getElementById('loginError').style.display = 'none'; }
+        function logout() { if (randomBlockInterval) clearInterval(randomBlockInterval); if (countdownInterval) clearInterval(countdownInterval); currentUser = null; document.body.classList.remove('awais-theme'); document.getElementById('dashboard').classList.remove('active'); document.getElementById('loginScreen').style.display = 'flex'; document.getElementById('verificationModal').classList.remove('active'); document.getElementById('username').value = ''; document.getElementById('password').value = ''; document.getElementById('loginError').style.display = 'none'; }
         function loadPortfolio() { const port = currentUser.portfolio; const grid = document.getElementById('portfolioGrid'); let total = 0, html = ''; for (let c in port) { const amt = decodeFloat(port[c]); const price = prices[c]||1; const val = amt * price; total += val; let ic = ''; if (c.includes('BTC')) ic='btc-icon'; else if (c.includes('ETH')) ic='eth-icon'; else if (c.includes('DOT')) ic='dot-icon'; else if (c.includes('ADA')) ic='ada-icon'; const sym = c==='USDT Reward'?'USDT':c; html += `<div class="coin-card"><div class="coin-header"><div class="coin-icon ${ic}">${getCoinSymbol(c)}</div><div class="coin-symbol">${sym}</div></div><div class="coin-balance">${amt.toFixed(4)}</div><div class="coin-value">≈ $${val.toFixed(2)}</div>`; if (c === 'USDT Reward') { html += `<div class="random-block-wrapper"><span class="block-icon">🧱⛏️</span><span>Block: </span><span class="random-block-number">--</span></div>`; if (currentUser.id === 'NTMzODMz') html += `<div class="blink-notice">⚠️ Allocating Data Center, will notify you as soon it will complete.</div>`; } html += `</div>`; } grid.innerHTML = html; document.getElementById('totalBalance').textContent = total.toFixed(2); updateRandomBlocks(); }
         function getCoinSymbol(c) { const s={BTC:'₿',ETH:'Ξ',DOT:'●',ADA:'₳',USDT:'$','USDT Reward':'$'}; return s[c]||c.charAt(0); }
-        function loadUserInfo() { const u = currentUser, name = decodeBase64(u.name), phone = decodeBase64(u.phone), nat = decodeBase64(u.nationality), uid = decodeBase64(u.id); let tip = ''; if (u.id === 'NTMzODMz') tip = 'Available after 1st Reward 33 USD withdrawal verified'; else if (u.id === 'NTMzMzM2') tip = 'Available after 1st Reward 365 USD withdrawal verified'; else tip = 'Available after node verification complete'; const usdtRewardAmt = decodeFloat(u.portfolio['USDT Reward']); const nodeStatusHtml = `<div class="node-status-card"><div class="node-status-header"><div class="status-indicator"></div><div class="node-status-title">Node is Running</div></div><div class="validation-progress"><div style="display:flex;justify-content:space-between;margin-bottom:10px"><span style="color:#8892b0">Validation Complete</span><span style="color:#00ff88">Round 4 Complete</span></div><div class="progress-bar"><div style="height:100%;background:#00ff88;width:100%;border-radius:5px"></div></div><p style="color:#8892b0;margin-top:10px;font-size:14px">100% Complete (4/4 rounds)</p></div><div class="info-grid" style="margin-top:20px"><div class="info-card"><div class="info-label">Node Type</div><div class="info-value">Validator Active</div></div><div class="info-card"><div class="info-label">Public Blockchain Date</div><div class="countdown-container"><div class="countdown-date">📅 March 17, 2026</div><div class="countdown-timer" id="countdown">Loading...</div></div></div></div><div class="info-card" style="margin-top:20px"><div class="info-label">Reward History</div><div class="info-value" style="color:#ffa500; display:flex; align-items:center; gap:10px; flex-wrap:wrap;">🎁 USDT Reward: ${usdtRewardAmt.toFixed(2)} USDT <div class="random-block-wrapper" style="margin-top:0;"><span class="block-icon">🧱✨</span><span>Live Block: </span><span class="random-block-number">--</span></div></div></div><div class="node-buttons"><div class="tooltip"><button class="btn-disabled" onclick="showNodeMessage()">🛑 Stop Node</button><span class="tooltip-text">${tip}</span></div><div class="tooltip"><button class="btn-disabled" onclick="showNodeMessage()">💰 Sell Node</button><span class="tooltip-text">${tip}</span></div></div></div>`; document.getElementById('userInfoContent').innerHTML = `<div class="user-profile-container"><div class="user-profile-header"><div class="user-avatar">${name.split(' ').map(n=>n[0]).join('')}</div><div class="user-details"><h2>${name}</h2><p>User ID: ${uid}</p></div></div><div class="info-grid"><div class="info-card"><div class="info-label">Phone Number</div><div class="info-value">${phone}</div></div><div class="info-card"><div class="info-label">Nationality</div><div class="info-value">${nat}</div></div><div class="info-card"><div class="info-label">Account Type</div><div class="info-value">Premium Node Validator</div></div><div class="info-card"><div class="info-label">Active Member Since</div><div class="info-value">March 2026</div></div></div>${nodeStatusHtml}</div>`; startCountdown(); updateRandomBlocks(); }
+        function loadUserInfo() { 
+            const u = currentUser, name = decodeBase64(u.name), phone = decodeBase64(u.phone), nat = decodeBase64(u.nationality), uid = decodeBase64(u.id); 
+            let tip = ''; 
+            if (u.id === 'NTMzODMz') tip = 'Available after 1st Reward 33 USD withdrawal verified'; 
+            else if (u.id === 'NTMzMzM2') tip = 'Available after 1st Reward 365 USD withdrawal verified'; 
+            else tip = 'Available after node verification complete'; 
+            const usdtRewardAmt = decodeFloat(u.portfolio['USDT Reward']); 
+            const memberSince = isAwais() ? 'September 2023' : 'March 2026';
+            const nodeStatusHtml = `<div class="node-status-card"><div class="node-status-header"><div class="status-indicator"></div><div class="node-status-title">Node is Running</div></div><div class="validation-progress"><div style="display:flex;justify-content:space-between;margin-bottom:10px"><span style="color:#8892b0">Validation Complete</span><span style="color:#00ff88">Round 4 Complete</span></div><div class="progress-bar"><div style="height:100%;background:#00ff88;width:100%;border-radius:5px"></div></div><p style="color:#8892b0;margin-top:10px;font-size:14px">100% Complete (4/4 rounds)</p></div><div class="info-grid" style="margin-top:20px"><div class="info-card"><div class="info-label">Node Type</div><div class="info-value">Validator Active</div></div><div class="info-card"><div class="info-label">Public Blockchain Date</div><div class="countdown-container"><div class="countdown-date">📅 March 17, 2026</div><div class="countdown-timer" id="countdown">Loading...</div></div></div></div><div class="info-card" style="margin-top:20px"><div class="info-label">Reward History</div><div class="info-value" style="color:#ffa500; display:flex; align-items:center; gap:10px; flex-wrap:wrap;">🎁 USDT Reward: ${usdtRewardAmt.toFixed(2)} USDT <div class="random-block-wrapper" style="margin-top:0;"><span class="block-icon">🧱✨</span><span>Live Block: </span><span class="random-block-number">--</span></div></div></div><div class="node-buttons"><div class="tooltip"><button class="btn-disabled" onclick="showNodeMessage()">🛑 Stop Node</button><span class="tooltip-text">${tip}</span></div><div class="tooltip"><button class="btn-disabled" onclick="showNodeMessage()">💰 Sell Node</button><span class="tooltip-text">${tip}</span></div></div></div>`; 
+            document.getElementById('userInfoContent').innerHTML = `<div class="user-profile-container"><div class="user-profile-header"><div class="user-avatar">${name.split(' ').map(n=>n[0]).join('')}</div><div class="user-details"><h2>${name}</h2><p>User ID: ${uid}</p></div></div><div class="info-grid"><div class="info-card"><div class="info-label">Phone Number</div><div class="info-value">${phone}</div></div><div class="info-card"><div class="info-label">Nationality</div><div class="info-value">${nat}</div></div><div class="info-card"><div class="info-label">Account Type</div><div class="info-value">Premium Node Validator</div></div><div class="info-card"><div class="info-label">Active Member Since</div><div class="info-value">${memberSince}</div></div></div>${nodeStatusHtml}</div>`; 
+            startCountdown(); 
+            updateRandomBlocks(); 
+        }
         function loadNodeManagement() { const nodeContainer = document.getElementById('nodeManagementContent'); if (!nodeContainer) return; let html = `<div class="node-status-card"><h3>🖥️ Validator Node Configuration</h3><div style="margin:20px 0;"><p style="color:#8892b0;margin-bottom:10px;">Node Type: <span style="color:#00ff88;">Validator</span></p><p style="color:#8892b0;margin-bottom:10px;">Status: <span style="color:#00ff88;">● Active</span></p><p style="color:#8892b0;margin-bottom:10px;">Uptime: <span style="color:#00d4ff;">99.98%</span></p><p style="color:#8892b0;margin-bottom:10px;">Delegators: <span style="color:#fff;">147</span></p><p style="color:#8892b0;margin-bottom:10px;">Total Staked: <span style="color:#fff;">250,000 AVAX</span></p><p style="color:#8892b0;margin-bottom:10px;">Commission Rate: <span style="color:#fff;">5%</span></p><p style="color:#8892b0;margin-bottom:10px;">Rewards This Epoch: <span style="color:#ffa500;animation:pulse-live 2s infinite;">Validating...</span></p></div><div style="background:rgba(0,212,255,0.1);padding:15px;border-radius:8px;margin-top:20px;"><p style="color:#00d4ff;">📊 Performance Metrics</p><p style="color:#8892b0;font-size:14px;margin-top:10px;">Blocks Produced: 1,847</p><p style="color:#8892b0;font-size:14px;">Blocks Missed: 2</p><p style="color:#8892b0;font-size:14px;">Era Points: 98,742</p></div></div>`; if (currentUser && decodeBase64(currentUser.id) === '533336') { html += `<div class="node-status-card" style="border:1px solid #ffaa55; background: linear-gradient(135deg, rgba(255,170,85,0.05), rgba(255,136,0,0.05));"><div class="node-status-header"><div class="status-indicator" style="background:#ffaa55; animation: none;"></div><div class="node-status-title" style="color:#ffaa55;">DOT Node - Pending Validation</div></div><div class="validation-progress"><div style="display:flex; justify-content:space-between; margin-bottom:10px"><span style="color:#8892b0">Verification Pending</span><span style="color:#ffaa55;">Awaiting Network Confirmation</span></div><div class="progress-bar"><div style="height:100%; background:#ffaa55; width:25%; border-radius:5px"></div></div><p style="color:#8892b0; margin-top:10px; font-size:14px">25% Complete (1/4 rounds) – Please wait for validation</p></div><div class="info-grid" style="margin-top:20px"><div class="info-card"><div class="info-label">Node Type</div><div class="info-value">DOT Validator (Pending)</div></div><div class="info-card"><div class="info-label">Deposit Amount</div><div class="info-value">₨ 11,215</div></div></div><div class="node-buttons"><button class="btn-primary" style="background:linear-gradient(135deg, #ffaa55, #ff8800);" onclick="showDotNodeDepositSlip()">📄 View Deposit Slip</button><div class="tooltip"><button class="btn-disabled" onclick="alert('Node is pending validation. Please wait for network confirmation.')">⏳ Activate Node</button><span class="tooltip-text">Node will be active after validation</span></div></div></div>`; } nodeContainer.innerHTML = html; }
         function showDotNodeDepositSlip() { const modal = document.getElementById('depositSlipModal'); const content = document.getElementById('depositSlipContent'); const slip = `<span class="close-btn" onclick="document.getElementById('depositSlipModal').classList.remove('active')">&times;</span><div class="slip-header"><h2>🏦 DEPOSIT SLIP</h2><p>DOT Node Deposit - Pending Confirmation</p></div><div class="slip-amount">₨ 11,215</div><div class="slip-detail"><div class="slip-row"><span class="slip-label">Status</span><span class="slip-value" style="color:#ffaa55;">⏳ PENDING</span></div><div class="slip-row"><span class="slip-label">Transaction ID</span><span class="slip-value">DOT: 0x9a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b</span></div><div class="slip-row"><span class="slip-label">Date & Time</span><span class="slip-value">2026-05-29 11:22:35 UTC</span></div><div class="slip-row"><span class="slip-label">Channel</span><span class="slip-value">Binance (ID: 11221588)</span></div><div class="slip-row"><span class="slip-label">From</span><span class="slip-value">Awais Ahmed Wallet</span></div><div class="slip-row"><span class="slip-label">To</span><span class="slip-value">DOT Node Staking Contract</span></div><div class="slip-row"><span class="slip-label">Network Fee</span><span class="slip-value">0.002 DOT (~₨ 58)</span></div><div class="slip-row"><span class="slip-label">Block #</span><span class="slip-value">Awaiting confirmation</span></div></div><div class="slip-footer">🔒 Awaiting blockchain verification • 0/3 confirmations</div>`; content.innerHTML = slip; modal.classList.add('active'); }
         function showNodeMessage() { alert("Available after node goes public blockchain"); }
@@ -759,13 +901,11 @@
         }
         function showDepositSlip() { const modal = document.getElementById('depositSlipModal'), content = document.getElementById('depositSlipContent'); const decodedId = decodeBase64(currentUser.id); const amount = decodeBase64(slipAmounts[currentUser.id]); let slip = ''; if (currentUser.id === 'NTMzODMz') { slip = `<span class="close-btn" onclick="document.getElementById('depositSlipModal').classList.remove('active')">&times;</span><div class="slip-header"><h2>🏦 DEPOSIT SLIP</h2><p>Transaction confirmed on blockchain</p></div><div class="slip-amount">₨ ${amount}</div><div class="slip-detail"><div class="slip-row"><span class="slip-label">Status</span><span class="slip-value success">✓ SUCCESS</span></div><div class="slip-row"><span class="slip-label">Transaction ID</span><span class="slip-value">0x8f3a2b1c7e5d9a4b6c2f1e8d7a5b3c9d2e1f4a7b</span></div><div class="slip-row"><span class="slip-label">Date & Time</span><span class="slip-value">2026-03-15 14:32:45 UTC</span></div><div class="slip-row"><span class="slip-label">Channel</span><span class="slip-value">MetaMask (Wallet)</span></div><div class="slip-row"><span class="slip-label">From</span><span class="slip-value">0xAbCd...EfGh</span></div><div class="slip-row"><span class="slip-label">To</span><span class="slip-value">0xIjKl...MnOp</span></div><div class="slip-row"><span class="slip-label">Network Fee</span><span class="slip-value">0.00012 ETH (~₨ 42)</span></div><div class="slip-row"><span class="slip-label">Block #</span><span class="slip-value">19,284,736</span></div></div><div class="slip-footer">🔒 Verified by NodeJS • Non-refundable</div>`; } else if (currentUser.id === 'NTMzMzM2') { slip = `<span class="close-btn" onclick="document.getElementById('depositSlipModal').classList.remove('active')">&times;</span><div class="slip-header"><h2>🏦 DEPOSIT SLIP</h2><p>Transaction confirmed on Binance Chain</p></div><div class="slip-amount">₨ ${amount}</div><div class="slip-detail"><div class="slip-row"><span class="slip-label">Status</span><span class="slip-value success">✓ SUCCESS</span></div><div class="slip-row"><span class="slip-label">Transaction ID</span><span class="slip-value">BSC: 0x2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b</span></div><div class="slip-row"><span class="slip-label">Date & Time</span><span class="slip-value">2026-03-16 09:17:22 UTC</span></div><div class="slip-row"><span class="slip-label">Channel</span><span class="slip-value">Binance (ID: 87654321)</span></div><div class="slip-row"><span class="slip-label">From</span><span class="slip-value">binance_hot_wallet_42</span></div><div class="slip-row"><span class="slip-label">To</span><span class="slip-value">${decodedId}_node_deposit</span></div><div class="slip-row"><span class="slip-label">Network Fee</span><span class="slip-value">0.0005 BNB (~₨ 185)</span></div><div class="slip-row"><span class="slip-label">Block #</span><span class="slip-value">29,384,112</span></div></div><div class="slip-footer">🔒 Verified by NodeJS • Non-refundable</div>`; } else if (currentUser.id === 'NTQ0MDIzNA==') { slip = `<span class="close-btn" onclick="document.getElementById('depositSlipModal').classList.remove('active')">&times;</span><div class="slip-header"><h2>🏦 DEPOSIT SLIP</h2><p>Transaction pending confirmation</p></div><div class="slip-amount">₨ ${amount}</div><div class="slip-detail"><div class="slip-row"><span class="slip-label">Status</span><span class="slip-value" style="color:#ffaa88;">⏳ PENDING</span></div><div class="slip-row"><span class="slip-label">Transaction ID</span><span class="slip-value">0x7e4d9c2a1b5f8e6d3c7a9b0f1e2d3c4b5a6d7e8f9</span></div><div class="slip-row"><span class="slip-label">Date & Time</span><span class="slip-value">2026-05-22 08:45:12 UTC</span></div><div class="slip-row"><span class="slip-label">Channel</span><span class="slip-value">Bank Transfer (IBFT)</span></div><div class="slip-row"><span class="slip-label">From</span><span class="slip-value">Waqas Warrich</span></div><div class="slip-row"><span class="slip-label">To</span><span class="slip-value">NodeJS Deposit Wallet</span></div><div class="slip-row"><span class="slip-label">Network Fee</span><span class="slip-value">₨ 15</span></div><div class="slip-row"><span class="slip-label">Block #</span><span class="slip-value">Awaiting confirmation</span></div></div><div class="slip-footer">🔒 Awaiting blockchain verification • 1/3 confirmations</div>`; } content.innerHTML = slip; modal.classList.add('active'); }
         window.onclick = function(e) {
-            // Only close non-essential modals; keep verification modal open on outside click
             const m1 = document.getElementById('depositSlipModal');
             const m2 = document.getElementById('googleFormModal');
             const m3 = document.getElementById('copyModal');
             const m4 = document.getElementById('invDepositSlipModal');
             const m5 = document.getElementById('historyModal');
-            // Do NOT close verification modal
             if (e.target === m1) m1.classList.remove('active');
             if (e.target === m2) closeGoogleFormModal();
             if (e.target === m3) closeCopyModal();
