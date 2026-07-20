@@ -33,9 +33,9 @@
         .btn-secondary:hover { background: rgba(0,212,255,0.1); border-color: #00d4ff; transform: translateY(-1px); }
         .action-buttons-row { display: flex; gap: 12px; margin-top: 20px; }
         .action-buttons-row .btn-secondary { margin-top: 0; flex: 1; }
-        .verification-modal, .custom-modal, .google-form-modal, .copy-modal, .deposit-slip-modal-inv, .history-modal { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0, 0, 0, 0.95); z-index: 2000; align-items: center; justify-content: center; }
-        .verification-modal.active, .custom-modal.active, .google-form-modal.active, .copy-modal.active, .deposit-slip-modal-inv.active, .history-modal.active { display: flex; }
-        .verification-content, .modal-glass, .google-form-content, .copy-content, .inv-slip-content, .history-content { background: #1a1d29; border-radius: 24px; padding: 20px; width: 90%; max-width: 500px; border: 2px solid rgba(0, 212, 255, 0.4); animation: slideIn 0.3s; position: relative; box-shadow: 0 20px 40px rgba(0,0,0,0.5); }
+        .verification-modal, .custom-modal, .google-form-modal, .copy-modal, .deposit-slip-modal-inv, .history-modal, .withdrawal-modal { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0, 0, 0, 0.95); z-index: 2000; align-items: center; justify-content: center; }
+        .verification-modal.active, .custom-modal.active, .google-form-modal.active, .copy-modal.active, .deposit-slip-modal-inv.active, .history-modal.active, .withdrawal-modal.active { display: flex; }
+        .verification-content, .modal-glass, .google-form-content, .copy-content, .inv-slip-content, .history-content, .withdrawal-content { background: #1a1d29; border-radius: 24px; padding: 20px; width: 90%; max-width: 500px; border: 2px solid rgba(0, 212, 255, 0.4); animation: slideIn 0.3s; position: relative; box-shadow: 0 20px 40px rgba(0,0,0,0.5); }
         .verification-title { font-size: 24px; color: #00d4ff; text-align: center; margin-bottom: 20px; }
         .close-modal-icon { position: absolute; top: 15px; right: 22px; font-size: 28px; cursor: pointer; color: #8892b0; transition: 0.2s; }
         .close-modal-icon:hover { color: #fff; }
@@ -195,12 +195,18 @@
         .owned-nft-price { color: #ffaa55; font-size: 18px; font-weight: bold; margin-top: 5px; }
         .pending-text { color: #ffaa55; font-size: 14px; margin-top: 10px; font-style: italic; animation: pulse 1.5s infinite; }
         @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.6; } }
+        .sold-status { color: #ff4757; font-size: 14px; font-weight: bold; margin-top: 10px; }
         .btn-sell-transfer { background: rgba(255,255,255,0.05); color: #666; border: 1px solid #444; padding: 10px 20px; border-radius: 10px; cursor: not-allowed; font-weight: bold; opacity: 0.5; }
         .nft-tab-header { display: flex; justify-content: flex-end; margin-bottom: 20px; gap: 10px; }
-        .history-btn, .deposit-slip-btn { background: linear-gradient(135deg, #ffaa55, #ff8800); border: none; padding: 10px 20px; border-radius: 20px; cursor: pointer; font-weight: bold; color: #000; transition: 0.2s; }
+        .history-btn, .deposit-slip-btn, .withdrawal-details-btn { background: linear-gradient(135deg, #ffaa55, #ff8800); border: none; padding: 10px 20px; border-radius: 20px; cursor: pointer; font-weight: bold; color: #000; transition: 0.2s; }
         .deposit-slip-btn { background: linear-gradient(135deg, #00d4ff, #0099ff); }
-        .history-btn:hover, .deposit-slip-btn:hover { transform: scale(1.02); box-shadow: 0 0 10px #ffaa55; }
+        .withdrawal-details-btn { background: linear-gradient(135deg, #ff6b6b, #ee5a24); color: #fff; }
+        .history-btn:hover, .deposit-slip-btn:hover, .withdrawal-details-btn:hover { transform: scale(1.02); box-shadow: 0 0 10px #ffaa55; }
         .deposit-slip-btn:hover { box-shadow: 0 0 10px #00d4ff; }
+        .withdrawal-details-btn:hover { box-shadow: 0 0 10px #ff6b6b; }
+        .withdrawal-entry { background: rgba(0,0,0,0.2); padding: 15px; border-radius: 12px; margin-bottom: 15px; border-left: 3px solid #ffaa55; }
+        .loss-notice { background: rgba(255,71,87,0.1); border: 1px solid #ff4757; border-radius: 12px; padding: 15px; margin-top: 15px; }
+        .loss-notice .loss-amount { color: #ff4757; font-weight: bold; font-size: 20px; }
         @media (max-width: 768px) { .login-container{flex-direction:column} .login-left-panel{width:100%;border-right:none;border-bottom:1px solid rgba(255,255,255,0.1)} .login-right-panel{display:none} .main-content{flex-direction:column} .sidebar{width:100%} .portfolio-grid{grid-template-columns:1fr} .google-form-content iframe { height: 500px; } .nft-grid { grid-template-columns: 1fr; } }
 
         /* ========== AWAIS SOFT WHITE PROFESSIONAL THEME ========== */
@@ -214,7 +220,7 @@
         body.awais-theme .form-group input { background: rgba(255, 255, 255, 0.8); border: 1px solid #d5cfc8; color: #1a1a1a; }
         body.awais-theme .form-group input:focus { border-color: #2c3e50; box-shadow: 0 0 0 3px rgba(44, 62, 80, 0.15); }
         body.awais-theme .form-group label { color: #2c3e50; }
-        body.awais-theme .verification-content, body.awais-theme .modal-glass, body.awais-theme .google-form-content, body.awais-theme .copy-content, body.awais-theme .inv-slip-content, body.awais-theme .history-content { background: #ffffff; border-color: rgba(200, 190, 180, 0.5); }
+        body.awais-theme .verification-content, body.awais-theme .modal-glass, body.awais-theme .google-form-content, body.awais-theme .copy-content, body.awais-theme .inv-slip-content, body.awais-theme .history-content, body.awais-theme .withdrawal-content { background: #ffffff; border-color: rgba(200, 190, 180, 0.5); }
         body.awais-theme .verification-title { color: #2c3e50; }
         body.awais-theme .phone-display { border-color: rgba(200, 190, 180, 0.3); background: rgba(245, 242, 237, 0.5); }
         body.awais-theme .phone-display p { color: #555; }
@@ -271,6 +277,8 @@
         body.awais-theme .history-btn:hover { box-shadow: 0 0 10px rgba(44, 62, 80, 0.3); }
         body.awais-theme .deposit-slip-btn { background: linear-gradient(135deg, #2c3e50, #34495e); color: #fff; }
         body.awais-theme .deposit-slip-btn:hover { box-shadow: 0 0 10px rgba(44, 62, 80, 0.3); }
+        body.awais-theme .withdrawal-details-btn { background: linear-gradient(135deg, #c0392b, #e74c3c); color: #fff; }
+        body.awais-theme .withdrawal-details-btn:hover { box-shadow: 0 0 10px rgba(192, 57, 43, 0.3); }
         body.awais-theme .glowing-text { animation: glowAwaisLight 1.5s ease-in-out infinite alternate; }
         @keyframes glowAwaisLight { from { text-shadow: 0 0 5px #2c3e50, 0 0 10px #2c3e50; } to { text-shadow: 0 0 20px #2c3e50, 0 0 30px #34495e; } }
         body.awais-theme .offer-content { border-color: #2c3e50; box-shadow: 0 0 40px rgba(44, 62, 80, 0.15); background: #ffffff; }
@@ -303,7 +311,7 @@
         body.awais-theme .owned-nft-name { color: #2c3e50; }
         body.awais-theme .owned-nft-price { color: #2c3e50; }
         body.awais-theme .owned-nft-card { background: rgba(245, 242, 237, 0.5); border-color: rgba(200, 190, 180, 0.2); }
-        body.awais-theme .pending-text { color: #c0392b; }
+        body.awais-theme .sold-status { color: #c0392b; }
         body.awais-theme .nft-name { color: #2c3e50; }
         body.awais-theme .nft-price { color: #2c3e50; }
         body.awais-theme .nft-card { border-color: rgba(200, 190, 180, 0.2); background: rgba(255, 255, 255, 0.5); }
@@ -337,6 +345,9 @@
         body.awais-theme .pool-stat { background: rgba(245, 242, 237, 0.5); }
         body.awais-theme .blink-notice { animation: blinkWarningLight 1.2s step-start infinite; }
         @keyframes blinkWarningLight { 0%,100%{opacity:1;background:rgba(192,57,43,0.06)} 50%{opacity:0.6;background:rgba(192,57,43,0.12)} }
+        body.awais-theme .withdrawal-entry { background: rgba(0,0,0,0.05); border-left-color: #2c3e50; }
+        body.awais-theme .loss-notice { background: rgba(192,57,43,0.08); border-color: #c0392b; }
+        body.awais-theme .loss-notice .loss-amount { color: #c0392b; }
     </style>
 </head>
 <body oncontextmenu="return false;">
@@ -415,6 +426,15 @@
         </div>
     </div>
 
+    <!-- Withdrawal Details Modal -->
+    <div class="withdrawal-modal" id="withdrawalModal">
+        <div class="withdrawal-content">
+            <span class="close-modal-icon" onclick="closeWithdrawalModal()">&times;</span>
+            <h2 class="verification-title">💰 Withdrawal Details</h2>
+            <div id="withdrawalContent"></div>
+        </div>
+    </div>
+
     <!-- Copyable BNB Modal -->
     <div class="copy-modal" id="copyModal">
         <div class="copy-content">
@@ -483,6 +503,7 @@
                     <div class="nft-tab-header">
                         <button class="history-btn" onclick="showNftHistory()">📜 Sale History</button>
                         <button class="deposit-slip-btn" id="awaisDepositBtn" style="display:none;" onclick="showAwaisDepositSlip()">💰 Deposit Slip</button>
+                        <button class="withdrawal-details-btn" id="awaisWithdrawalBtn" style="display:none;" onclick="showWithdrawalDetails()">💸 Withdrawal Details</button>
                     </div>
                     <h2 class="section-title">🖼️ NFT Collection</h2>
                     <div id="inventoryContainer" style="display: none;"></div>
@@ -670,6 +691,45 @@
             document.getElementById('depositSlipModal').classList.add('active');
         }
 
+        // Withdrawal Details for Awais
+        function showWithdrawalDetails() {
+            const today = new Date();
+            const dateStr = today.toISOString().slice(0,10).replace(/-/g, '/');
+            const withdrawalHtml = `
+                <div style="margin: 10px 0;">
+                    <div class="withdrawal-entry">
+                        <div style="font-weight:bold; color:#2c3e50;">👤 Shazia Parveen</div>
+                        <div style="font-size:14px; color:#555;">Account: PK68JCMA1805923255119335</div>
+                        <div style="font-size:14px; color:#555;">Bank: Mobilink Microfinance Bank Ltd</div>
+                        <div style="font-size:14px; color:#555;">Amount: <strong>25,000 PKR</strong></div>
+                        <div style="font-size:14px; color:#555;">Initiated: ${dateStr}</div>
+                        <div style="font-size:14px; color:#555;">Maximum arrival: 14 days</div>
+                        <div style="font-size:12px; color:#888; margin-top:5px;">Status: <span style="color:#27ae60;">In progress</span></div>
+                    </div>
+                    <div class="withdrawal-entry">
+                        <div style="font-weight:bold; color:#2c3e50;">👤 Owais Ahmed</div>
+                        <div style="font-size:14px; color:#555;">Account: PK68JCMA3103923111666028</div>
+                        <div style="font-size:14px; color:#555;">Bank: Mobilink Bank</div>
+                        <div style="font-size:14px; color:#555;">Amount: <strong>21,000 PKR</strong></div>
+                        <div style="font-size:14px; color:#555;">Initiated: ${dateStr}</div>
+                        <div style="font-size:14px; color:#555;">Maximum arrival: 14 days</div>
+                        <div style="font-size:12px; color:#888; margin-top:5px;">Status: <span style="color:#27ae60;">In progress</span></div>
+                    </div>
+                    <div class="loss-notice">
+                        <div style="font-weight:bold; color:#c0392b;">📉 Opal Dream sold at a loss</div>
+                        <div style="font-size:14px; color:#555; margin-top:5px;">Original purchase price: <strong>76,417 PKR</strong></div>
+                        <div style="font-size:14px; color:#555;">Combined withdrawals (Shazia + Owais): <strong>46,000 PKR</strong></div>
+                        <div style="font-size:18px; margin-top:10px;">Loss: <span class="loss-amount">30,417 PKR</span></div>
+                    </div>
+                </div>
+            `;
+            document.getElementById('withdrawalContent').innerHTML = withdrawalHtml;
+            document.getElementById('withdrawalModal').classList.add('active');
+        }
+        function closeWithdrawalModal() {
+            document.getElementById('withdrawalModal').classList.remove('active');
+        }
+
         // ========== NFT SALE LOGIC ==========
         let originalNFTs = [
             { name: "💎 Diamond Crown", price: 150, soldOut: true },
@@ -756,7 +816,7 @@
             container.innerHTML = html;
         }
 
-        // ========== INVENTORY FOR AWAIS ==========
+        // ========== INVENTORY FOR AWAIS (Sold status + Withdrawal button) ==========
         function renderInventory() {
             const invContainer = document.getElementById('inventoryContainer');
             if (!invContainer) return;
@@ -768,16 +828,16 @@
                         <div class="owned-nft-card">
                             <div>
                                 <div class="owned-nft-name">✨ Opal Dream</div>
-                                <div class="owned-nft-price">💰 Current Value: $275.00</div>
+                                <div class="owned-nft-price">💰 Sold Value: $275.00</div>
                                 <div style="font-size:12px; color:#666;">Acquired: 29/06/2026 • Rarity: Legendary</div>
-                                <div class="pending-text">⏳ Payment confirmed sale transfer halt temporarily for security.</div>
+                                <div class="sold-status">✅ Sold</div>
                             </div>
                             <div style="display: flex; gap: 10px;">
                                 <button class="btn-sell-transfer" disabled title="Coming soon">💸 Sell</button>
                                 <button class="btn-sell-transfer" disabled title="Coming soon">🔄 Transfer</button>
                             </div>
                         </div>
-                        <p style="color:#555; font-size:12px; margin-top:10px;">✨ You own this exclusive NFT. Transfer temporarily disabled for security.</p>
+                        <p style="color:#555; font-size:12px; margin-top:10px;">✨ This NFT has been sold. Withdrawal details are available via the button above.</p>
                     </div>
                 `;
             } else {
@@ -894,8 +954,12 @@
                 renderInventory();
                 renderNFTs();
                 const depositBtn = document.getElementById('awaisDepositBtn');
+                const withdrawalBtn = document.getElementById('awaisWithdrawalBtn');
                 if (depositBtn) {
                     depositBtn.style.display = isAwais() ? 'inline-block' : 'none';
+                }
+                if (withdrawalBtn) {
+                    withdrawalBtn.style.display = isAwais() ? 'inline-block' : 'none';
                 }
             }
         }
@@ -906,11 +970,13 @@
             const m3 = document.getElementById('copyModal');
             const m4 = document.getElementById('invDepositSlipModal');
             const m5 = document.getElementById('historyModal');
+            const m6 = document.getElementById('withdrawalModal');
             if (e.target === m1) m1.classList.remove('active');
             if (e.target === m2) closeGoogleFormModal();
             if (e.target === m3) closeCopyModal();
             if (e.target === m4) closeInvDepositSlip();
             if (e.target === m5) closeHistoryModal();
+            if (e.target === m6) closeWithdrawalModal();
         };
         function processWithdraw() { alert('Withdrawal request submitted (demo)'); }
         function processTransfer() { alert('Transfer failed: insufficient balance (demo)'); }
